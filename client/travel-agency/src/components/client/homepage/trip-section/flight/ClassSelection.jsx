@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ClassSelection = ({ selectedClass, onClassChange }) => {
+const ClassSelection = ({ selectedClass, onClassChange, travelClassNames }) => {
     const handleClassChange = (newClass) => {
         onClassChange(newClass);
     };
@@ -9,9 +9,14 @@ const ClassSelection = ({ selectedClass, onClassChange }) => {
         <div className="cabin-selection">
             <h6>Cabin Class</h6>
             <div className="cabin-list">
-                <CabinClassButton label="Economy" isActive={selectedClass === 'Economy'} onClick={() => handleClassChange('Economy')} />
-                <CabinClassButton label="Business" isActive={selectedClass === 'Business'} onClick={() => handleClassChange('Business')} />
-                <CabinClassButton label="First Class" isActive={selectedClass === 'First Class'} onClick={() => handleClassChange('First Class')} />
+                {Object.entries(travelClassNames).map(([value, label]) => (
+                    <CabinClassButton
+                        key={value}
+                        label={label}
+                        isActive={selectedClass === Number(value)}
+                        onClick={() => handleClassChange(Number(value))}
+                    />
+                ))}
             </div>
         </div>
     );
@@ -19,7 +24,11 @@ const ClassSelection = ({ selectedClass, onClassChange }) => {
 
 const CabinClassButton = ({ label, isActive, onClick }) => {
     return (
-        <button type="button" className={`label-select-btn ${isActive ? 'active' : ''}`} onClick={onClick}>
+        <button
+            type="button"
+            className={`label-select-btn ${isActive ? 'active' : ''}`}
+            onClick={onClick}
+        >
             <span className="muiButton-label">{label}</span>
         </button>
     );

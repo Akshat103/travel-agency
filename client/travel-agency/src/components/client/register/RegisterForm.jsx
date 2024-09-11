@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
 import google from '../../../assets/img/icon/google.png';
 import facebook from '../../../assets/img/icon/facebook.png';
 import twitter from '../../../assets/img/icon/twitter.png';
@@ -176,7 +175,6 @@ const RegisterForm = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </section>
   );
 };

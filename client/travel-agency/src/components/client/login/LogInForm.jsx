@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LogInForm = () => {
   const [formData, setFormData] = useState({
     emailOrMobile: '',
     password: ''
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +23,7 @@ const LogInForm = () => {
       const response = await axios.post('/api/login', formData);
       const { userType } = response.data;
       localStorage.setItem('userType', userType); 
+      navigate('/');
       toast.success('Login successful!');
     } catch (error) {
       toast.error('Login failed. Please check your credentials.');
@@ -73,7 +76,6 @@ const LogInForm = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </section>
   );
 };

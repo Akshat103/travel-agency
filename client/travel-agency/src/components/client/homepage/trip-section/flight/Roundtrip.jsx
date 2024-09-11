@@ -9,7 +9,8 @@ const Roundtrip = ({
   handleSelectDestination,
   handleDateChange,
   handlePassengerCountChange,
-  handleClassChange
+  handleClassChange,
+  updateBookingTypeAndSearch
 }) => {
   return (
     <div class="tab-pane fade" id="roundtrip" role="tabpanel" aria-labelledby="roundtrip-tab">
@@ -40,6 +41,7 @@ const Roundtrip = ({
                 <div class="col-lg-3  col-md-6 col-sm-12 col-12">
                   <div class="form_search_date">
                     <DateRangeInput
+                      onColumn={true}
                       isRoundTrip={true}
                       startDate={flightDetails.TravelDate}
                       endDate={flightDetails.DepartureDate}
@@ -52,11 +54,12 @@ const Roundtrip = ({
                     flightDetails={flightDetails}
                     onPassengerCountChange={handlePassengerCountChange}
                     onClassChange={handleClassChange}
+                    useDropdown={true}
                   />
                 </div>
               </div>
-              <div class="top_form_search_button">
-                <button class="btn btn_theme btn_md">Search</button>
+              <div className="d-flex justify-content-center">
+                <button class="btn btn_theme btn_md" onClick={updateBookingTypeAndSearch}>Search</button>
               </div>
             </form>
           </div>

@@ -1,16 +1,16 @@
 import React from 'react';
 
-const DateRangeInput = ({ isRoundTrip, startDate, endDate, onChange }) => {
+const DateRangeInput = ({ onColumn, isRoundTrip, startDate, endDate, onChange }) => {
   return (
     <div className="form_search_date">
-      <div className="flight_Search_boxed date_flex_area">
+      <div className={`flight_Search_boxed date_flex_area ${!onColumn ? 'row' : ''}`}>
         <div className="Journey_date">
           <p>Journey date</p>
           <input
             type="date"
             value={startDate}
             onChange={(e) => onChange(e.target.value, endDate)}
-          />
+            />
         </div>
         {isRoundTrip && (
           <div className="Return_date">

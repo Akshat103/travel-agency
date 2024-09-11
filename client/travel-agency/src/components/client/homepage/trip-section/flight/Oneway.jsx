@@ -9,7 +9,8 @@ const Oneway = ({
   handleSelectDestination,
   handleDateChange,
   handlePassengerCountChange,
-  handleClassChange
+  handleClassChange,
+  handleSearch
 }) => {
   return (
     <div className="tab-pane fade show active" id="oneway_flight" role="tabpanel" aria-labelledby="oneway-tab">
@@ -45,15 +46,16 @@ const Oneway = ({
                     onChange={handleDateChange}
                   />
                 </div>
-                <div className="col-lg-2 col-md-6 col-sm-12 col-12">
+                <div className="col-lg-3 col-md-6 col-sm-12 col-12">
                   <PassengerDetails
                     flightDetails={flightDetails}
                     onPassengerCountChange={handlePassengerCountChange}
                     onClassChange={handleClassChange}
+                    useDropdown={true}
                   />
                 </div>
-                <div className="top_form_search_button">
-                  <button className="btn btn_theme btn_md">Search</button>
+                <div className="d-flex justify-content-center">
+                  <button className="btn btn_theme btn_md" onClick={handleSearch} >Search</button>
                 </div>
               </div>
             </form>

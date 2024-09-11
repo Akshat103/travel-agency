@@ -8,7 +8,7 @@ const Banner = ({ title, subtitle, breadcrumbs }) => {
         <div className="row align-items-center">
           <div className="col-lg-12">
             <div className="common_bannner_text">
-              <h1>{title}</h1>
+              <h1 style={{color:'white'}}>{title}</h1>
               {subtitle && <h3>{subtitle}</h3>}
               {breadcrumbs && (
                 <ul>
