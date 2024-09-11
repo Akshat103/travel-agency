@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import FlightOptions from './flight/FlightOptions';
 import Oneway from './flight/Oneway';
 import Roundtrip from './flight/Roundtrip';

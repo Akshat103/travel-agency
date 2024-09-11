@@ -34,15 +34,12 @@ export const useFlight = () => {
 
   const handleSearch = useCallback(async () => {
     const currentFlightDetails = flightDetailsRef.current;
-
     if (!isValidFlightDetails(currentFlightDetails)) {
       return;
     }
-
-    console.log('Searching with:', currentFlightDetails);
     try {
       const data = await apiHandler('post', '/flightsearch', { requestdata: currentFlightDetails });
-      console.log('Search results:', data);
+      return data.data[0];
     } catch (error) {
       console.error('Error searching flights:', error);
     }

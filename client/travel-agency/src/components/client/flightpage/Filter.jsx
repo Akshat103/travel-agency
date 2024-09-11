@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LocationInput from "../homepage/trip-section/flight/LocationInput";
 import DateRangeInput from '../homepage/trip-section/flight/DateRangeInput';
 import PassengerDetails from '../homepage/trip-section/flight/PassengerDetails';
 import { useFlight } from '../../../hooks/useFlight';
 
-const Filter = ({ onSearch }) => {
+const Filter = ({ onSearch, setData, isSearching }) => {
   const [isRoundTrip, setIsRoundTrip] = useState(false);
   const {
     flightDetails,
@@ -22,10 +22,16 @@ const Filter = ({ onSearch }) => {
   };
 
   const handleSearchClick = async () => {
-    console.log('Search button clicked');
-    await handleSearch();
+    isSearching(true);
+    const data = await handleSearch();
+    setData(data);
+    isSearching(false);
     if (onSearch) onSearch();
   };  
+
+   useEffect(() => {
+    handleSearchClick();
+  }, []);
 
   return (
     <div className="container p-3">

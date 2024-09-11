@@ -2,6 +2,7 @@ import React from 'react';
 import LocationInput from './LocationInput';
 import DateRangeInput from './DateRangeInput';
 import PassengerDetails from './PassengerDetails';
+import { useNavigate } from 'react-router-dom';
 
 const Oneway = ({
   flightDetails,
@@ -9,9 +10,16 @@ const Oneway = ({
   handleSelectDestination,
   handleDateChange,
   handlePassengerCountChange,
-  handleClassChange,
-  handleSearch
+  handleClassChange
 }) => {
+
+  const navigate = useNavigate();
+
+  const clickSearch = (event) => {
+    event.preventDefault();
+    navigate('/flight-details');
+  };
+
   return (
     <div className="tab-pane fade show active" id="oneway_flight" role="tabpanel" aria-labelledby="oneway-tab">
       <div className="row">
@@ -55,7 +63,9 @@ const Oneway = ({
                   />
                 </div>
                 <div className="d-flex justify-content-center">
-                  <button className="btn btn_theme btn_md" onClick={handleSearch} >Search</button>
+                  <button className="btn btn_theme btn_md" onClick={clickSearch}>
+                    Search
+                  </button>
                 </div>
               </div>
             </form>
