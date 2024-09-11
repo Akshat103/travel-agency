@@ -1,13 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Banner from '../../components/client/Banner';
 import Filter from '../../components/client/flightpage/Filter';
 import ListFlights from '../../components/client/flightpage/ListFlights';
-import { useFlight } from '../../hooks/useFlight';
+import { useDispatch } from 'react-redux';
+import { searchFlights } from '../../redux/flightSlice';
 
 const FlightSearch = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [flights, setFlights] = useState([]);
-  const { handleSearch } = useFlight();
+  const dispatch = useDispatch();
+
+  const handleSearch = async (flightDetails) => {
+    setIsSearching(true);
+    try {
+      const result = await dispatch(searchFlights(flightDetails)).unwrap();
+      setFlights(result);
+    } catch (error) {
+      console.error('Error searching flights:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   return (
     <>
@@ -21,7 +34,7 @@ const FlightSearch = () => {
       <div className="container-fluid">
         <div className="row p-2">
           <div className="col-md-3 bg-light" style={{ borderRadius: '20px' }}>
-            <Filter onSearch={handleSearch} setData={setFlights} isSearching={setIsSearching}/>
+            <Filter onSearch={handleSearch} />
           </div>
           <div className="col-md-9">
             <ListFlights flights={flights} isSearching={isSearching} />

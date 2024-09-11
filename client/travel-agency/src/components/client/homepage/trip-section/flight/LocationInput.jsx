@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
-import _ from 'lodash'; 
+import _ from 'lodash';
 
 const LocationInput = ({ label, onSelect }) => {
     const [query, setQuery] = useState('');
@@ -8,17 +8,21 @@ const LocationInput = ({ label, onSelect }) => {
     const [selectedAirport, setSelectedAirport] = useState(null);
     const [isTyping, setIsTyping] = useState(false);
     const [airportsData, setAirportsData] = useState([]);
+    const dataFetched = useRef(false);
 
     useEffect(() => {
-        axios.get('/api/flightcity')
-            .then(response => {
-                if (response.data.statuscode === '100') {
-                    setAirportsData(response.data.data);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching airport data:', error);
-            });
+        if (!dataFetched.current) {
+            axios.get('/api/flightcity')
+                .then(response => {
+                    if (response.data.statuscode === '100') {
+                        setAirportsData(response.data.data);
+                        dataFetched.current = true;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching airport data:', error);
+                });
+        }
     }, []);
 
     const debounceFilterSuggestions = useCallback(

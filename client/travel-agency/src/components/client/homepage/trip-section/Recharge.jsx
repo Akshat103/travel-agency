@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const Recharge = () => {
   const [number, setNumber] = useState('');
@@ -12,22 +11,28 @@ const Recharge = () => {
   const [amount, setAmount] = useState('');
   const [dataFetched, setDataFetched] = useState(false);
 
-  const clearState = () =>{
+  const clearState = () => {
     setNumber('');
     setOperator('');
     setCircle('');
     setAmount('');
-  }
-   const fetchOperatorsAndCircles = async () => {
+  };
+
+  const fetchOperatorsAndCircles = async () => {
     try {
-      const operatorResponse = await axios.get('/api/get-operator');
-      const circleResponse = await axios.get('/api/get-circle');
+      const [operatorResponse, circleResponse] = await Promise.all([
+        axios.get('/api/get-operator'),
+        axios.get('/api/get-circle'),
+      ]);
+
       if (operatorResponse.data[0].Status === '1') {
         setOperators(operatorResponse.data[0].data[0].data);
       }
+
       if (circleResponse.data[0].Status === '1') {
         setCircles(circleResponse.data[0].data);
       }
+
       setDataFetched(true);
     } catch (error) {
       toast.error('Failed to fetch operators or circles.');
@@ -54,7 +59,7 @@ const Recharge = () => {
 
     if (Number(amount) > 0) {
       try {
-        await axios.post('/api/recharge', {
+        await apiHandler('POST', '/recharge', {
           number,
           operator,
           circle,

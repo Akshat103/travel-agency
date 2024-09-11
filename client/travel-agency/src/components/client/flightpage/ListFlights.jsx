@@ -2,20 +2,12 @@ import React, { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { FaPlaneDeparture, FaPlaneArrival, FaCalendarDay, FaInfoCircle, FaMapMarkerAlt } from 'react-icons/fa';
 import Modal from '../../modal/Modal';
-import flightsData from './test.json';
 
 const ListFlights = ({ flights, isSearching }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedFlight, setSelectedFlight] = useState(null);
-    flights = flightsData.Flights;
-
     const [currentPage, setCurrentPage] = useState(1);
     const flightsPerPage = 9;
-
-    const indexOfLastFlight = currentPage * flightsPerPage;
-    const indexOfFirstFlight = indexOfLastFlight - flightsPerPage;
-    const currentFlights = flights.slice(indexOfFirstFlight, indexOfLastFlight);
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const openModal = (flight) => {
         setSelectedFlight(flight);
@@ -44,6 +36,16 @@ const ListFlights = ({ flights, isSearching }) => {
             </div>
         );
     }
+
+    const indexOfLastFlight = currentPage * flightsPerPage;
+    const indexOfFirstFlight = indexOfLastFlight - flightsPerPage;
+    const currentFlights = flights.slice(indexOfFirstFlight, indexOfLastFlight);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const totalPages = Math.ceil(flights.length / flightsPerPage);
+    const hasPreviousPage = currentPage > 1;
+    const hasNextPage = currentPage < totalPages;
 
     return (
         <div className="p-3">
@@ -85,24 +87,26 @@ const ListFlights = ({ flights, isSearching }) => {
                 ))}
             </div>
 
-            {/* Pagination Controls */}
             <nav>
                 <ul className="pagination justify-content-center">
-                    {Array.from({ length: Math.ceil(flights.length / flightsPerPage) }, (_, index) => (
-                        <li
-                            key={index}
-                            className={`page-item ${index + 1 === currentPage ? 'active' : ''}`}
-                            onClick={() => paginate(index + 1)}
-                        >
-                            <a className="page-link" href="#">
-                                {index + 1}
-                            </a>
-                        </li>
-                    ))}
+                    <li className={`page-item ${!hasPreviousPage ? 'disabled' : ''}`}>
+                        <a className="page-link" href="#" onClick={() => hasPreviousPage && paginate(currentPage - 1)}>
+                            Previous
+                        </a>
+                    </li>
+                    <li className="page-item active">
+                        <a className="page-link" href="#">
+                            {currentPage}
+                        </a>
+                    </li>
+                    <li className={`page-item ${!hasNextPage ? 'disabled' : ''}`}>
+                        <a className="page-link" href="#" onClick={() => hasNextPage && paginate(currentPage + 1)}>
+                            Next
+                        </a>
+                    </li>
                 </ul>
             </nav>
 
-            {/* Modal for selected flight */}
             {selectedFlight && (
                 <Modal isOpen={modalIsOpen} onClose={closeModal}>
                     <div className="container">
@@ -134,7 +138,7 @@ const ListFlights = ({ flights, isSearching }) => {
                                         <li className="list-group-item">
                                             <strong>Flight Number:</strong> {segment.Flight_Number}
                                             <br />
-                                            <strong>Flight Number:</strong> {segment.Airline_Name}
+                                            <strong>Airline Name:</strong> {segment.Airline_Name}
                                             <br />
                                             <FaPlaneDeparture /> Departure: {segment.Departure_DateTime}
                                             <br />

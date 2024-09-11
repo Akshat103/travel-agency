@@ -1,37 +1,43 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import LocationInput from "../homepage/trip-section/flight/LocationInput";
 import DateRangeInput from '../homepage/trip-section/flight/DateRangeInput';
 import PassengerDetails from '../homepage/trip-section/flight/PassengerDetails';
-import { useFlight } from '../../../hooks/useFlight';
+import { updateFlightDetails } from '../../../redux/flightSlice';
 
-const Filter = ({ onSearch, setData, isSearching }) => {
+const Filter = ({ onSearch }) => {
+  const dispatch = useDispatch();
+  const { flightDetails } = useSelector((state) => state.flights);
   const [isRoundTrip, setIsRoundTrip] = useState(false);
-  const {
-    flightDetails,
-    handleSelectOrigin,
-    handleSelectDestination,
-    handleDateChange,
-    handlePassengerCountChange,
-    handleClassChange,
-    handleSearch,
-    handleBookingTypeChange,
-  } = useFlight();
-
+  
+  const handleSelectOrigin = (airport) => {
+    dispatch(updateFlightDetails({ Origin: { AIRPORTCODE: airport.AIRPORTCODE, COUNTRYCODE: airport.COUNTRYCODE } }));
+  };
+  
+  const handleSelectDestination = (airport) => {
+    dispatch(updateFlightDetails({ Destination: { AIRPORTCODE: airport.AIRPORTCODE, COUNTRYCODE: airport.COUNTRYCODE } }));
+  };
+  
+  const handleDateChange = (startDate, endDate) => {
+    dispatch(updateFlightDetails({ TravelDate: startDate, DepartureDate: endDate }));
+  };
+  
+  const handlePassengerCountChange = (type, change) => {
+    dispatch(updateFlightDetails({ [`${type}_Count`]: Math.max(0, flightDetails[`${type}_Count`] + change) }));
+  };
+  
+  const handleClassChange = (newClass) => {
+    dispatch(updateFlightDetails({ Class_Of_Travel: newClass }));
+  };
+  
   const handleToggleRoundTrip = () => {
     setIsRoundTrip(prev => !prev);
+    dispatch(updateFlightDetails({ Booking_Type: isRoundTrip ? '0' : '1' }));
   };
-
-  const handleSearchClick = async () => {
-    isSearching(true);
-    const data = await handleSearch();
-    setData(data);
-    isSearching(false);
-    if (onSearch) onSearch();
-  };  
-
-   useEffect(() => {
-    handleSearchClick();
-  }, []);
+  
+  useEffect(() => {
+    onSearch(flightDetails);
+  }, []);  // Added `isRoundTrip` to the dependency array
 
   return (
     <div className="container p-3">
@@ -85,7 +91,7 @@ const Filter = ({ onSearch, setData, isSearching }) => {
           />
         </div>
         <div className="col">
-          <button className="btn btn-primary w-100" onClick={handleSearchClick}>Search</button>
+          <button className="btn btn-primary w-100" onClick={() => onSearch(flightDetails)}>Search</button>
         </div>
       </div>
     </div>

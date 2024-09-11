@@ -1,6 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 const RechargeLog = require('../models/RechargeLog');
+const { response } = require('express');
 
 const { RECHARGE_MEMBER_ID, RECHARGE_PIN, RECHARGE_API_URL } = process.env;
 
@@ -88,7 +89,6 @@ const rechargeRequest = async (req, res) => {
       });
   
       await rechargeLog.save();
-  
       res.json(response.data);
     } catch (error) {
       const errorLog = new RechargeLog({

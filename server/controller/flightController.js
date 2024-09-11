@@ -1,8 +1,14 @@
 const axios = require('axios');
-const {formatDate} = require('../utils/utils');
+const { formatDate } = require('../utils/utils');
+
+// Ensure environment variables are defined
 const FLIGHT_API_SERVICE_URL = process.env.FLIGHT_API_SERVICE_URL;
 const FLIGHT_ACCESS_TOKEN = process.env.FLIGHT_ACCESS_TOKEN;
 const FLIGHT_TXNID = process.env.FLIGHT_TXNID;
+
+if (!FLIGHT_API_SERVICE_URL || !FLIGHT_ACCESS_TOKEN || !FLIGHT_TXNID) {
+    throw new Error('Missing required environment variables');
+}
 
 // Helper function to send POST requests
 const sendPostRequest = async (methodName, requestData) => {
@@ -20,6 +26,8 @@ const sendPostRequest = async (methodName, requestData) => {
         });
         return response.data;
     } catch (error) {
+        // Log error details for debugging
+        console.error('Error in sendPostRequest:', error.message);
         throw new Error(error.response ? error.response.data : error.message);
     }
 };
@@ -30,7 +38,9 @@ const getFlightCities = async (req, res) => {
         const data = await sendPostRequest('FLIGHTCITY');
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        // Log error details for debugging
+        console.error('Error in getFlightCities:', error.message);
+        res.status(500).json({ error: 'Failed to fetch flight cities' });
     }
 };
 
@@ -38,8 +48,14 @@ const getFlightCities = async (req, res) => {
 const searchFlights = async (req, res) => {
     const { requestdata } = req.body;
 
+    // Basic input validation
+    if (!requestdata || !requestdata.Origin || !requestdata.Destination || !requestdata.TravelDate) {
+        return res.status(400).json({ error: 'Invalid request data' });
+    }
+
     const Travel_Type = requestdata.Origin.COUNTRYCODE === requestdata.Destination.COUNTRYCODE ? "0" : "1";
     const travelDate = formatDate(requestdata.TravelDate);
+
     const transformedData = {
         Travel_Type: Travel_Type,
         TripInfo: [
@@ -64,7 +80,9 @@ const searchFlights = async (req, res) => {
         const data = await sendPostRequest('FLIGHTSEARCH', transformedData);
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        // Log error details for debugging
+        console.error('Error in searchFlights:', error.message);
+        res.status(500).json({ error: 'Failed to search flights' });
     }
 };
 
