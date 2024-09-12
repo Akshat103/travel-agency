@@ -21,4 +21,6 @@ router.put('/update-user', authMiddleware, userController.updateUser);
 // Delete a user by client ID
 router.delete('/delete-user', authMiddleware, userController.deleteUser);
 
+router.post('/logout', userController.logoutUser);
+
 module.exports = router;

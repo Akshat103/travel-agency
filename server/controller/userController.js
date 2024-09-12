@@ -20,19 +20,19 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({
       $or: [{ email: emailOrMobile }, { mobileNumber: emailOrMobile }]
     });
-    
+
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    
+
     const token = user.generateAuthToken();
-    
+
     res.cookie('sessionId', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production'
     });
-    
-    res.status(200).json({ 
+
+    res.status(200).json({
       message: 'Login successful',
       userType: user.userType
     });
@@ -96,11 +96,27 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const logoutUser = (req, res) => {
+  try {
+    res.clearCookie('sessionId', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      path: '/',
+    });
+
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
   getAllUsers,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
+  logoutUser
 };

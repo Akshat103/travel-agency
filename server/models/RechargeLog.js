@@ -5,6 +5,18 @@ const rechargeLogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  usertx: {
+    type: String,
+    required: true,
+  },
+  number: {
+    type: String,
+    required: true,
+  },
+  amount: {
+    type: String,
+    required: true,
+  },
   status: {
     type: String,
     required: true,

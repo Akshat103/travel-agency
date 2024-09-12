@@ -1,25 +1,32 @@
-import React, { useState, lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Loading from './components/Loading';
+import loadable from '@loadable/component';
 
-const ClientRoutes = lazy(() => import('./routes/ClientRoutes'));
-const AdminRoutes = lazy(() => import('./routes/AdminRoutes'));
+// Dynamically load routes
+const ClientRoutes = loadable(() => import('./routes/ClientRoutes'));
+const AdminRoutes = loadable(() => import('./routes/AdminRoutes'));
+
+// Private Route Component
+const PrivateRoute = ({ children, allowedRoles }) => {
+  const userRole = localStorage.getItem('userType');
+  return allowedRoles.includes(userRole) ? children : <Navigate to="/" />;
+};
 
 const App = () => {
-  const [userRole, setUserRole] = useState('client');
-
   return (
     <div>
       <Router>
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route
-              path="/*"
-              element={userRole === 'client' ? <ClientRoutes /> : <Navigate to="/admin" />}
-            />
+            <Route path="/*" element={<ClientRoutes />} />
             <Route
               path="/admin/*"
-              element={userRole === 'admin' ? <AdminRoutes /> : <Navigate to="/" />}
+              element={
+                <PrivateRoute allowedRoles={['0']}>
+                  <AdminRoutes />
+                </PrivateRoute>
+              }
             />
           </Routes>
         </Suspense>

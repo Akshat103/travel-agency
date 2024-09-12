@@ -48,7 +48,7 @@ const getOperator = async (req, res) => {
             params: {
                 memberid: RECHARGE_MEMBER_ID,
                 pin: RECHARGE_PIN,
-                Method:'getoperator'
+                Method: 'getoperator'
             },
         });
 
@@ -59,51 +59,60 @@ const getOperator = async (req, res) => {
     }
 };
 
-// Recharge Request
+const generateOrderId = () => {
+    return Math.random().toString(36).slice(2, 12).toUpperCase();
+};
+
 const rechargeRequest = async (req, res) => {
     const { number, operator, circle, amount, RechargeMode = 0 } = req.body;
-  
+    const orderid = generateOrderId(); 
+
+    console.log(req.user.clientId);
+
     try {
-      const response = await axios.get(
-        `${RECHARGE_API_URL}/services_cyapi/recharge_cyapi.aspx`,
-        {
-          params: {
-            memberid: RECHARGE_MEMBER_ID,
-            pin: RECHARGE_PIN,
+        const response = await axios.get(
+            `${RECHARGE_API_URL}/services_cyapi/recharge_cyapi.aspx`,
+            {
+                params: {
+                    memberid: RECHARGE_MEMBER_ID,
+                    pin: RECHARGE_PIN,
+                    number,
+                    operator,
+                    circle,
+                    amount,
+                    usertx: orderid,
+                    format: 'json',
+                    RechargeMode,
+                },
+            }
+        );
+
+        const rechargeLog = new RechargeLog({
+            clientId: req.user.clientId,
+            usertx: orderid,
             number,
-            operator,
-            circle,
             amount,
-            usertx: req.user.clientId,
-            format: 'json',
-            RechargeMode,
-          },
-        }
-      );
-  
-      const rechargeLog = new RechargeLog({
-        clientId: req.user.clientId,
-        status: response.data.Status || 'Unknown',
-        transaction: response.data.ApiTransID || 'No Transaction ID',
-        entryLog: response.data, 
-      });
-  
-      await rechargeLog.save();
-      res.json(response.data);
+            status: response.data.Status || 'Unknown',
+            transaction: response.data.ApiTransID || 'No Transaction ID',
+            entryLog: response.data,
+        });
+
+        await rechargeLog.save();
+        res.json(response.data);
     } catch (error) {
-      const errorLog = new RechargeLog({
-        clientId: req.user.clientId,
-        status: 'Failed',
-        transaction: 'No Transaction ID',
-        entryLog: { error: error.message },
-      });
-  
-      await errorLog.save();
-  
-      res.status(500).json({ error: error.message });
+        const errorLog = new RechargeLog({
+            clientId: req.user.clientId,
+            status: 'Failed',
+            transaction: 'No Transaction ID',
+            entryLog: { error: error.message },
+        });
+
+        await errorLog.save();
+
+        res.status(500).json({ error: error.message });
     }
-  };
-  
+};
+
 
 // Dispute Request
 const disputeRequest = async (req, res) => {
