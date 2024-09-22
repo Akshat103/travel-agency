@@ -10,9 +10,12 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+// Serve static files (index.html)
+app.use(express.static(path.join(__dirname, 'public'))); // Ensure your index.html is in the 'public' folder
+
 dbConnect();
 
-// api routes
+// API routes
 const userRoutes = require('./routes/userRoutes');
 const flightRoutes = require('./routes/flightRoutes');
 const rechargeRoutes = require('./routes/rechargeRoutes');
@@ -26,12 +29,19 @@ app.use('/api', flightRoutes);
 app.use('/api', rechargeRoutes);
 app.use('/api/otp', otpRoutes);
 app.use('/api', busRoutes);
-app.use('/api',paymentRoutes);
+app.use('/api', paymentRoutes);
 
-app.use('/', (req, res) => {
-  res.status(404).send('Welcome to Yara Holidays.');
+// Serve index.html at the root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Send a welcome message at /api
+app.get('/api', (req, res) => {
+  res.send('Welcome to Yara Holidays.');
+});
+
+// Handle 404 for unmatched routes
 app.use((req, res) => {
   res.status(404).send('Page Not Found');
 });
