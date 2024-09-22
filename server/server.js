@@ -16,26 +16,20 @@ dbConnect();
 const userRoutes = require('./routes/userRoutes');
 const flightRoutes = require('./routes/flightRoutes');
 const rechargeRoutes = require('./routes/rechargeRoutes');
+const otpRoutes = require('./routes/otpRoutes');
+const busRoutes = require('./routes/busRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
+// Use the routes
 app.use('/api', userRoutes);
 app.use('/api', flightRoutes);
 app.use('/api', rechargeRoutes);
+app.use('/api/otp', otpRoutes);
+app.use('/api', busRoutes);
+app.use('/api',paymentRoutes);
 
-// Serve static files from frontend, dashboard, and super-admin folders
-app.use('/', express.static(path.join(__dirname, '../frontend')));
-app.use('/dashboard', express.static(path.join(__dirname, '../dashboard')));
-app.use('/super-admin', express.static(path.join(__dirname, '../super-admin')));
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
-});
-
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dashboard', 'db-dashboard.html'));
-});
-
-app.get('/super-admin', (req, res) => {
-  res.sendFile(path.join(__dirname, '../super-admin', 'db-dashboard.html'));
+app.use('/', (req, res) => {
+  res.status(404).send('Welcome to Yara Holidays.');
 });
 
 app.use((req, res) => {

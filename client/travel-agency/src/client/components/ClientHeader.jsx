@@ -27,7 +27,7 @@ const ClientHeader = () => {
     if (userType === '1') {
       return (
         <>
-          <li><Link to="dashboard">Dashboard</Link></li>
+          <li><Link to="/dashboard">Dashboard</Link></li>
           <li><button onClick={logout} className='btn btn-dark'>
             Log Out
           </button></li>
@@ -36,7 +36,7 @@ const ClientHeader = () => {
     } else if (userType === '0') {
       return (
         <>
-          <li><Link to="admin">Dashboard</Link></li>
+          <li><Link to="/admin">Dashboard</Link></li>
           <li><button onClick={logout} className='btn btn-dark'>
             Log Out
           </button></li>
@@ -45,8 +45,8 @@ const ClientHeader = () => {
     } else {
       return (
         <>
-          <li><Link to="login">Login</Link></li>
-          <li><Link to="register">Register</Link></li>
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/register">Register</Link></li>
         </>
       );
     }

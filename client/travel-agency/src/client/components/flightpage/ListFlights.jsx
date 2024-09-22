@@ -21,7 +21,6 @@ const ListFlights = ({ flights, isSearching }) => {
         setSelectedFlight(null);
     };
 
-    console.log(isSearching)
     if (isSearching) {
         return (
             <div className="p-3">

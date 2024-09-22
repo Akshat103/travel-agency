@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
 
 // Create a new user
 const createUser = async (req, res) => {
@@ -40,8 +39,6 @@ const loginUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
-
 
 // Get all users
 const getAllUsers = async (req, res) => {

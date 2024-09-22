@@ -6,19 +6,18 @@ import Banner from '../components/Banner';
 import ListPlans from '../components/rechargepage/ListPlans';
 import RechargeFilter from '../components/rechargepage/RechargeFilter';
 import { setNumber, setOperator, setCircle } from '../../redux/rechargeSlice';
-import planData from './plan.json';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import usePayment from '../../utils/payment';
 
 const RechargePage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { number: initialNumber, operator: initialOperator, circle: initialCircle } = location.state || {};
-
+  const { payment } = usePayment();
   const [plans, setPlans] = useState([]);
   const [filteredPlans, setFilteredPlans] = useState([]);
   const [filterType, setFilterType] = useState('');
-  const [amount, setAmount] = useState('');
 
   useEffect(() => {
     if (initialNumber && initialOperator && initialCircle) {
@@ -30,22 +29,29 @@ const RechargePage = () => {
     }
   }, [initialNumber, initialOperator, initialCircle, dispatch]);
 
-  const fetchPlans = () => {
+  const fetchPlans = async (number, operator, circle) => {
     try {
-      if (planData.Status === "0" && Array.isArray(planData.PlanDescription)) {
-        const allPlans = planData.PlanDescription;
+      const response = await axios.post('/api/get-plans', {
+        operatorCode: operator,
+        circleCode: circle,
+        mobileNumber: number
+      });
+
+      if (response.data.Status === "0" && Array.isArray(response.data.PlanDescription)) {
+        const allPlans = response.data.PlanDescription;
         setPlans(allPlans);
         setFilteredPlans(allPlans);
-        console.log("fetch");
       } else {
-        console.error('Invalid data structure:', planData);
+        console.error('Invalid data structure:', response.data);
         setPlans([]);
         setFilteredPlans([]);
+        toast.error('Failed to fetch plans. Please try again.');
       }
     } catch (error) {
       console.error('Error loading plans:', error.message);
       setPlans([]);
       setFilteredPlans([]);
+      toast.error('Error fetching plans. Please check your connection and try again.');
     }
   };
 
@@ -59,38 +65,29 @@ const RechargePage = () => {
   const handleFilterChange = (type) => {
     setFilterType(type);
     if (type) {
-      setFilteredPlans(plans.filter(plan => plan.recharge_short_desc === type));
+      setFilteredPlans(plans.filter(plan => plan.recharge_type === type));
     } else {
       setFilteredPlans(plans);
     }
   };
 
-  const uniqueTypes = [...new Set(plans.map(plan => plan.recharge_short_desc))];
+  const uniqueTypes = [...new Set(plans.map(plan => plan.recharge_type))];
 
   const handleRecharge = async (amount) => {
     if (Number(amount) > 0) {
-      toast.promise(
-        axios.post('/api/recharge', {
-          number: initialNumber,
-          operator: initialOperator,
-          circle: initialCircle,
-          amount,
-        }).then(response => {
-          if (response.data.Status === "Success") {
-            toast.success('Recharge successful!');
-          } else {
-            toast.error('Something went wrong! Please try again.');
-          }
-        }),
-        {
-          pending: 'Recharge Processing...',
-          error: 'Recharge failed. Please try again.',
-        }
-      );
+      const receipt = `recharge_rcptid_${Math.floor(Math.random() * 10000)}`;
+      const serviceType = "recharge";
+      const serviceDetails = {
+        number: initialNumber,
+        operator: initialOperator,
+        circle: initialCircle,
+        amount,
+      };
+      payment(amount, receipt, serviceType, serviceDetails)      
     } else {
-      toast.error('Please enter a valid amount.');
+      toast.error("Invalid amount. Please enter a valid amount for recharge.");
     }
-  }; 
+  };
 
   return (
     <div>

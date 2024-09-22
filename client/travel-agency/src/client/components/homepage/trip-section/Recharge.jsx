@@ -9,9 +9,13 @@ const Recharge = ({ context, onDetailsChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { number, operator, circle, operators, circles, dataFetched } = useSelector((state) => state.recharge);
+  
   useEffect(() => {
     if (number.length === 3 && !dataFetched) {
       fetchOperatorsAndCircles();
+    }
+    if (number.length === 10) {
+      fetchCircleOperator();
     }
   }, [number, dataFetched]);
 
@@ -40,6 +44,23 @@ const Recharge = ({ context, onDetailsChange }) => {
     }
   };
 
+  const fetchCircleOperator = async () => {
+    try {
+      const response = await axios.post('/api/get-circle-operator', {
+        mobileNumber: number
+      });
+
+      if (response.data.Status === '0') {
+        dispatch(setOperator(response.data.OperatorCode));
+        dispatch(setCircle(response.data.CircleCode));
+      } else {
+        toast.error('Failed to fetch circle and operator information');
+      }
+    } catch (error) {
+      toast.error('Error fetching circle and operator information');
+    }
+  };
+
   const handleNumberChange = (e) => {
     const inputValue = e.target.value.replace(/\D/g, '');
     if (inputValue.length <= 10) {
@@ -65,7 +86,7 @@ const Recharge = ({ context, onDetailsChange }) => {
         <div className="col-lg-12">
           <div className="tour_search_form">
             <div>
-            <div className={`${context === 'recharge' ? 'col' : 'row'}`}>
+              <div className={`${context === 'recharge' ? 'col' : 'row'}`}>
                 <div className={`${context==='recharge' ? 'm-1': 'col-lg-4 col-md-6 col-sm-12 col-12'}`}>
                   <input
                     type="text"

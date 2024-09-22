@@ -37,7 +37,7 @@ const Filter = ({ onSearch }) => {
   
   useEffect(() => {
     onSearch(flightDetails);
-  }, []);  // Added `isRoundTrip` to the dependency array
+  }, []);
 
   return (
     <div className="container p-3">
