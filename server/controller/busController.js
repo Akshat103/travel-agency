@@ -106,8 +106,42 @@ const busSearch = async (req, res) => {
     }
 };
 
+const busBook = async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        const data = {
+            "request": {
+                "tripid": id
+            },
+            "AuthData": {
+                "Merchantkey": MERCHANT_KEY,
+                "MerchantID": MEMBER_ID,
+                "TypeData": "json"
+            }
+        };
+
+        const apiResponse = await axios.post(`${BUS_API_URL}/BusSeatLayout`, data);
+        if (apiResponse.status === 200) {
+            const responseData = apiResponse.data;
+            let cleanedData = typeof responseData === 'string' ? JSON.parse(responseData) : responseData;
+
+            if (cleanedData && cleanedData.data) {
+                res.json(cleanedData.data);
+            } else {
+                res.status(400).json({ message: "Data not found in API response." });
+            }
+        } else {
+            res.status(400).json({ message: "Failed to fetch data from API." });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred.", error: error.message });
+    }
+};
+
 module.exports = {
     getSourceList,
     getDestinationList,
-    busSearch
+    busSearch,
+    busBook
 };

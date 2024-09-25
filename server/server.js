@@ -10,10 +10,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// Serve static files (index.html)
-app.use(express.static(path.join(__dirname, 'public'))); // Ensure your index.html is in the 'public' folder
-
 dbConnect();
+
+// Serve static files (index.html)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // API routes
 const userRoutes = require('./routes/userRoutes');
@@ -32,7 +32,7 @@ app.use('/api', busRoutes);
 app.use('/api', paymentRoutes);
 
 // Serve index.html at the root
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 

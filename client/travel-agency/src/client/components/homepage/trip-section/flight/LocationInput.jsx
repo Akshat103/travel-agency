@@ -83,9 +83,9 @@ const LocationInput = ({ label, onSelect }) => {
                     </ul>
                 )
             )}
-            {selectedAirport && (
+            {selectedAirport ? (
                 <span>{selectedAirport.AIRPORTCODE} - {selectedAirport.AIRPORTNAME}</span>
-            )}
+            ) : <span>Name/Code</span>}
         </>
     );
 };

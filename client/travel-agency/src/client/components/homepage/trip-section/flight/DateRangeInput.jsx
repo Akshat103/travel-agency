@@ -1,18 +1,22 @@
 import React from 'react';
 
-const DateRangeInput = ({ onColumn, isRoundTrip, startDate, endDate, onChange }) => {
+const DateRangeInput = ({ isRoundTrip, startDate, endDate, onChange }) => {
   return (
-    <div className="form_search_date">
-      <div className={`flight_Search_boxed date_flex_area ${!onColumn ? 'row' : ''}`}>
+    <div className='row'>
+      <div className="flight_Search_boxed">
         <div className="Journey_date">
           <p>Journey date</p>
           <input
             type="date"
             value={startDate}
             onChange={(e) => onChange(e.target.value, endDate)}
-            />
+          />
+          <span style={{ color: "transparent" }}>date</span>
         </div>
-        {isRoundTrip && (
+      </div>
+
+      {isRoundTrip && (
+        <div className="flight_Search_boxed">
           <div className="Return_date">
             <p>Return date</p>
             <input
@@ -20,9 +24,11 @@ const DateRangeInput = ({ onColumn, isRoundTrip, startDate, endDate, onChange })
               value={endDate}
               onChange={(e) => onChange(startDate, e.target.value)}
             />
+            <span style={{ color: "transparent" }}>date</span>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
     </div>
   );
 };

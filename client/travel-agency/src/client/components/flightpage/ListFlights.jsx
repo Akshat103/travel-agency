@@ -25,7 +25,7 @@ const ListFlights = ({ flights, isSearching }) => {
         return (
             <div className="p-3">
                 <h4>Flights</h4>
-                <Skeleton count={15} height={50} />
+                <Skeleton count={5} height={150} />
             </div>
         );
     }
@@ -52,7 +52,7 @@ const ListFlights = ({ flights, isSearching }) => {
     return (
         <div className="p-3">
             <h4>Flights</h4>
-            <div className="row">
+            <div className="col">
                 {currentFlights.map((flight, index) => (
                     <div key={index} className="col-md-4 mb-3">
                         <div className="card">
@@ -124,8 +124,6 @@ const ListFlights = ({ flights, isSearching }) => {
                                 {selectedFlight.Fares.map((fare, idx) => (
                                     <div key={idx} className="fare-info">
                                         <strong>Total Amount:</strong> {fare.FareDetails[0].Total_Amount} {fare.FareDetails[0].Currency_Code}
-                                        <br />
-                                        <strong>Basic Amount:</strong> {fare.FareDetails[0].Basic_Amount} {fare.FareDetails[0].Currency_Code}
                                         <br />
                                         <strong>Seats Available:</strong> {fare.Seats_Available}
                                     </div>

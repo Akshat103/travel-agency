@@ -40,19 +40,19 @@ const PassengerDetails = ({ flightDetails, onPassengerCountChange, onClassChange
         <div className="passengers-types">
           <PassengerType
             type="Adult"
-            ageRange="12+ yrs"
+            ageRange="12+"
             count={Adult_Count}
             onChange={(change) => onPassengerCountChange('Adult', change)}
           />
           <PassengerType
             type="Child"
-            ageRange="2 - Less than 12 yrs"
+            ageRange="2> and <12"
             count={Child_Count}
             onChange={(change) => onPassengerCountChange('Child', change)}
           />
           <PassengerType
             type="Infant"
-            ageRange="Less than 2 yrs"
+            ageRange="<2"
             count={Infant_Count}
             onChange={(change) => onPassengerCountChange('Infant', change)}
           />

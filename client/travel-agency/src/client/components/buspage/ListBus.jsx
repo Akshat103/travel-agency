@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import SeatLayout from './SeatLayout';
 
 const ListBus = ({ isSearching, buses, loadMoreBuses }) => {
   const observer = useRef();
@@ -106,9 +107,7 @@ const BusCard = React.forwardRef(({ bus }, ref) => {
                 <h6 className="font-semibold mb-2">Boarding Points</h6>
                 <ul className="list-disc pl-5">
                   {bus.boardingTimes.map((point, index) => (
-                    <li key={index}>
-                      {point.bpName}
-                    </li>
+                    <li key={index}>{point.bpName}</li>
                   ))}
                 </ul>
               </div>
@@ -116,9 +115,7 @@ const BusCard = React.forwardRef(({ bus }, ref) => {
                 <h6 className="font-semibold mb-2">Dropping Points</h6>
                 <ul className="list-disc pl-5">
                   {bus.droppingTimes.map((point, index) => (
-                    <li key={index}>
-                      {point.bpName}
-                    </li>
+                    <li key={index}>{point.bpName}</li>
                   ))}
                 </ul>
               </div>
@@ -134,6 +131,7 @@ const BusCard = React.forwardRef(({ bus }, ref) => {
                 ))}
               </div>
             </div>
+            <SeatLayout id={bus.id} />
           </div>
         )}
       </div>
