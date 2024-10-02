@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
     const [showSeats, setShowSeats] = useState(false);
@@ -34,8 +35,8 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
     }, [seatData, passengers]);
 
     const updateAvailableSeats = () => {
-        const available = seatData.filter(seat => 
-            seat.available === "True" && 
+        const available = seatData.filter(seat =>
+            seat.available === "True" &&
             !passengers.some(p => p.seat && p.seat.name === seat.name)
         );
         setAvailableSeats(available);
@@ -96,27 +97,27 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
             const updatedPassengers = editingIndex !== null
                 ? passengers.map((passenger, index) => index === editingIndex ? currentPassenger : passenger)
                 : [...passengers, currentPassenger];
-    
+
             setPassengers(updatedPassengers);
             setCurrentPassenger({ passengertitle: '', passengername: '', passengerage: '', seat: null });
-    
+
             const total = updatedPassengers.reduce((sum, passenger) => sum + (passenger.seat ? Number(passenger.seat.fare) : 0), 0);
             setTotalAmount(total);
-    
+
             setEditingIndex(null);
             setShowPassengerInputs(false);
             updateAvailableSeats();
         }
     };
-    
+
     const handleRemovePassenger = (index) => {
         const updatedPassengers = passengers.filter((_, i) => i !== index);
         setPassengers(updatedPassengers);
-    
+
         const total = updatedPassengers.reduce((sum, passenger) => sum + (passenger.seat ? Number(passenger.seat.fare) : 0), 0);
         setTotalAmount(total);
         updateAvailableSeats();
-    };   
+    };
 
     const handleEditPassenger = (index) => {
         const passengerToEdit = passengers[index];
@@ -127,7 +128,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
 
     const { source, destination, journeyDate } = useSelector((state) => state.bus);
 
-    const handleBook = () => {
+    const handleBook = async () => {
         const bookingData = {
             source,
             destination,
@@ -149,10 +150,18 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                 passengerage,
             })),
         };
-    
+
         console.log('Total Amount:', totalAmount);
         console.log(bookingData);
-        // Here you would typically send this data to your booking API
+
+        try {
+            const response = await axios.post('/api/busBook', bookingData);
+            console.log('Booking successful:', response.data);
+            // Handle success (e.g., show a confirmation message, redirect, etc.)
+        } catch (error) {
+            console.error('Error booking:', error.response ? error.response.data : error.message);
+            // Handle error (e.g., show an error message to the user)
+        }
     };
 
     return (
@@ -249,7 +258,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                     }}>
                                         {editingIndex !== null ? 'Edit Passenger' : 'Add Passenger'}
                                     </button>
-                                    
+
                                     {showPassengerInputs && (
                                         <>
                                             <div className="row mb-4">

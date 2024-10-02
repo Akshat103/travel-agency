@@ -171,13 +171,13 @@ const busSeatbook = async (req, res) => {
                 "TypeData": "json"
             }
         };
-
+        console.log("data: ", data)
         const apiResponse = await axios.post(`${BUS_API_URL}/BusSeatblock`, data);
 
         if (apiResponse.status === 200) {
             const responseData = apiResponse.data;
             let cleanedData = typeof responseData === 'string' ? JSON.parse(responseData) : responseData;
-
+            console.log("cleanedData: ", cleanedData)
             if (cleanedData && cleanedData.data) {
                 const bookingId = cleanedData.data.booking_id;
 
@@ -193,9 +193,9 @@ const busSeatbook = async (req, res) => {
                         "TypeData": "json"
                     }
                 };
-
+                console.log("bookTicketData: ", bookTicketData)
                 const ticketResponse = await axios.post(`${BUS_API_URL}/BookTicket`, bookTicketData);
-
+                console.log("ticketResponse: ", ticketResponse)
                 if (ticketResponse.status === 200) {
                     const ticketResponseData = ticketResponse.data;
                     cleanedData = typeof ticketResponseData === 'string' ? JSON.parse(ticketResponseData) : ticketResponseData;
