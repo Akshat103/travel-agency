@@ -30,7 +30,7 @@ const rechargeLogSchema = new mongoose.Schema({
     default: Date.now,
   },
   entryLog: {
-    type: Object, // Stores the entire request or response if needed
+    type: Object,
     required: true,
   },
 });

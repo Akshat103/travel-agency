@@ -2,7 +2,8 @@ const Razorpay = require('razorpay');
 require('dotenv').config();
 const crypto = require("crypto");
 const OrderSchema = require('../models/Order');
-const {rechargeRequest} = require('../controller/rechargeController')
+const { rechargeRequest } = require('./rechargeController');
+const { busSeatbook } = require('./busController');
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -76,14 +77,22 @@ module.exports.verifyOrder = async (req, res) => {
 
         if (serviceType === 'recharge') {
             const { number, operator, circle, amount } = updatedOrder.serviceDetails;
-            console.log(number, operator, circle, amount)
-            await rechargeRequest(number, operator, circle, amount, orderid=razorpay_order_id, clientId);
+            await rechargeRequest(number, operator, circle, amount, orderid = razorpay_order_id, clientId);
+            return res.status(201).json({
+                success: true,
+                message: `${serviceType} done successfully.`
+            });
+        }
+        
+        else if (serviceType === 'bookbus') {
+            const response = await busSeatbook(updatedOrder.serviceDetails);
+            return res.status(201).json({
+                success: true,
+                message: `${serviceType} done successfully.`,
+                data: response
+            });
         }
 
-        return res.status(201).json({
-            success: true,
-            message: `${serviceType} done successfully.`
-        });
     } else {
         await OrderSchema.findOneAndUpdate(
             { orderId: razorpay_order_id },

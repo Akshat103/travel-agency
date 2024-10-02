@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import usePayment from '../../../utils/payment';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -27,7 +28,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
     const [editingIndex, setEditingIndex] = useState(null);
     const [availableSeats, setAvailableSeats] = useState([]);
     const [showPassengerInputs, setShowPassengerInputs] = useState(false);
-
+    const { payment } = usePayment();
     const id = bus.id;
 
     useEffect(() => {
@@ -151,16 +152,13 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
             })),
         };
 
-        console.log('Total Amount:', totalAmount);
-        console.log(bookingData);
-
         try {
-            const response = await axios.post('/api/busBook', bookingData);
-            console.log('Booking successful:', response.data);
-            // Handle success (e.g., show a confirmation message, redirect, etc.)
+            const receipt = `bus_booking_rcptid_${Math.floor(Math.random() * 10000)}`;
+            const serviceType = "bookbus";
+            const serviceDetails = bookingData;
+            payment(totalAmount, receipt, serviceType, serviceDetails)
         } catch (error) {
             console.error('Error booking:', error.response ? error.response.data : error.message);
-            // Handle error (e.g., show an error message to the user)
         }
     };
 

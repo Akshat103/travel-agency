@@ -1,3 +1,4 @@
+const BookingLog = require('../models/BookingLog');
 const axios = require('axios');
 require('dotenv').config();
 
@@ -139,12 +140,12 @@ const seatLayout = async (req, res) => {
     }
 };
 
-const busSeatbook = async (req, res) => {
+const busSeatbook = async (deatils) => {
     try {
         const {
             source, destination, doj, tripid, bpid, dpid,
             mobile, email, idtype, idnumber, address, Search_Key, seats
-        } = req.body;
+        } = deatils;
 
         const id = req.user.clientId;
 
@@ -171,17 +172,16 @@ const busSeatbook = async (req, res) => {
                 "TypeData": "json"
             }
         };
-        console.log("data: ", data)
+
         const apiResponse = await axios.post(`${BUS_API_URL}/BusSeatblock`, data);
 
         if (apiResponse.status === 200) {
             const responseData = apiResponse.data;
             let cleanedData = typeof responseData === 'string' ? JSON.parse(responseData) : responseData;
-            console.log("cleanedData: ", cleanedData)
+
             if (cleanedData && cleanedData.data) {
                 const bookingId = cleanedData.data.booking_id;
 
-                // Make the second API call to book the ticket
                 const bookTicketData = {
                     "request": {
                         "booking_id": bookingId,
@@ -193,25 +193,45 @@ const busSeatbook = async (req, res) => {
                         "TypeData": "json"
                     }
                 };
-                console.log("bookTicketData: ", bookTicketData)
+
                 const ticketResponse = await axios.post(`${BUS_API_URL}/BookTicket`, bookTicketData);
-                console.log("ticketResponse: ", ticketResponse)
                 if (ticketResponse.status === 200) {
                     const ticketResponseData = ticketResponse.data;
                     cleanedData = typeof ticketResponseData === 'string' ? JSON.parse(ticketResponseData) : ticketResponseData;
 
-                    res.json(cleanedData);
+                    // Log the booking details
+                    const bookingLog = new BookingLog({
+                        source,
+                        destination,
+                        doj,
+                        tripid,
+                        bpid,
+                        dpid,
+                        mobile,
+                        email,
+                        idtype,
+                        idnumber,
+                        address,
+                        Search_Key,
+                        seats,
+                        booking_id: bookingId,
+                        agentid: id
+                    });
+
+                    await bookingLog.save();
+
+                    return cleanedData;
                 } else {
-                    res.status(400).json({ message: "Failed to book the ticket." });
+                    throw new Error(error.message);
                 }
             } else {
-                res.status(400).json({ message: "Data not found in API response." });
+                throw new Error(error.message);
             }
         } else {
-            res.status(400).json({ message: "Failed to fetch data from API." });
+            throw new Error(error.message);
         }
     } catch (error) {
-        res.status(500).json({ message: "An error occurred.", error: error.message });
+        throw new Error(error.message);
     }
 };
 
