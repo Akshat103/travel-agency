@@ -90,7 +90,7 @@ const Bus = ({ layout, onSearch }) => {
         if (layout === "col") {
             onSearch();
         } else {
-            navigate('/bus-details');
+            navigate('/bus');
         }
     };
 

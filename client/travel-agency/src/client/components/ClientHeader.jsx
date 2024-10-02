@@ -1,6 +1,6 @@
 import React from 'react';
 import ClientNavBar from './ClientNavBar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -9,6 +9,7 @@ const ClientHeader = () => {
   const userType = localStorage.getItem('userType');
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const logout = async() =>{
     try {
@@ -52,9 +53,15 @@ const ClientHeader = () => {
     }
   };
 
+  const isHomePage = location.pathname === '/';
   return (
     <>
-      <header className="main_header_arae">
+      <header className="main_header_arae"
+      style={{
+        position: isHomePage? 'absolute': 'relative',
+        background: !isHomePage? 'blueviolet': ''
+      }}
+      >
         <div className="topbar-area">
           <div className="container">
             <div className="row align-items-center">

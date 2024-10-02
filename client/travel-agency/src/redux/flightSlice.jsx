@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { apiHandler } from '../utils/apiHandler';
+import axios from 'axios';
 
 export const searchFlights = createAsyncThunk(
   'flights/searchFlights',
   async (flightDetails, { rejectWithValue }) => {
     try {
-      const response = await apiHandler('post', '/flightsearch', { requestdata: flightDetails });
-      return response.data[0].Flights;
+      const response = await axios.post('/api/flightsearch', { requestdata: flightDetails });
+      return response.data.data[0].Flights;
     } catch (error) {
       return rejectWithValue('Error searching flights');
     }

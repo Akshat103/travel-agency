@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateFlightDetails, searchFlights } from '../../../../redux/flightSlice';
+import { updateFlightDetails } from '../../../../redux/flightSlice';
 import FlightSearchForm from './flight/FlightSearchForm';
 
 const Flight = () => {
@@ -25,10 +25,6 @@ const Flight = () => {
 
   const handleClassChange = (newClass) => {
     dispatch(updateFlightDetails({ Class_Of_Travel: newClass }));
-  };
-
-  const handleSearch = () => {
-    dispatch(searchFlights(flightDetails));
   };
 
   const handleBookingTypeChange = (newBookingType) => {

@@ -17,7 +17,7 @@ const FlightSearchForm = ({
 
   const clickSearch = (event) => {
     event.preventDefault();
-    navigate('/flight-details');
+    navigate('/flights');
   };
 
   const toggleRoundTrip = () => {

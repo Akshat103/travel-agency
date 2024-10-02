@@ -1,24 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
-import { FaPlaneDeparture, FaPlaneArrival, FaCalendarDay, FaInfoCircle, FaMapMarkerAlt } from 'react-icons/fa';
-import Modal from '../../../components/modal/Modal';
-import { Link } from 'react-router-dom';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { FaPlaneDeparture, FaPlaneArrival, FaCalendarDay, FaMapMarkerAlt } from 'react-icons/fa';
+import { Info, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const ListFlights = ({ flights, isSearching }) => {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [selectedFlight, setSelectedFlight] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const flightsPerPage = 9;
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const flightsPerPage = 4;
+    const navigate = useNavigate();
 
-    const openModal = (flight) => {
-        setSelectedFlight(flight);
-        setModalIsOpen(true);
-    };
-
-    const closeModal = () => {
-        setModalIsOpen(false);
-        setSelectedFlight(null);
+    const handleViewDetails = (flight) => {
+        navigate('/flight-details', { state: { flight } });
     };
 
     if (isSearching) {
@@ -51,21 +44,25 @@ const ListFlights = ({ flights, isSearching }) => {
 
     return (
         <div className="p-3">
-            <h4>Flights</h4>
-            <div className="col">
+            <h4 className="mb-4">Flights</h4>
+            <div className="row">
                 {currentFlights.map((flight, index) => (
                     <div key={index} className="col-md-4 mb-3">
-                        <div className="card">
+                        <div className="card h-100 shadow-sm">
                             <div className="card-body">
+                                <h5 className="card-title mb-3">{flight.Airline_Code} {flight.Flight_Numbers}</h5>
                                 <p className="card-text">
-                                    <FaPlaneDeparture /> <strong>From:</strong> {flight.Origin}
+                                    <FaPlaneDeparture className="me-2 text-primary" /> <strong>From:</strong> {flight.Origin}
                                     <br />
-                                    <FaPlaneArrival /> <strong>To:</strong> {flight.Destination}
+                                    <FaPlaneArrival className="me-2 text-primary" /> <strong>To:</strong> {flight.Destination}
                                     <br />
-                                    <FaCalendarDay /> <strong>Date:</strong> {flight.TravelDate}
+                                    <FaCalendarDay className="me-2 text-primary" /> <strong>Date:</strong> {flight.TravelDate}
                                 </p>
-                                <button onClick={() => openModal(flight)} className="btn btn-secondary">
-                                    <FaInfoCircle /> View Details
+                                <button 
+                                    onClick={() => handleViewDetails(flight)} 
+                                    className="btn btn-primary"
+                                >
+                                    <Info size={18} className="me-2" /> View Details
                                 </button>
                             </div>
                             <ul className="list-group list-group-flush">
@@ -73,12 +70,9 @@ const ListFlights = ({ flights, isSearching }) => {
                                     <strong>Flight ID:</strong> {flight.Flight_Id}
                                 </li>
                                 <li className="list-group-item">
-                                    <strong>Flight Numbers:</strong> {flight.Flight_Numbers}
-                                </li>
-                                <li className="list-group-item">
-                                    <FaMapMarkerAlt /> <strong>Segments:</strong>
+                                    <FaMapMarkerAlt className="me-2 text-success" /> <strong>Segments:</strong>
                                     {flight.Segments.map((segment, idx) => (
-                                        <span key={idx} className="d-block">
+                                        <span key={idx} className="d-block ms-3">
                                             {segment.Flight_Number} ({segment.Origin} to {segment.Destination})
                                         </span>
                                     ))}
@@ -89,70 +83,25 @@ const ListFlights = ({ flights, isSearching }) => {
                 ))}
             </div>
 
-            <nav>
+            <nav className="mt-4">
                 <ul className="pagination justify-content-center">
                     <li className={`page-item ${!hasPreviousPage ? 'disabled' : ''}`}>
-                        <Link className="page-link" to="#" onClick={() => hasPreviousPage && paginate(currentPage - 1)}>
-                            Previous
-                        </Link>
+                        <button className="page-link" onClick={() => hasPreviousPage && paginate(currentPage - 1)}>
+                            <ArrowLeft size={18} /> Previous
+                        </button>
                     </li>
                     <li className="page-item active">
-                        <Link className="page-link" to="#">
+                        <span className="page-link">
                             {currentPage}
-                        </Link>
+                        </span>
                     </li>
                     <li className={`page-item ${!hasNextPage ? 'disabled' : ''}`}>
-                        <Link className="page-link" to="#" onClick={() => hasNextPage && paginate(currentPage + 1)}>
-                            Next
-                        </Link>
+                        <button className="page-link" onClick={() => hasNextPage && paginate(currentPage + 1)}>
+                            Next <ArrowRight size={18} />
+                        </button>
                     </li>
                 </ul>
             </nav>
-
-            {selectedFlight && (
-                <Modal isOpen={modalIsOpen} onClose={closeModal}>
-                    <div className="container">
-                        <div className="row mb-4">
-                            <div className="col-md-6">
-                                <p><strong>Flight ID:</strong> {selectedFlight.Flight_Id}</p>
-                                <p><strong>Origin:</strong> {selectedFlight.Origin}</p>
-                                <p><strong>Destination:</strong> {selectedFlight.Destination}</p>
-                                <p><strong>Travel Date:</strong> {selectedFlight.TravelDate}</p>
-                            </div>
-                            <div className="col-md-6">
-                                <h4>Fares</h4>
-                                {selectedFlight.Fares.map((fare, idx) => (
-                                    <div key={idx} className="fare-info">
-                                        <strong>Total Amount:</strong> {fare.FareDetails[0].Total_Amount} {fare.FareDetails[0].Currency_Code}
-                                        <br />
-                                        <strong>Seats Available:</strong> {fare.Seats_Available}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="row mb-4">
-                            <h4 className="col-12">Segments</h4>
-                            {selectedFlight.Segments.map((segment, idx) => (
-                                <div key={idx} className="col-md-6">
-                                    <ul className="list-group">
-                                        <li className="list-group-item">
-                                            <strong>Flight Number:</strong> {segment.Flight_Number}
-                                            <br />
-                                            <strong>Airline Name:</strong> {segment.Airline_Name}
-                                            <br />
-                                            <FaPlaneDeparture /> Departure: {segment.Departure_DateTime}
-                                            <br />
-                                            <FaPlaneArrival /> Arrival: {segment.Arrival_DateTime}
-                                            <br />
-                                            Duration: {segment.Duration}
-                                        </li>
-                                    </ul>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </Modal>
-            )}
         </div>
     );
 };

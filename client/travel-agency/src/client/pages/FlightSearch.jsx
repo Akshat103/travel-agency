@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Banner from '../components/Banner';
 import Filter from '../components/flightpage/Filter';
 import ListFlights from '../components/flightpage/ListFlights';
 import { useDispatch } from 'react-redux';
@@ -24,7 +23,7 @@ const FlightSearch = () => {
       toast.success('Flights found successfully!');
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error('Recharge failed. Please try again.');
+      toast.error('Error searching flights. Please try again.');
       console.error('Error searching flights:', error);
     } finally {
       setIsSearching(false);
@@ -34,13 +33,6 @@ const FlightSearch = () => {
 
   return (
     <>
-      <Banner
-        title="Flights"
-        breadcrumbs={[
-          { text: 'Home', link: '/' },
-          { text: 'Flights' },
-        ]}
-      />
       <div className="container-fluid">
         <div className="row p-2">
           <div className="col-md-3 bg-light" style={{ borderRadius: '20px' }}>

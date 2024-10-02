@@ -106,7 +106,7 @@ const busSearch = async (req, res) => {
     }
 };
 
-const busBook = async (req, res) => {
+const seatLayout = async (req, res) => {
     try {
         const { id } = req.body;
 
@@ -143,5 +143,5 @@ module.exports = {
     getSourceList,
     getDestinationList,
     busSearch,
-    busBook
+    seatLayout
 };

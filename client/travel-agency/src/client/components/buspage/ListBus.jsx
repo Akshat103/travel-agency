@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import SeatLayout from './SeatLayout';
+import { ChevronRight } from 'lucide-react';
 
 const ListBus = ({ isSearching, buses, loadMoreBuses }) => {
   const observer = useRef();
+  const navigate = useNavigate();
 
   const lastBusElementRef = (node) => {
     if (isSearching) return;
@@ -61,6 +62,7 @@ const ListBus = ({ isSearching, buses, loadMoreBuses }) => {
               key={bus.id}
               bus={bus}
               ref={isLastBus ? lastBusElementRef : null}
+              onClick={() => navigate('/bus-details', { state: { bus } })}
             />
           );
         })}
@@ -69,20 +71,13 @@ const ListBus = ({ isSearching, buses, loadMoreBuses }) => {
   );
 };
 
-const BusCard = React.forwardRef(({ bus }, ref) => {
-  const [showDetails, setShowDetails] = React.useState(false);
-
+const BusCard = React.forwardRef(({ bus, onClick }, ref) => {
   return (
-    <div ref={ref} className="card shadow-sm m-2">
+    <div ref={ref} className="card shadow-sm m-2 cursor-pointer" onClick={onClick}>
       <div className="card-body">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h5 className="card-title mb-0">{bus.travels}</h5>
-          <button
-            className="btn btn-sm btn-outline-primary"
-            onClick={() => setShowDetails(!showDetails)}
-          >
-            {showDetails ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-          </button>
+          <ChevronRight size={20} />
         </div>
         <div className="grid grid-cols-3 gap-4 mb-4">
           <div className="d-flex">
@@ -100,40 +95,6 @@ const BusCard = React.forwardRef(({ bus }, ref) => {
             <p>{bus.availableSeats}</p>
           </div>
         </div>
-        {showDetails && (
-          <div className="mt-4">
-            <div className="d-flex">
-              <div className="mb-4 me-4">
-                <h6 className="font-semibold mb-2">Boarding Points</h6>
-                <ul className="list-disc pl-5">
-                  {bus.boardingTimes.map((point, index) => (
-                    <li key={index}>{point.bpName}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mb-4 ms-4">
-                <h6 className="font-semibold mb-2">Dropping Points</h6>
-                <ul className="list-disc pl-5">
-                  {bus.droppingTimes.map((point, index) => (
-                    <li key={index}>{point.bpName}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div>
-              <h6 className="font-semibold mb-2">Fare Options</h6>
-              <div className="grid grid-cols-3 gap-4">
-                {bus.fareDetails.map((fare, index) => (
-                  <div key={index} className="d-flex justify-content-between border rounded p-2 mt-2 mb-2">
-                    <p className="font-semibold">₹{fare.totalFare}</p>
-                    <button className="btn btn-sm btn-primary mt-2">Book</button>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <SeatLayout id={bus.id} />
-          </div>
-        )}
       </div>
     </div>
   );
