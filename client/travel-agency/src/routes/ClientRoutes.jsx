@@ -9,6 +9,7 @@ import BusSearch from '../client/pages/BusSearch';
 import RechargePage from '../client/pages/RechargePage';
 import FlightDetails from '../client/components/flightpage/FlightDetails';
 import BusDetails from '../client/components/buspage/BusDetails';
+import SuccessPage from '../pages/SuccessPage';
 import NotFound from '../pages/NotFound';
 
 const ClientRoutes = () => {
@@ -22,6 +23,7 @@ const ClientRoutes = () => {
       <Route path="bus" element={<ClientLayout><BusSearch /></ClientLayout>} />
       <Route path="bus-details" element={<ClientLayout><BusDetails /></ClientLayout>} />
       <Route path="mobile-recharge" element={<ClientLayout><RechargePage /></ClientLayout>} />
+      <Route path="success" element={<ClientLayout><SuccessPage /></ClientLayout>} />
       <Route path="*" element={<ClientLayout><NotFound /></ClientLayout>} />
     </Routes>
   );

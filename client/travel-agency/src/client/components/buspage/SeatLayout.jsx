@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import usePayment from '../../../utils/payment';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 
 const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
     const [showSeats, setShowSeats] = useState(false);

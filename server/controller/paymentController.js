@@ -80,13 +80,13 @@ module.exports.verifyOrder = async (req, res) => {
             await rechargeRequest(number, operator, circle, amount, orderid = razorpay_order_id, clientId);
             return res.status(201).json({
                 success: true,
-                message: `${serviceType} done successfully.`
+                message: "Recharge done successfully."
             });
         } else if (serviceType === 'bookbus') {
             const response = await busSeatbook(updatedOrder.serviceDetails, clientId);
             return res.status(201).json({
                 success: true,
-                message: `${serviceType} done successfully.`,
+                message: "Bus booking done successfully.",
                 data: response
             });
         }

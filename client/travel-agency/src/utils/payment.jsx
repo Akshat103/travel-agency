@@ -50,21 +50,21 @@ const usePayment = () => {
                     "handler": async function (response) {
                         toast.info("Processing payment...");
                         try {
-                            const { data: { success } } = await axios.post('/api/verify-payment', {
+                            const { data } = await axios.post('/api/verify-payment', {
                                 razorpay_payment_id: response.razorpay_payment_id,
                                 razorpay_order_id: response.razorpay_order_id,
                                 razorpay_signature: response.razorpay_signature,
                                 serviceType
                             });
-
-                            if (success) {
-                                toast.success("Payment verified successfully.");
+                            if (data.success) {
+                                navigate('/success', { state: { message: data.message } });
                                 resolve(success);
                             } else {
                                 toast.error("Payment verification failed.");
                                 reject("Payment verification failed.");
                             }
                         } catch (error) {
+                            console.log(error)
                             if (error.response && error.response.status === 401) {
                                 const { redirect } = error.response.data;
                                 if (redirect) {
