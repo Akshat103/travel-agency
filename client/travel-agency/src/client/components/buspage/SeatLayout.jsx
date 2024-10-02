@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
@@ -21,10 +21,25 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
         passengerage: '',
         seat: null,
     });
+    const [totalAmount, setTotalAmount] = useState(0);
     const [showPassengerForm, setShowPassengerForm] = useState(false);
     const [editingIndex, setEditingIndex] = useState(null);
+    const [availableSeats, setAvailableSeats] = useState([]);
+    const [showPassengerInputs, setShowPassengerInputs] = useState(false);
 
     const id = bus.id;
+
+    useEffect(() => {
+        updateAvailableSeats();
+    }, [seatData, passengers]);
+
+    const updateAvailableSeats = () => {
+        const available = seatData.filter(seat => 
+            seat.available === "True" && 
+            !passengers.some(p => p.seat && p.seat.name === seat.name)
+        );
+        setAvailableSeats(available);
+    };
 
     const fetchSeatData = async () => {
         setLoading(true);
@@ -69,37 +84,45 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
         }));
     };
 
+    const handleSeatSelection = (selectedSeat) => {
+        setCurrentPassenger((prev) => ({
+            ...prev,
+            seat: selectedSeat,
+        }));
+    };
+
     const handleAddPassenger = () => {
         if (currentPassenger.passengertitle && currentPassenger.passengername && currentPassenger.passengerage && currentPassenger.seat) {
             const updatedPassengers = editingIndex !== null
                 ? passengers.map((passenger, index) => index === editingIndex ? currentPassenger : passenger)
                 : [...passengers, currentPassenger];
-
+    
             setPassengers(updatedPassengers);
             setCurrentPassenger({ passengertitle: '', passengername: '', passengerage: '', seat: null });
-            setSeatData((prevSeatData) =>
-                prevSeatData.map((seat) =>
-                    seat.Seat_Key === currentPassenger.seat.Seat_Key ? { ...seat, available: "False" } : seat
-                )
-            );
+    
+            const total = updatedPassengers.reduce((sum, passenger) => sum + (passenger.seat ? Number(passenger.seat.fare) : 0), 0);
+            setTotalAmount(total);
+    
             setEditingIndex(null);
+            setShowPassengerInputs(false);
+            updateAvailableSeats();
         }
     };
-
-    const handleEditPassenger = (index) => {
-        setCurrentPassenger(passengers[index]);
-        setEditingIndex(index);
-    };
-
+    
     const handleRemovePassenger = (index) => {
-        const removedPassenger = passengers[index];
         const updatedPassengers = passengers.filter((_, i) => i !== index);
         setPassengers(updatedPassengers);
-        setSeatData((prevSeatData) =>
-            prevSeatData.map((seat) =>
-                seat.Seat_Key === removedPassenger.seat.Seat_Key ? { ...seat, available: "True" } : seat
-            )
-        );
+    
+        const total = updatedPassengers.reduce((sum, passenger) => sum + (passenger.seat ? Number(passenger.seat.fare) : 0), 0);
+        setTotalAmount(total);
+        updateAvailableSeats();
+    };   
+
+    const handleEditPassenger = (index) => {
+        const passengerToEdit = passengers[index];
+        setCurrentPassenger(passengerToEdit);
+        setEditingIndex(index);
+        setShowPassengerInputs(true);
     };
 
     const { source, destination, journeyDate } = useSelector((state) => state.bus);
@@ -126,11 +149,11 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                 passengerage,
             })),
         };
+    
+        console.log('Total Amount:', totalAmount);
         console.log(bookingData);
-        // Add API call to handle booking
+        // Here you would typically send this data to your booking API
     };
-
-    const availableSeats = seatData.filter((seat) => seat.available === "True");
 
     return (
         <div>
@@ -151,17 +174,17 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                 {seatData.map((seat) => (
                                     <div
                                         key={`${seat.row}-${seat.column}`}
-                                        className={`col-sm-4 col-md-2 mb-2 ${seat.available === "True" ? 'border border-success' : 'border border-danger'} p-2 rounded text-center`}
+                                        className={`col-sm-4 col-md-2 mb-2 ${availableSeats.some(s => s.Seat_Key === seat.Seat_Key) ? 'border border-success' : 'border border-danger'} p-2 rounded text-center`}
                                         style={{
                                             height: '100px',
                                             width: '100px',
                                             margin: '0 auto',
-                                            opacity: seat.available === "True" ? 1 : 0.5,
+                                            opacity: availableSeats.some(s => s.Seat_Key === seat.Seat_Key) ? 1 : 0.5,
                                         }}
                                     >
                                         <strong>Seat {seat.name}</strong>
                                         <p>₹{seat.fare}</p>
-                                        <p>{seat.available === "True" ? "Available" : "Booked"}</p>
+                                        <p>{availableSeats.some(s => s.Seat_Key === seat.Seat_Key) ? "Available" : "Booked"}</p>
                                     </div>
                                 ))}
                             </div>
@@ -220,64 +243,71 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                             {showPassengerForm && (
                                 <div className="mt-4">
                                     <h5>Passenger Details</h5>
-                                    <div className="row mb-4">
-                                        <div className="col-md-6">
-                                            <input
-                                                type="text"
-                                                name="passengertitle"
-                                                className="form-control"
-                                                placeholder="Title"
-                                                value={currentPassenger.passengertitle}
-                                                onChange={handlePassengerInput}
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <input
-                                                type="text"
-                                                name="passengername"
-                                                className="form-control"
-                                                placeholder='Name'
-                                                value={currentPassenger.passengername}
-                                                onChange={handlePassengerInput}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row mb-4">
-                                        <div className="col-md-6">
-                                            <input
-                                                type="number"
-                                                name="passengerage"
-                                                className="form-control"
-                                                placeholder='Age'
-                                                value={currentPassenger.passengerage}
-                                                onChange={handlePassengerInput}
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <select
-                                                name="Seat_Key"
-                                                className="form-control"
-                                                value={currentPassenger.seat ? currentPassenger.seat.name : ''}
-                                                onChange={(e) => {
-                                                    const selectedSeat = availableSeats.find(seat => seat.name === e.target.value);
-                                                    setCurrentPassenger((prev) => ({
-                                                        ...prev,
-                                                        seat: selectedSeat,
-                                                    }));
-                                                }}
-                                            >
-                                                <option value="">Select a seat</option>
-                                                {availableSeats.map((seat) => (
-                                                    <option key={seat.name} value={seat.name}>
-                                                        {seat.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <button className="btn btn-primary mt-2" onClick={handleAddPassenger}>
-                                        {editingIndex !== null ? 'Update Passenger' : 'Add Passenger'}
+                                    <button className="btn btn-primary mb-3" onClick={() => {
+                                        setShowPassengerInputs(true);
+                                        setCurrentPassenger({ passengertitle: '', passengername: '', passengerage: '', seat: null });
+                                    }}>
+                                        {editingIndex !== null ? 'Edit Passenger' : 'Add Passenger'}
                                     </button>
+                                    
+                                    {showPassengerInputs && (
+                                        <>
+                                            <div className="row mb-4">
+                                                <div className="col-md-4">
+                                                    <input
+                                                        type="text"
+                                                        name="passengertitle"
+                                                        className="form-control"
+                                                        placeholder="Title"
+                                                        value={currentPassenger.passengertitle}
+                                                        onChange={handlePassengerInput}
+                                                    />
+                                                </div>
+                                                <div className="col-md-4">
+                                                    <input
+                                                        type="text"
+                                                        name="passengername"
+                                                        className="form-control"
+                                                        placeholder='Name'
+                                                        value={currentPassenger.passengername}
+                                                        onChange={handlePassengerInput}
+                                                    />
+                                                </div>
+                                                <div className="col-md-4">
+                                                    <input
+                                                        type="number"
+                                                        name="passengerage"
+                                                        className="form-control"
+                                                        placeholder='Age'
+                                                        value={currentPassenger.passengerage}
+                                                        onChange={handlePassengerInput}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="row mb-4">
+                                                <div className="col-md-6">
+                                                    <select
+                                                        className="form-control"
+                                                        value={currentPassenger.seat ? currentPassenger.seat.name : ''}
+                                                        onChange={(e) => {
+                                                            const selectedSeat = availableSeats.find(seat => seat.name === e.target.value);
+                                                            handleSeatSelection(selectedSeat);
+                                                        }}
+                                                    >
+                                                        <option value="">Select a seat</option>
+                                                        {availableSeats.map((seat) => (
+                                                            <option key={seat.name} value={seat.name}>
+                                                                {seat.name} - ₹{seat.fare}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button className="btn btn-primary mt-2" onClick={handleAddPassenger}>
+                                                {editingIndex !== null ? 'Update Passenger' : 'Save Passenger'}
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             )}
 
@@ -287,7 +317,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                     <ul className="list-group">
                                         {passengers.map((passenger, index) => (
                                             <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                                {`${passenger.passengertitle} ${passenger.passengername}, Age: ${passenger.passengerage}, Seat: ${passenger.seat.name}`}
+                                                {`${passenger.passengertitle} ${passenger.passengername}, Age: ${passenger.passengerage}, Seat: ${passenger.seat ? passenger.seat.name : 'Not selected'}`}
                                                 <div>
                                                     <button className="btn btn-warning btn-sm mx-1" onClick={() => handleEditPassenger(index)}>Edit</button>
                                                     <button className="btn btn-danger btn-sm mx-1" onClick={() => handleRemovePassenger(index)}>Remove</button>
@@ -295,6 +325,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                             </li>
                                         ))}
                                     </ul>
+                                    <p className="mt-3">Total Amount: ₹{totalAmount}</p>
                                     <button className="btn btn-success mt-3" onClick={handleBook}>Book Seats</button>
                                 </div>
                             )}

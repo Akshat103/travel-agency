@@ -14,7 +14,7 @@ const getSourceList = async (req, res) => {
         };
 
         const apiResponse = await axios.post(`${BUS_API_URL}/GetSourceList`, data);
-        
+
         if (apiResponse.status === 200) {
             const responseData = apiResponse.data;
 
@@ -139,9 +139,86 @@ const seatLayout = async (req, res) => {
     }
 };
 
+const busSeatbook = async (req, res) => {
+    try {
+        const {
+            source, destination, doj, tripid, bpid, dpid,
+            mobile, email, idtype, idnumber, address, Search_Key, seats
+        } = req.body;
+
+        const id = req.user.clientId;
+
+        const data = {
+            "request": {
+                "source": source,
+                "destination": destination,
+                "doj": doj,
+                "tripid": tripid,
+                "bpid": bpid,
+                "dpid": dpid,
+                "mobile": mobile,
+                "email": email,
+                "clientID": id,
+                "idtype": idtype,
+                "idnumber": idnumber,
+                "address": address,
+                "Search_Key": Search_Key,
+                "seats": seats
+            },
+            "AuthData": {
+                "Merchantkey": MERCHANT_KEY,
+                "MerchantID": MEMBER_ID,
+                "TypeData": "json"
+            }
+        };
+
+        const apiResponse = await axios.post(`${BUS_API_URL}/BusSeatblock`, data);
+
+        if (apiResponse.status === 200) {
+            const responseData = apiResponse.data;
+            let cleanedData = typeof responseData === 'string' ? JSON.parse(responseData) : responseData;
+
+            if (cleanedData && cleanedData.data) {
+                const bookingId = cleanedData.data.booking_id;
+
+                // Make the second API call to book the ticket
+                const bookTicketData = {
+                    "request": {
+                        "booking_id": bookingId,
+                        "agentid": id
+                    },
+                    "AuthData": {
+                        "Merchantkey": MERCHANT_KEY,
+                        "MerchantID": MEMBER_ID,
+                        "TypeData": "json"
+                    }
+                };
+
+                const ticketResponse = await axios.post(`${BUS_API_URL}/BookTicket`, bookTicketData);
+
+                if (ticketResponse.status === 200) {
+                    const ticketResponseData = ticketResponse.data;
+                    cleanedData = typeof ticketResponseData === 'string' ? JSON.parse(ticketResponseData) : ticketResponseData;
+
+                    res.json(cleanedData);
+                } else {
+                    res.status(400).json({ message: "Failed to book the ticket." });
+                }
+            } else {
+                res.status(400).json({ message: "Data not found in API response." });
+            }
+        } else {
+            res.status(400).json({ message: "Failed to fetch data from API." });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred.", error: error.message });
+    }
+};
+
 module.exports = {
     getSourceList,
     getDestinationList,
     busSearch,
-    seatLayout
+    seatLayout,
+    busSeatbook
 };
