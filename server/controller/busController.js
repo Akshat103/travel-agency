@@ -1,4 +1,4 @@
-const BookingLog = require('../models/BookingLog');
+const BookingLog = require('../models/BusBookingLog');
 const axios = require('axios');
 require('dotenv').config();
 
@@ -140,14 +140,12 @@ const seatLayout = async (req, res) => {
     }
 };
 
-const busSeatbook = async (deatils) => {
+const busSeatbook = async (details, clientId) => {
     try {
         const {
             source, destination, doj, tripid, bpid, dpid,
             mobile, email, idtype, idnumber, address, Search_Key, seats
-        } = deatils;
-
-        const id = req.user.clientId;
+        } = details;
 
         const data = {
             "request": {
@@ -159,7 +157,7 @@ const busSeatbook = async (deatils) => {
                 "dpid": dpid,
                 "mobile": mobile,
                 "email": email,
-                "clientID": id,
+                "clientID": clientId,
                 "idtype": idtype,
                 "idnumber": idnumber,
                 "address": address,
@@ -185,7 +183,7 @@ const busSeatbook = async (deatils) => {
                 const bookTicketData = {
                     "request": {
                         "booking_id": bookingId,
-                        "agentid": id
+                        "agentid": clientId
                     },
                     "AuthData": {
                         "Merchantkey": MERCHANT_KEY,
@@ -215,23 +213,24 @@ const busSeatbook = async (deatils) => {
                         Search_Key,
                         seats,
                         booking_id: bookingId,
-                        agentid: id
+                        agentid: clientId
                     });
 
                     await bookingLog.save();
 
                     return cleanedData;
                 } else {
-                    throw new Error(error.message);
+                    throw new Error(`Failed to book the ticket: ${ticketResponse.statusText}`);
                 }
             } else {
-                throw new Error(error.message);
+                throw new Error(`Invalid response data: ${JSON.stringify(cleanedData)}`);
             }
         } else {
-            throw new Error(error.message);
+            throw new Error(`Failed to fetch data from API: ${apiResponse.statusText}`);
         }
     } catch (error) {
-        throw new Error(error.message);
+        console.error("Error during bus seat booking:", error);
+        throw new Error(`Bus seat booking failed: ${error.message}`);
     }
 };
 

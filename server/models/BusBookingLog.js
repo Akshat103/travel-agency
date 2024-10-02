@@ -19,6 +19,6 @@ const bookingLogSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
-const BookingLog = mongoose.model('BookingLog', bookingLogSchema);
+const BookingLog = mongoose.model('BusBookingLog', bookingLogSchema);
 
 module.exports = BookingLog;

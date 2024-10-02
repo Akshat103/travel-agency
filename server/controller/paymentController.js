@@ -82,10 +82,8 @@ module.exports.verifyOrder = async (req, res) => {
                 success: true,
                 message: `${serviceType} done successfully.`
             });
-        }
-        
-        else if (serviceType === 'bookbus') {
-            const response = await busSeatbook(updatedOrder.serviceDetails);
+        } else if (serviceType === 'bookbus') {
+            const response = await busSeatbook(updatedOrder.serviceDetails, clientId);
             return res.status(201).json({
                 success: true,
                 message: `${serviceType} done successfully.`,
@@ -105,3 +103,4 @@ module.exports.verifyOrder = async (req, res) => {
         });
     }
 };
+
