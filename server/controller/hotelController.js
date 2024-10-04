@@ -1,7 +1,4 @@
-const axios = require('axios');
-require('dotenv').config();
-
-const { HOTEL_API_URL, MERCHANT_KEY, MEMBER_ID } = process.env;
+const { HOTEL_API_URL, HOTEL_KEY, MEMBER_ID } = process.env;
 
 const getCity = async (req, res) => {
     try {
@@ -9,7 +6,7 @@ const getCity = async (req, res) => {
 
         const response = await axios.post(`${HOTEL_API_URL}/HotelNew.aspx`, {
             MerchantID: MEMBER_ID,
-            Merchantkey: MERCHANT_KEY,
+            Merchantkey: HOTEL_KEY,
             Method: "getcity",
             cityname: cityname
         });

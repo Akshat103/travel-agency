@@ -3,6 +3,6 @@ const router = express.Router();
 const hotelController = require('../controller/hotelController');
 const {authMiddleware} = require('../middleware/authMiddleware');
 
-router.get('/hotelcity', hotelController.getCity);
+router.post('/hotelcity', hotelController.getCity);
 
 module.exports = router;
