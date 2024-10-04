@@ -124,10 +124,14 @@ const Hotel = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
-        // Here you would typically send the data to your backend or perform further actions
+        const response = await axios.post('/api/hotelcity', {
+            formData
+        });
+        console.log(response);
+        
     };
 
     const handleCitySelect = (city) => {
