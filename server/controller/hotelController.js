@@ -4,11 +4,16 @@ const { HOTEL_API_URL, HOTEL_KEY, MEMBER_ID } = process.env;
 
 const getCity = async (req, res) => {
     try {
+        if (!HOTEL_API_URL || !HOTEL_KEY || !MEMBER_ID) {
+            console.error("Missing necessary environment variables.");
+            return res.status(500).json({ error: 'Server configuration error. Please contact support.' });
+        }
+
         const { cityname } = req.body;
 
-        if(!cityname) res.status(400).json({
-            msg: "No city found"
-        });
+        if (!cityname) {
+            return res.status(400).json({ msg: "City name is required." });
+        }
 
         const response = await axios.post(`${HOTEL_API_URL}/HotelNew.aspx`, {
             MerchantID: MEMBER_ID,
@@ -17,16 +22,31 @@ const getCity = async (req, res) => {
             cityname: cityname
         });
 
+        if (!response.data || response.data.statuscode !== 200 || !Array.isArray(response.data.data)) {
+            console.error("Unexpected API response format:", response.data);
+            return res.status(502).json({ error: 'Invalid response from the hotel API.' });
+        }
+
         const filteredData = response.data.data.filter(item => item.type === "City");
+
+        if (filteredData.length === 0) {
+            return res.status(404).json({ msg: 'No cities found for the given name.' });
+        }
 
         res.status(200).json({
             statuscode: response.data.statuscode,
             msg: response.data.msg,
             data: filteredData
         });
+
     } catch (error) {
-        console.error("Error fetching city data:", error);
-        res.status(500).json({ error: 'An error occurred while fetching city data.' });
+        if (axios.isAxiosError(error)) {
+            console.error("Network or API error:", error.message);
+            return res.status(502).json({ error: 'Failed to communicate with the hotel API.' });
+        }
+
+        console.error("Unexpected server error:", error);
+        res.status(500).json({ error: 'An internal server error occurred.' });
     }
 };
 
