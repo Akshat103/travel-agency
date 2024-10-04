@@ -10,7 +10,7 @@ const getCity = async (req, res) => {
         }
 
         const { cityname } = req.body;
-
+        console.log(req.body)
         if (!cityname) {
             return res.status(400).json({ msg: "City name is required." });
         }
@@ -22,7 +22,7 @@ const getCity = async (req, res) => {
             cityname: cityname
         });
 
-        if (!response.data || response.data.statuscode !== 200 || !Array.isArray(response.data.data)) {
+        if (!response.data || response.data.statuscode !== "TXN" || !Array.isArray(response.data.data)) {
             console.error("Unexpected API response format:", response.data);
             return res.status(502).json({ error: 'Invalid response from the hotel API.' });
         }
