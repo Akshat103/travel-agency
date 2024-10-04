@@ -10,7 +10,7 @@ const getCity = async (req, res) => {
         }
 
         const { cityname } = req.body;
-        console.log(req.body)
+
         if (!cityname) {
             return res.status(400).json({ msg: "City name is required." });
         }
@@ -27,7 +27,9 @@ const getCity = async (req, res) => {
             return res.status(502).json({ error: 'Invalid response from the hotel API.' });
         }
 
-        const filteredData = response.data.data.filter(item => item.type === "City");
+        const filteredData = response.data.data.filter(item => 
+            item.type === "City" || item.type === "PointOfInterest"
+        );       
 
         if (filteredData.length === 0) {
             return res.status(404).json({ msg: 'No cities found for the given name.' });
