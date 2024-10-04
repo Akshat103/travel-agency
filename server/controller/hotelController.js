@@ -6,6 +6,10 @@ const getCity = async (req, res) => {
     try {
         const { cityname } = req.body;
 
+        if(!cityname) res.status(400).json({
+            msg: "No city found"
+        });
+
         const response = await axios.post(`${HOTEL_API_URL}/HotelNew.aspx`, {
             MerchantID: MEMBER_ID,
             Merchantkey: HOTEL_KEY,

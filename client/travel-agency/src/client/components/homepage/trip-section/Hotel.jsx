@@ -37,7 +37,7 @@ const Hotel = () => {
     const fetchCitySuggestions = async (query) => {
         setLoading(true);
         try {
-            const response = await axios.get('/api/hotelcity', {
+            const response = await axios.post('/api/hotelcity', {
                 data: {
                     cityname: query
                 }
