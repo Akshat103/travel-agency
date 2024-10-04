@@ -127,7 +127,7 @@ const Hotel = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
-        const response = await axios.post('/api/hotelcity', {
+        const response = await axios.post('/api/hotelbycity', {
             formData
         });
         console.log(response);

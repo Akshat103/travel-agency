@@ -93,7 +93,7 @@ const searchByCity = async (req, res) => {
     const config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: HOTEL_API_URL || `${HOTEL_API_URL}/HotelNew.aspx`,
+        url: `${HOTEL_API_URL}/HotelNew.aspx`,
         headers: {},
         data: data
     };
