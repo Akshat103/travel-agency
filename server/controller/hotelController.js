@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const { HOTEL_API_URL, HOTEL_KEY, MEMBER_ID } = process.env;
 
 const getCity = async (req, res) => {
