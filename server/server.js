@@ -21,6 +21,7 @@ const flightRoutes = require('./routes/flightRoutes');
 const rechargeRoutes = require('./routes/rechargeRoutes');
 const otpRoutes = require('./routes/otpRoutes');
 const busRoutes = require('./routes/busRoutes');
+const hotelRoutes = require('./routes/hotelRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 
 // Use the routes
@@ -29,6 +30,7 @@ app.use('/api', flightRoutes);
 app.use('/api', rechargeRoutes);
 app.use('/api/otp', otpRoutes);
 app.use('/api', busRoutes);
+app.use('/api', hotelRoutes);
 app.use('/api', paymentRoutes);
 
 // Serve index.html at the root

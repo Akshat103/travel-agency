@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '/img/logo.png';
+import { Link } from 'react-router-dom';
 
 const ClientNavBar = () => {
     return (
@@ -10,9 +11,9 @@ const ClientNavBar = () => {
                     <div className="container">
                         <div className="main-responsive-menu">
                             <div className="logo">
-                                <a href="index.html">
+                                <Link to="/">
                                     <img src={logo} alt="logo" />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

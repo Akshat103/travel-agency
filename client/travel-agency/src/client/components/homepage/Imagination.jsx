@@ -17,26 +17,20 @@ const Imagination = () => {
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="imagination_boxed">
-                        <Link to="top-destinations.html">
                             <img src={img1} alt="img"/>
-                        </Link>
-                        <h3><Link to="top-destinations.html">7% Discount for all <span>Airlines</span></Link></h3>
+                        <h3 className="text-white">Discount for all Airlines</h3>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="imagination_boxed">
-                        <Link to="top-destinations.html">
                             <img src={img2} alt="img"/>
-                        </Link>
-                        <h3><Link to="#!">Travel around<span>the world</span></Link></h3>
+                        <h3 className="text-white">Travel around<span>the world</span></h3>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="imagination_boxed">
-                        <Link to="top-destinations.html">
                             <img src={img3} alt="img"/>
-                        </Link>
-                        <h3><Link to="top-destinations.html">Luxury resorts<span>top deals</span></Link></h3>
+                        <h3 className="text-white">Luxury resorts<span>top deals</span></h3>
                     </div>
                 </div>
             </div>
