@@ -33,7 +33,7 @@ const getFlightCities = async (req, res) => {
 // Function to search flights
 const searchFlights = async (req, res) => {
     const { requestdata } = req.body;
-    
+
     if (!requestdata || !requestdata.Origin || !requestdata.Destination || !requestdata.TravelDate) {
         return res.status(400).json({ error: 'Invalid request data' });
     }
@@ -42,6 +42,7 @@ const searchFlights = async (req, res) => {
     const travelDate = formatDate(requestdata.TravelDate);
 
     let transformedData;
+
     if (!requestdata.DepartureDate) {
         transformedData = {
             Travel_Type: Travel_Type,
@@ -90,7 +91,7 @@ const searchFlights = async (req, res) => {
             Filtered_Airline: []
         };
     }
-    
+
     try {
         const response = await axios.post(FLIGHT_API_SERVICE_URL, {
             methodname: 'FLIGHTSEARCH',
@@ -110,7 +111,31 @@ const searchFlights = async (req, res) => {
     }
 };
 
+const airGetSSR = async (req, res) => {
+    const { requestdata } = req.body;
+
+    try {
+        const response = await axios.post(FLIGHT_API_SERVICE_URL, {
+            methodname: "Air_GetSSR",
+            opid: 569,
+            txnid: FLIGHT_TXNID,
+            requestdata
+        }, {
+            headers: {
+                'Access-Token': FLIGHT_ACCESS_TOKEN,
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(response)
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error('Error calling the API:', error);
+        res.status(500).json({ error: 'An error occurred while fetching data.' });
+    }
+};
+
 module.exports = {
     getFlightCities,
-    searchFlights
+    searchFlights,
+    airGetSSR
 };
