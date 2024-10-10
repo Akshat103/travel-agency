@@ -48,7 +48,7 @@ const usePayment = () => {
                     "name": "Yara Holidays",
                     "description": `Payment for ${serviceType}`,
                     "handler": async function (response) {
-                        toast.info("Processing payment...");
+                        toast.info("Processing order...");
                         try {
                             const { data } = await axios.post('/api/verify-payment', {
                                 razorpay_payment_id: response.razorpay_payment_id,
@@ -61,8 +61,8 @@ const usePayment = () => {
                                 // navigate('/success', { state: { message: data.message } });
                                 resolve(success);
                             } else {
-                                toast.error("Payment verification failed.");
-                                reject("Payment verification failed.");
+                                toast.error("Order completion failed.");
+                                reject("Order completion failed.");
                             }
                         } catch (error) {
                             console.log(error)
@@ -72,7 +72,7 @@ const usePayment = () => {
                                     navigate(redirect);
                                 }
                             } else {
-                                toast.error("Error occurred during payment verification.");
+                                toast.error("Error occurred during order processing.");
                                 reject(error);
                             }
                         }

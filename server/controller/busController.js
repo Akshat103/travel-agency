@@ -196,7 +196,7 @@ const busSeatbook = async (details, clientId) => {
                 if (ticketResponse.status === 200) {
                     const ticketResponseData = ticketResponse.data;
                     cleanedData = typeof ticketResponseData === 'string' ? JSON.parse(ticketResponseData) : ticketResponseData;
-
+console.log("ticketResponseData: ", ticketResponseData, "cleanedData: ",cleanedData)
                     // Log the booking details
                     const bookingLog = new BookingLog({
                         source,
@@ -214,12 +214,12 @@ const busSeatbook = async (details, clientId) => {
                         seats,
                         booking_id: bookingId,
                         agentid: clientId,
-                        bookingData: ticketResponseData.data.data
+                        bookingData: ticketResponseData.data
                     });
 
                     await bookingLog.save();
 
-                    return cleanedData.data;
+                    return cleanedData;
                 } else {
                     throw new Error(`Failed to book the ticket: ${ticketResponse.statusText}`);
                 }
