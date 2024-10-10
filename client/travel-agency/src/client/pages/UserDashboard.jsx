@@ -1,9 +1,12 @@
-import React from 'react'
-
+import Profile from "../components/dashboard/Profile";
+import OrdersList from "../components/dashboard/OrdersList";
 const UserDashboard = () => {
   return (
-    <div>UserDashboard</div>
-  )
-}
+    <div>
+      <Profile />
+      <OrdersList />
+    </div>
+  );
+};
 
-export default UserDashboard
+export default UserDashboard;

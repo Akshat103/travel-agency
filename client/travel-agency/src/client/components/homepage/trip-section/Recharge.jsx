@@ -87,7 +87,7 @@ const Recharge = ({ context, onDetailsChange }) => {
           <div className="tour_search_form">
             <div>
               <div className={`${context === 'recharge' ? 'col' : 'row'}`}>
-                <div className={`${context==='recharge' ? 'm-1': 'col-lg-4 col-md-6 col-sm-12 col-12'}`}>
+                <div className={`${context==='recharge' ? 'm-1': 'col-lg-4 col-md-6 col-sm-12 col-12 mb-2'}`}>
                   <input
                     type="text"
                     className="form-control"

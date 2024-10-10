@@ -17,6 +17,14 @@ const HotelSearch = () => {
   const handleSearch = useCallback(async () => {
     setIsSearching(true);
 
+    // Validate the formData fields
+    const { CheckInDate, CheckOutDate, RoomCount, HotelRoomDetail } = formData;
+
+    if (!CheckInDate || !CheckOutDate || RoomCount <= 0 || !HotelRoomDetail || HotelRoomDetail.length === 0) {
+      setIsSearching(false);
+      return;
+    }
+
     try {
       const response = await axios.post('/api/hotelbycity', { formData });
 
@@ -48,18 +56,26 @@ const HotelSearch = () => {
   }, [hotelData, formData]);
 
   return (
-    <div>
-      <h4>Hotels</h4>
-      <div className="container-fluid">
-        <div className="row p-2">
-          <div className="col-md-3 bg-light" style={{ borderRadius: '20px' }}>
-            <Hotel layout="col" isVertical={true} onSearch={handleSearch} />
+    <div className="container-fluid">
+      <div className="row p-2">
+        <div className="row">
+          <div className="col-12 text-center">
+            <h3 className="fw-bold text-white px-1 py-1 rounded" style={{ background: "#8c3eea" }}>
+              Hotel
+            </h3>
           </div>
-          <div className="col-md-9">
-            <ListHotel
-              isSearching={isSearching}
-              hotels={hotelData}
-            />
+        </div>
+        <div className="container-fluid">
+          <div className="row p-2">
+            <div className="col-md-3" style={{ borderRadius: '20px' }}>
+              <Hotel layout="col" isVertical={true} onSearch={handleSearch} />
+            </div>
+            <div className="col-md-9">
+              <ListHotel
+                isSearching={isSearching}
+                hotels={hotelData}
+              />
+            </div>
           </div>
         </div>
       </div>

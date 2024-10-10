@@ -38,7 +38,12 @@ const ClientNavBar = () => {
                                     </li>
                                     <li className="nav-item">
                                         <Link to="/mobile-recharge" className="nav-link">
-                                            <strong>Mobile Recharge</strong>
+                                            <strong>Recharge</strong>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to="/hotel" className="nav-link">
+                                            <strong>Hotel</strong>
                                         </Link>
                                     </li>
                                     <li className="nav-item">

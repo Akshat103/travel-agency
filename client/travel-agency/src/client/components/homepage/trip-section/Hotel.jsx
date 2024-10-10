@@ -198,7 +198,7 @@ const Hotel = ({ isVertical, onSearch }) => {
                                 )}
                             </div>
 
-                            <div className={`${isVertical ? '' : 'col-md-2'} flight_Search_boxed`}>
+                            <div className={`${isVertical ? '' : 'col-md-2'} mb-4 flight_Search_boxed`}>
                                 <p className="mb-0 me-2">Rooms</p>
                                 <div className="d-flex align-items-center">
                                     <button onClick={() => dispatch(removeRoom())} disabled={formData.RoomCount <= 1} style={{ border: "none" }}>

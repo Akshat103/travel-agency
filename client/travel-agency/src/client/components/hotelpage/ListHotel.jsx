@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
+import NoHotel from './NoHotel';
 
 const ListHotel = ({ isSearching, hotels }) => {
     const [displayedHotels, setDisplayedHotels] = useState([]);
@@ -47,10 +48,7 @@ const ListHotel = ({ isSearching, hotels }) => {
 
     if (!displayedHotels.length) {
         return (
-            <div className="p-3">
-                <h4>Hotels</h4>
-                <p>No hotels found.</p>
-            </div>
+            <NoHotel/>
         );
     }
 
