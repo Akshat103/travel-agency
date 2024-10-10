@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { useLocation, NavLink } from "react-router-dom";
 
 import { Nav } from "react-bootstrap";
@@ -19,17 +19,16 @@ const Sidebar = ({ color, image, DashboardRoutes }) => {
       />
       <div className="sidebar-wrapper">
         <div className="logo d-flex align-items-center justify-content-start">
-          <a
-            href="https://www.creative-tim.com?ref=lbd-sidebar"
+          <NavLink
             className="simple-text logo-mini mx-1"
           >
             <div className="logo-img">
               <img src={logo} alt="..." />
             </div>
-          </a>
-          <a className="simple-text" href="/">
+          </NavLink>
+          <NavLink className="simple-text" to="/">
             Yara Holidays
-          </a>
+          </NavLink>
         </div>
         <Nav>
           {DashboardRoutes.map((prop, key) => {

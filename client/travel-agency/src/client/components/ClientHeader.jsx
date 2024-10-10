@@ -15,7 +15,6 @@ const ClientHeader = () => {
     try {
       const response = await axios.post('/api/logout');
       const { message } = response.data;
-      console.log('Logout successful:', message); 
       localStorage.clear(); 
       navigate('/');
       toast.success(message);

@@ -2,12 +2,11 @@ import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Loading from './components/Loading';
 import loadable from '@loadable/component';
+import './App.css'
 
-// Dynamically load routes
 const ClientRoutes = loadable(() => import('./routes/ClientRoutes'));
 const AdminRoutes = loadable(() => import('./routes/AdminRoutes'));
 
-// Private Route Component
 const PrivateRoute = ({ children, allowedRoles }) => {
   const userRole = localStorage.getItem('userType');
   return allowedRoles.includes(userRole) ? children : <Navigate to="/" />;

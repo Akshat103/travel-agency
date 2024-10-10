@@ -86,10 +86,10 @@ const BusDetails = () => {
             <h5 className="font-semibold mb-2">Fare Options</h5>
             <div className="row">
               {bus.fareDetails.map((fare, index) => (
-                <div key={index} className="col-md-4 mb-3">
+                <div key={index} className="col-md-2">
                   <div className="card">
                     <div className="card-body">
-                      <h6 className="card-title">₹{fare.totalFare}</h6>
+                      <h6 >₹{fare.totalFare}</h6>
                     </div>
                   </div>
                 </div>

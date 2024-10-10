@@ -4,7 +4,9 @@ const busSlice = createSlice({
     name: 'bus',
     initialState: {
         source: "",
+        sourceName: "",
         destination: "",
+        destinationName: "",
         journeyDate: "",
         sourceList: [],
         destinationList: []
@@ -13,8 +15,14 @@ const busSlice = createSlice({
         setSource(state, action) {
             state.source = action.payload;
         },
+        setSourceName(state, action) {
+            state.sourceName = action.payload;
+        },
         setDestination(state, action) {
             state.destination = action.payload;
+        },
+        setDestinationName(state, action) {
+            state.destinationName = action.payload;
         },
         setJourneyDate(state, action) {
             state.journeyDate = action.payload;
@@ -30,7 +38,9 @@ const busSlice = createSlice({
 
 export const { 
     setSource, 
+    setSourceName, 
     setDestination, 
+    setDestinationName, 
     setJourneyDate, 
     setSourceList,
     setDestinationList

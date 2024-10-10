@@ -4,6 +4,27 @@ import axios from 'axios';
 export const searchFlights = createAsyncThunk(
   'flights/searchFlights',
   async (flightDetails, { rejectWithValue }) => {
+    
+    const requiredFields = [
+      'Origin.AIRPORTCODE', 
+      'Origin.COUNTRYCODE', 
+      'Destination.AIRPORTCODE', 
+      'Destination.COUNTRYCODE', 
+      'TravelDate', 
+      'Booking_Type', 
+      'Adult_Count', 
+      'Class_Of_Travel'
+    ];
+    
+    const checkField = (obj, fieldPath) => fieldPath.split('.').reduce((o, key) => (o !== undefined && o[key] !== undefined) ? o[key] : null, obj);
+    
+    for (const field of requiredFields) {
+      const fieldValue = checkField(flightDetails, field);
+      if (fieldValue === null || fieldValue === '') {
+        return;
+      }
+    }
+
     try {
       const response = await axios.post('/api/flightsearch', { requestdata: flightDetails });
       return response.data.data[0].Flights;
@@ -12,6 +33,8 @@ export const searchFlights = createAsyncThunk(
     }
   }
 );
+
+
 
 const initialState = {
   flightDetails: {

@@ -12,15 +12,17 @@ const FlightSearch = () => {
 
   const handleSearch = async (flightDetails) => {
     setIsSearching(true);
-    
+
     const toastId = toast.info('Searching...', { autoClose: false });
-  
+
     try {
       const result = await dispatch(searchFlights(flightDetails)).unwrap();
       setFlights(result);
-      
+
       toast.dismiss(toastId);
-      toast.success('Flights found successfully!');
+      if (result) {
+        toast.success('Flights found successfully!');
+      }
     } catch (error) {
       toast.dismiss(toastId);
       toast.error('Error searching flights. Please try again.');
@@ -29,13 +31,19 @@ const FlightSearch = () => {
       setIsSearching(false);
     }
   };
-  
 
   return (
     <>
       <div className="container-fluid">
         <div className="row p-2">
-          <div className="col-md-3 bg-light" style={{ borderRadius: '20px' }}>
+          <div className="row">
+            <div className="col-12 text-center">
+              <h3 className="fw-bold text-white px-1 py-1 rounded" style={{background:"#8c3eea"}}>
+                Get Your Flights
+              </h3>
+            </div>
+          </div>
+          <div className="col-md-3" style={{ borderRadius: '20px' }}>
             <Filter onSearch={handleSearch} />
           </div>
           <div className="col-md-9">

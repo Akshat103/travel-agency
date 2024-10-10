@@ -57,7 +57,8 @@ const usePayment = () => {
                                 serviceType
                             });
                             if (data.success) {
-                                navigate('/success', { state: { message: data.message } });
+                                console.log(data)
+                                // navigate('/success', { state: { message: data.message } });
                                 resolve(success);
                             } else {
                                 toast.error("Payment verification failed.");
@@ -77,7 +78,7 @@ const usePayment = () => {
                         }
                     },
                     "theme": {
-                        "color": "#F37254"
+                        "color": "#8c3eea"
                     }
                 };
 

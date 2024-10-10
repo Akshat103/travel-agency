@@ -1,0 +1,328 @@
+[
+    {
+        "Airline_Code": "SG",
+        "Block_Ticket_Allowed": false,
+        "Cached": false,
+        "Destination": "BOM",
+        "Fares": [
+            {
+                "FareDetails": [
+                    {
+                        "AirportTax_Amount": 749,
+                        "AirportTaxes": [
+                            {
+                                "Tax_Amount": 749,
+                                "Tax_Code": "Tax",
+                                "Tax_Desc": "Tax"
+                            },
+                            {
+                                "Tax_Amount": 0,
+                                "Tax_Code": "YQ",
+                                "Tax_Desc": "YQ"
+                            }
+                        ],
+                        "Basic_Amount": 3338,
+                        "CancellationCharges": [
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 0,
+                                "DurationTo": 3,
+                                "DurationTypeFrom": 0,
+                                "DurationTypeTo": 0,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "100",
+                                "ValueType": 1
+                            },
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 0,
+                                "DurationTo": 4,
+                                "DurationTypeFrom": 1,
+                                "DurationTypeTo": 1,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "3505",
+                                "ValueType": 0
+                            },
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 4,
+                                "DurationTo": 365,
+                                "DurationTypeFrom": 1,
+                                "DurationTypeTo": 1,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "2950",
+                                "ValueType": 0
+                            }
+                        ],
+                        "Currency_Code": "INR",
+                        "FareClasses": [
+                            {
+                                "Class_Code": "I",
+                                "Class_Desc": "Promo",
+                                "FareBasis": "IRIC0",
+                                "Privileges": null,
+                                "Segment_Id": 0
+                            }
+                        ],
+                        "Free_Baggage": {
+                            "Check_In_Baggage": "15Kg",
+                            "Hand_Baggage": "7Kg"
+                        },
+                        "GST": 12.87,
+                        "Gross_Commission": 84.37,
+                        "Net_Commission": 71.5,
+                        "PAX_Type": 0,
+                        "Promo_Discount": 0,
+                        "RescheduleCharges": [
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 0,
+                                "DurationTo": 4,
+                                "DurationTypeFrom": 0,
+                                "DurationTypeTo": 0,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "100",
+                                "ValueType": 1
+                            },
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 0,
+                                "DurationTo": 3,
+                                "DurationTypeFrom": 1,
+                                "DurationTypeTo": 1,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "2950",
+                                "ValueType": 0
+                            },
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 4,
+                                "DurationTo": 365,
+                                "DurationTypeFrom": 1,
+                                "DurationTypeTo": 1,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "2250",
+                                "ValueType": 0
+                            }
+                        ],
+                        "Service_Fee_Amount": 0,
+                        "TDS": 1.43,
+                        "Total_Amount": 4087,
+                        "Trade_Markup_Amount": 0,
+                        "YQ_Amount": 0
+                    }
+                ],
+                "FareType": 0,
+                "Fare_Id": "DD5176768644391328724",
+                "Fare_Key": null,
+                "Food_onboard": null,
+                "GSTMandatory": false,
+                "LastFewSeats": null,
+                "ProductClass": "DD",
+                "PromptMessage": null,
+                "Refundable": true,
+                "Seats_Available": "2",
+                "Warning": null
+            },
+            {
+                "FareDetails": [
+                    {
+                        "AirportTax_Amount": 749,
+                        "AirportTaxes": [
+                            {
+                                "Tax_Amount": 749,
+                                "Tax_Code": "Tax",
+                                "Tax_Desc": "Tax"
+                            },
+                            {
+                                "Tax_Amount": 0,
+                                "Tax_Code": "YQ",
+                                "Tax_Desc": "YQ"
+                            }
+                        ],
+                        "Basic_Amount": 3338,
+                        "CancellationCharges": [
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 0,
+                                "DurationTo": 3,
+                                "DurationTypeFrom": 0,
+                                "DurationTypeTo": 0,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "100",
+                                "ValueType": 1
+                            },
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 0,
+                                "DurationTo": 4,
+                                "DurationTypeFrom": 1,
+                                "DurationTypeTo": 1,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "3505",
+                                "ValueType": 0
+                            },
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 4,
+                                "DurationTo": 365,
+                                "DurationTypeFrom": 1,
+                                "DurationTypeTo": 1,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "2950",
+                                "ValueType": 0
+                            }
+                        ],
+                        "Currency_Code": "INR",
+                        "FareClasses": [
+                            {
+                                "Class_Code": "I",
+                                "Class_Desc": "Promo",
+                                "FareBasis": "IRIC0",
+                                "Privileges": null,
+                                "Segment_Id": 0
+                            }
+                        ],
+                        "Free_Baggage": {
+                            "Check_In_Baggage": "15Kg",
+                            "Hand_Baggage": "7Kg"
+                        },
+                        "GST": 12.87,
+                        "Gross_Commission": 84.37,
+                        "Net_Commission": 71.5,
+                        "PAX_Type": 0,
+                        "Promo_Discount": 0,
+                        "RescheduleCharges": [
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 0,
+                                "DurationTo": 4,
+                                "DurationTypeFrom": 0,
+                                "DurationTypeTo": 0,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "100",
+                                "ValueType": 1
+                            },
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 0,
+                                "DurationTo": 3,
+                                "DurationTypeFrom": 1,
+                                "DurationTypeTo": 1,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "2950",
+                                "ValueType": 0
+                            },
+                            {
+                                "Applicablility": 1,
+                                "DurationFrom": 4,
+                                "DurationTo": 365,
+                                "DurationTypeFrom": 1,
+                                "DurationTypeTo": 1,
+                                "OfflineServiceFee": 50,
+                                "OnlineServiceFee": 50,
+                                "PassengerType": 0,
+                                "Remarks": "",
+                                "Return_Flight": false,
+                                "Value": "2250",
+                                "ValueType": 0
+                            }
+                        ],
+                        "Service_Fee_Amount": 0,
+                        "TDS": 1.43,
+                        "Total_Amount": 4087,
+                        "Trade_Markup_Amount": 0,
+                        "YQ_Amount": 0
+                    }
+                ],
+                "FareType": 0,
+                "Fare_Id": "DD5057716817266436911",
+                "Fare_Key": null,
+                "Food_onboard": null,
+                "GSTMandatory": false,
+                "LastFewSeats": null,
+                "ProductClass": "DD",
+                "PromptMessage": null,
+                "Refundable": true,
+                "Seats_Available": "2",
+                "Warning": null
+            }
+        ],
+        "Flight_Id": "5171381490893308116",
+        "Flight_Key": "FK5118066013392636207$FK5566860976764368582$FK5667082532791435688$FK5096258669637832847",
+        "Flight_Numbers": "8157-10/10/2024 09:00",
+        "GST_Entry_Allowed": true,
+        "HasMoreClass": false,
+        "InventoryType": 0,
+        "IsLCC": true,
+        "Origin": "DEL",
+        "Repriced": false,
+        "Segments": [
+            {
+                "Aircraft_Type": "320",
+                "Airline_Code": "SG",
+                "Airline_Name": "SpiceJet",
+                "Arrival_DateTime": "10/10/2024 11:10",
+                "Departure_DateTime": "10/10/2024 09:00",
+                "Destination": "BOM",
+                "Destination_City": "MUMBAI",
+                "Destination_Terminal": "1",
+                "Duration": "02:10",
+                "Flight_Number": "8157",
+                "Leg_Index": 0,
+                "OperatedBy": null,
+                "Origin": "DEL",
+                "Origin_City": "DELHI",
+                "Origin_Terminal": "3",
+                "Return_Flight": false,
+                "Segment_Id": 0,
+                "Stop_Over": null
+            }
+        ],
+        "TravelDate": "10/10/2024"
+    }
+]

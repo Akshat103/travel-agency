@@ -3,11 +3,13 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ListBus from '../components/buspage/ListBus';
 import Bus from '../components/homepage/trip-section/Bus';
+import { useNavigate } from 'react-router-dom';
 
 const BusSearch = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [busData, setBusData] = useState([]);
   const { source, destination, journeyDate } = useSelector((state) => state.bus);
+  const navigate = useNavigate();
 
   const handleSearch = useCallback(async () => {
     if (!source || !destination || !journeyDate) {
@@ -23,14 +25,18 @@ const BusSearch = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ source, destination, doj:journeyDate }),
+        body: JSON.stringify({ source, destination, doj: journeyDate }),
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      const data = await response.json();
+
+      if (response.status === 401) {
+        navigate(data.redirect);
+        toast.dismiss(toastId);
+        toast.error(data.message);
+        return;
       }
 
-      const data = await response.json();
       setBusData(data);
       toast.dismiss(toastId);
       toast.success('Buses found successfully!');
@@ -44,14 +50,21 @@ const BusSearch = () => {
   }, [source, destination, journeyDate]);
 
   useEffect(() => {
-      handleSearch();
+    handleSearch();
   }, []);
 
   return (
     <div>
       <div className="container-fluid">
         <div className="row p-2">
-          <div className="col-md-3 bg-light" style={{ borderRadius: '20px' }}>
+          <div className="row mb-2">
+            <div className="col-12 text-center">
+              <h3 className="fw-bold text-white px-1 py-1 rounded" style={{ background: "#8c3eea" }}>
+                Start Adventure
+              </h3>
+            </div>
+          </div>
+          <div className="col-md-3" style={{ borderRadius: '20px' }}>
             <Bus layout="col" onSearch={handleSearch} />
           </div>
           <div className="col-md-9">

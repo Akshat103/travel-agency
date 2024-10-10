@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 // Create a new user
 const createUser = async (req, res) => {
@@ -16,8 +18,26 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { emailOrMobile, password } = req.body;
+
+    if (emailOrMobile === process.env.ADMIN && password === process.env.ADMIN_PASS) {
+      const adminToken = jwt.sign({ userType: 0 }, process.env.JWT_SECRET, {
+        expiresIn: '12h',
+      });
+      
+      res.cookie('sessionId', adminToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+      });
+
+      return res.status(200).json({
+        message: 'Admin login successful',
+        userType: 0,
+      });
+    }
+
+    // Regular user login
     const user = await User.findOne({
-      $or: [{ email: emailOrMobile }, { mobileNumber: emailOrMobile }]
+      $or: [{ email: emailOrMobile }, { mobileNumber: emailOrMobile }],
     });
 
     if (!user || !(await user.comparePassword(password))) {
@@ -28,12 +48,12 @@ const loginUser = async (req, res) => {
 
     res.cookie('sessionId', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production'
+      secure: process.env.NODE_ENV === 'production',
     });
 
     res.status(200).json({
       message: 'Login successful',
-      userType: user.userType
+      userType: user.userType,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -21,10 +21,10 @@ const userSchema = new mongoose.Schema({
     userType: {
         type: Number,
         enum: {
-            values: [0, 1, 2],
-            message: 'User type must be 0, 1, or 2'
+            values: [0, 1],
+            message: 'User type must be 0 or 1'
         },
-        required: [true, 'User type is required']
+        default: 1
     },
     mobileNumber: {
         type: String,

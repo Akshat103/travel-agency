@@ -2,14 +2,16 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AdminLayout from '../admin/AdminLayout'
 import AdminHome from '../admin/pages/AdminHome'
+import NotFound from '../pages/NotFound'
 
 const AdminRoutes = () => {
   return (
-    <AdminLayout>
-      <Routes>
+    <Routes>
+      <Route path="/" element={<AdminLayout />}>
         <Route index element={<AdminHome />} />
-      </Routes>
-    </AdminLayout>
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   )
 }
 

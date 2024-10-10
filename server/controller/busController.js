@@ -213,12 +213,13 @@ const busSeatbook = async (details, clientId) => {
                         Search_Key,
                         seats,
                         booking_id: bookingId,
-                        agentid: clientId
+                        agentid: clientId,
+                        bookingData: ticketResponseData.data.data
                     });
 
                     await bookingLog.save();
 
-                    return cleanedData;
+                    return cleanedData.data;
                 } else {
                     throw new Error(`Failed to book the ticket: ${ticketResponse.statusText}`);
                 }

@@ -1,59 +1,56 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import { ChevronRight } from 'lucide-react';
+import NoBus from './NoBus';
 
 const ListBus = ({ isSearching, buses, loadMoreBuses }) => {
+  const containerRef = useRef();
   const observer = useRef();
   const navigate = useNavigate();
 
   const lastBusElementRef = (node) => {
     if (isSearching) return;
+    
     if (observer.current) observer.current.disconnect();
+    
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         loadMoreBuses();
       }
+    }, {
+      root: containerRef.current,
+      threshold: 1.0,
     });
+    
     if (node) observer.current.observe(node);
   };
 
-  useEffect(() => {
-    const loadMoreOnScroll = () => {
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-
-      if (scrollY + windowHeight >= documentHeight - 50) {
-        loadMoreBuses();
-      }
-    };
-
-    window.addEventListener('scroll', loadMoreOnScroll);
-    return () => window.removeEventListener('scroll', loadMoreOnScroll);
-  }, [loadMoreBuses]);
-
+  // Render skeleton while searching
   if (isSearching) {
     return (
-      <div className="p-3">
-        <h4>Buses</h4>
+      <div>
         <Skeleton count={3} height={150} />
       </div>
     );
   }
 
+  // Render message if no buses found
   if (!buses.length) {
     return (
-      <div className="p-3">
-        <h4>Buses</h4>
-        <p>No buses found.</p>
+      <div>
+        <NoBus/>
       </div>
     );
   }
 
+  // Render the list of buses with a scrollable container
   return (
-    <div className="p-3">
-      <h4>Buses</h4>
+    <div
+      ref={containerRef}
+      style={{ height: '100vh', overflowY: 'auto' }}
+      className="pt-0 p-4"
+    >
       <div className="space-y-4">
         {buses.map((bus, index) => {
           const isLastBus = index === buses.length - 1;

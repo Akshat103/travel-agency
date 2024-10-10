@@ -9,6 +9,6 @@ router.get('/flightcity', flightController.getFlightCities);
 // Route to search flights
 router.post('/flightsearch', authMiddleware, flightController.searchFlights);
 
-router.post('/getssr', authMiddleware, flightController.airGetSSR);
+router.post('/getairseatmap', flightController.getAirSeatMap);
 
 module.exports = router;

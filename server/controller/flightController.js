@@ -111,22 +111,29 @@ const searchFlights = async (req, res) => {
     }
 };
 
-const airGetSSR = async (req, res) => {
+const getAirSeatMap = async (req, res) => {
     const { requestdata } = req.body;
 
-    try {
-        const response = await axios.post(FLIGHT_API_SERVICE_URL, {
-            methodname: "Air_GetSSR",
-            opid: 569,
+    const apiConfig = {
+        method: 'POST',
+        url: FLIGHT_API_SERVICE_URL,
+        headers: {
+            'Access-Token': FLIGHT_ACCESS_TOKEN,
+            'Content-Type': 'application/json',
+        },
+        data: {
+            methodname: "AirSeatMaps",
+            opid: 567,
             txnid: FLIGHT_TXNID,
             requestdata
-        }, {
-            headers: {
-                'Access-Token': FLIGHT_ACCESS_TOKEN,
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log(response)
+        }
+    };
+
+    console.log(apiConfig)
+
+    try {
+        const response = await axios(apiConfig);
+        console.log("response: ", response.data);
         res.status(200).json(response.data);
     } catch (error) {
         console.error('Error calling the API:', error);
@@ -137,5 +144,5 @@ const airGetSSR = async (req, res) => {
 module.exports = {
     getFlightCities,
     searchFlights,
-    airGetSSR
+    getAirSeatMap
 };

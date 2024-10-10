@@ -3,6 +3,7 @@ import flightReducer from './flightSlice';
 import airportReducer from './airportSlice';
 import rechargeReducer from './rechargeSlice';
 import busReducer from './busSlice';
+import hotelReducer from './hotelSlice';
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         airports: airportReducer,
         recharge: rechargeReducer,
         bus: busReducer,
+        hotel: hotelReducer, 
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

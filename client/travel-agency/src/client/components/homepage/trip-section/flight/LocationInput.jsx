@@ -57,7 +57,7 @@ const LocationInput = ({ label, onSelect }) => {
 
     return (
         <>
-            <div>
+            <div style={{ position: 'relative' }}>
                 <p>{label}</p>
                 <input
                     type="text"
@@ -65,28 +65,49 @@ const LocationInput = ({ label, onSelect }) => {
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Enter airport or country"
                 />
+
+                {isTyping ? (
+                    <p>Loading suggestions...</p>
+                ) : (
+                    suggestions.length > 0 && (
+                        <ul
+                            className="suggestions-list"
+                            style={{
+                                maxHeight: '150px',
+                                overflowY: 'auto',
+                                margin: 0,
+                                padding: 0,
+                                listStyleType: 'none',
+                                position: 'absolute',
+                                top: '100%',
+                                left: 0,
+                                zIndex: 10,
+                                backgroundColor: 'white',
+                                border: '1px solid #ddd',
+                            }}
+                        >
+                            {suggestions.map((airport, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => handleSelect(airport)}
+                                    style={{
+                                        cursor: 'pointer',
+                                        padding: '8px',
+                                        borderBottom: '1px solid #ddd'
+                                    }}
+                                >
+                                    {airport.AIRPORTNAME} ({airport.AIRPORTCODE}), {airport.COUNTRYNAME}
+                                </li>
+                            ))}
+                        </ul>
+                    )
+                )}
+                {selectedAirport ? (
+                    <span>{selectedAirport.AIRPORTCODE} - {selectedAirport.AIRPORTNAME}</span>
+                ) : <span>Name/Code</span>}
             </div>
-            {isTyping ? (
-                <p>Loading suggestions...</p>
-            ) : (
-                suggestions.length > 0 && (
-                    <ul className="suggestions-list" style={{ maxHeight: '150px', overflowY: 'auto', margin: 0, padding: 0, listStyleType: 'none' }}>
-                        {suggestions.map((airport, index) => (
-                            <li
-                                key={index}
-                                onClick={() => handleSelect(airport)}
-                                style={{ cursor: 'pointer', padding: '8px', borderBottom: '1px solid #ddd' }}
-                            >
-                                {airport.AIRPORTNAME} ({airport.AIRPORTCODE}), {airport.COUNTRYNAME}
-                            </li>
-                        ))}
-                    </ul>
-                )
-            )}
-            {selectedAirport ? (
-                <span>{selectedAirport.AIRPORTCODE} - {selectedAirport.AIRPORTNAME}</span>
-            ) : <span>Name/Code</span>}
         </>
+
     );
 };
 

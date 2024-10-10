@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import RechargeAnimation from './RechargeAnimation';
 
 const ListPlans = ({ plans, onRecharge }) => {
     const [displayedPlans, setDisplayedPlans] = useState([]);
@@ -68,7 +69,7 @@ const ListPlans = ({ plans, onRecharge }) => {
                     </div>
                 ))
             ) : (
-                <p className="text-center text-gray-500">No plans available. Please update the details.</p>
+                <RechargeAnimation/>
             )}
         </div>
     );

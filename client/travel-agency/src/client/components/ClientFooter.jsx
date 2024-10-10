@@ -1,5 +1,6 @@
 import React from 'react';
 import cardImage from '/img/common/cards.png';
+import { Link } from 'react-router-dom';
 
 const ClientFooter = () => {
   return (
@@ -15,19 +16,19 @@ const ClientFooter = () => {
               <div className="footer_first_area">
                 <div className="footer_inquery_area">
                   <h5>Call 24/7 for any help</h5>
-                  <h3> <a href="tel:+00-123-456-789">+00 123 456 789</a></h3>
+                  <h3> <Link to="tel:+91-8079-881-580">+91 8079 881 580</Link></h3>
                 </div>
                 <div className="footer_inquery_area">
                   <h5>Mail to our support team</h5>
-                  <h3> <a href="mailto:support@domain.com">support@domain.com</a></h3>
+                  <h3> <Link to="mailto:yaraholiday46@gmail.com">yaraholiday46@gmail.com</Link></h3>
                 </div>
                 <div className="footer_inquery_area">
                   <h5>Follow us on</h5>
                   <ul className="soical_icon_footer">
-                    <li><a href="#!"><i className="fab fa-facebook"></i></a></li>
-                    <li><a href="#!"><i className="fab fa-twitter-square"></i></a></li>
-                    <li><a href="#!"><i className="fab fa-instagram"></i></a></li>
-                    <li><a href="#!"><i className="fab fa-linkedin"></i></a></li>
+                    <li><Link to="#!"><i className="fab fa-facebook"></i></Link></li>
+                    <li><Link to="#!"><i className="fab fa-twitter-square"></i></Link></li>
+                    <li><Link to="#!"><i className="fab fa-instagram"></i></Link></li>
+                    <li><Link to="#!"><i className="fab fa-linkedin"></i></Link></li>
                   </ul>
                 </div>
               </div>
@@ -38,12 +39,12 @@ const ClientFooter = () => {
               </div>
               <div className="footer_link_area">
                 <ul>
-                  <li><a href="about.html">About Us</a></li>
-                  <li><a href="testimonials.html">Testimonials</a></li>
-                  <li><a href="faqs.html">Rewards</a></li>
-                  <li><a href="terms-service.html">Work with Us</a></li>
-                  <li><a href="tour-guides.html">Meet the Team </a></li>
-                  <li><a href="news.html">Blog</a></li>
+                  <li><Link to="about.html">About Us</Link></li>
+                  <li><Link to="testimonials.html">Testimonials</Link></li>
+                  <li><Link to="faqs.html">Rewards</Link></li>
+                  <li><Link to="terms-service.html">Work with Us</Link></li>
+                  <li><Link to="tour-guides.html">Meet the Team </Link></li>
+                  <li><Link to="news.html">Blog</Link></li>
                 </ul>
               </div>
             </div>
@@ -53,45 +54,31 @@ const ClientFooter = () => {
               </div>
               <div className="footer_link_area">
                 <ul>
-                  <li><a href="dashboard.html">Account</a></li>
-                  <li><a href="faq.html">Faq</a></li>
-                  <li><a href="testimonials.html">Legal</a></li>
-                  <li><a href="contact.html">Contact</a></li>
-                  <li><a href="top-destinations.html"> Affiliate Program</a></li>
-                  <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                  <li><Link to="dashboard.html">Account</Link></li>
+                  <li><Link to="faq.html">Faq</Link></li>
+                  <li><Link to="testimonials.html">Legal</Link></li>
+                  <li><Link to="contact.html">Contact</Link></li>
+                  <li><Link to="top-destinations.html"> Affiliate Program</Link></li>
+                  <li><Link to="privacy-policy.html">Privacy Policy</Link></li>
                 </ul>
               </div>
             </div>
             <div className="col-lg-2 col-md-4 col-sm-6 col-12">
               <div className="footer_heading_area">
-                <h5>Other Services</h5>
+                <h5>Our Services</h5>
               </div>
               <div className="footer_link_area">
                 <ul>
-                  <li><a href="top-destinations-details.html">Community program</a></li>
-                  <li><a href="top-destinations-details.html">Investor Relations</a></li>
-                  <li><a href="flight-search-result.html">Rewards Program</a></li>
-                  <li><a href="room-booking.html">PointsPLUS</a></li>
-                  <li><a href="testimonials.html">Partners</a></li>
-                  <li><a href="hotel-search.html">List My Hotel</a></li>
+                  <li><Link to="/mobile-recharge">Mobile Recharge</Link></li>
+                  <li><Link to="top-destinations-details.html">Investor Relations</Link></li>
+                  <li><Link to="flight-search-result.html">Rewards Program</Link></li>
+                  <li><Link to="room-booking.html">PointsPLUS</Link></li>
+                  <li><Link to="testimonials.html">Partners</Link></li>
+                  <li><Link to="hotel-search.html">List My Hotel</Link></li>
                 </ul>
               </div>
             </div>
-            <div className="col-lg-2 col-md-4 col-sm-6 col-12">
-              <div className="footer_heading_area">
-                <h5>Top cities</h5>
-              </div>
-              <div className="footer_link_area">
-                <ul>
-                  <li><a href="room-details.html">Chicago</a></li>
-                  <li><a href="hotel-details.html">New York</a></li>
-                  <li><a href="hotel-booking.html">San Francisco</a></li>
-                  <li><a href="tour-search.html">California</a></li>
-                  <li><a href="tour-booking.html">Ohio </a></li>
-                  <li><a href="tour-guides.html">Alaska</a></li>
-                </ul>
-              </div>
-            </div>
+            
           </div>
         </div>
       </footer>

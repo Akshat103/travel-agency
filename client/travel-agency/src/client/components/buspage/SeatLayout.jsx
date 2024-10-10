@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import usePayment from '../../../utils/payment';
 import { useSelector } from 'react-redux';
+import { IoIosPersonAdd } from "react-icons/io";
+import { CiEdit } from "react-icons/ci";
+import { IoPersonRemove } from "react-icons/io5";
 
 const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
     const [showSeats, setShowSeats] = useState(false);
@@ -126,12 +129,14 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
         setShowPassengerInputs(true);
     };
 
-    const { source, destination, journeyDate } = useSelector((state) => state.bus);
+    const { source, sourceName, destination, destinationName, journeyDate } = useSelector((state) => state.bus);
 
     const handleBook = async () => {
         const bookingData = {
             source,
+            sourceName,
             destination,
+            destinationName,
             doj: journeyDate,
             tripid: bus.id,
             bpid: selectedBoarding,
@@ -195,138 +200,132 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                 ))}
                             </div>
 
-                            {!showContactForm && (
-                                <button className="btn btn-primary mt-3" onClick={() => setShowContactForm(true)}>
-                                    Book
-                                </button>
-                            )}
-
-                            {showContactForm && (
-                                <div className="mt-4">
-                                    <div className="row mb-4">
-                                        <div className="col-md-6">
-                                            <input placeholder='Mobile Number' type="text" name="mobile" className="form-control" value={contactDetails.mobile} onChange={handleContactInput} />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <input placeholder='Email' type="email" name="email" className="form-control" value={contactDetails.email} onChange={handleContactInput} />
-                                        </div>
+                            <div className="mt-4">
+                                <div className="row mb-4">
+                                    <div className="col-md-6">
+                                        <input placeholder='Mobile Number' type="text" name="mobile" className="form-control" value={contactDetails.mobile} onChange={handleContactInput} />
                                     </div>
-                                    <div className="row mb-4">
-                                        <div className="col-md-6">
-                                            <select name="idType" className="form-control" value={contactDetails.idType} onChange={handleContactInput}>
-                                                <option value="">ID Proof</option>
-                                                <option value="Aadhar">Aadhar</option>
-                                                <option value="PAN">PAN</option>
-                                            </select>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <input
-                                                type="text"
-                                                name="idNumber"
-                                                className="form-control"
-                                                placeholder='ID Number'
-                                                value={contactDetails.idNumber}
-                                                onChange={handleContactInput}
-                                                maxLength={contactDetails.idType === 'Aadhar' ? 12 : 10}
-                                                pattern={contactDetails.idType === 'Aadhar' ? '\\d{12}' : '[A-Z0-9]{10}'}
-                                            />
-                                        </div>
+                                    <div className="col-md-6">
+                                        <input placeholder='Email' type="email" name="email" className="form-control" value={contactDetails.email} onChange={handleContactInput} />
                                     </div>
-                                    <div className="mb-3">
+                                </div>
+                                <div className="row mb-4">
+                                    <div className="col-md-6">
+                                        <select name="idType" className="form-control" value={contactDetails.idType} onChange={handleContactInput}>
+                                            <option value="">ID Proof</option>
+                                            <option value="Aadhar">Aadhar</option>
+                                            <option value="PAN">PAN</option>
+                                        </select>
+                                    </div>
+                                    <div className="col-md-6">
                                         <input
                                             type="text"
-                                            name="address"
+                                            name="idNumber"
                                             className="form-control"
-                                            placeholder='Address'
-                                            value={contactDetails.address}
+                                            placeholder='ID Number'
+                                            value={contactDetails.idNumber}
                                             onChange={handleContactInput}
+                                            maxLength={contactDetails.idType === 'Aadhar' ? 12 : 10}
+                                            pattern={contactDetails.idType === 'Aadhar' ? '\\d{12}' : '[A-Z0-9]{10}'}
                                         />
                                     </div>
-                                    <button className="btn btn-primary mt-2" onClick={() => setShowPassengerForm(true)}>Next</button>
                                 </div>
-                            )}
+                                <div className="mb-3">
+                                    <input
+                                        type="text"
+                                        name="address"
+                                        className="form-control"
+                                        placeholder='Address'
+                                        value={contactDetails.address}
+                                        onChange={handleContactInput}
+                                    />
+                                </div>
+                            </div>
 
-                            {showPassengerForm && (
-                                <div className="mt-4">
-                                    <h5>Passenger Details</h5>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <h5 className="mt-2 mb-2">Passengers:</h5>
+                                </div>
+                                <div className="col-md-6">
                                     <button className="btn btn-primary mb-3" onClick={() => {
                                         setShowPassengerInputs(true);
                                         setCurrentPassenger({ passengertitle: '', passengername: '', passengerage: '', seat: null });
                                     }}>
-                                        {editingIndex !== null ? 'Edit Passenger' : 'Add Passenger'}
+                                        {editingIndex !== null ? <CiEdit /> : <IoIosPersonAdd />}
                                     </button>
-
-                                    {showPassengerInputs && (
-                                        <>
-                                            <div className="row mb-4">
-                                                <div className="col-md-4">
-                                                    <input
-                                                        type="text"
-                                                        name="passengertitle"
-                                                        className="form-control"
-                                                        placeholder="Title"
-                                                        value={currentPassenger.passengertitle}
-                                                        onChange={handlePassengerInput}
-                                                    />
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <input
-                                                        type="text"
-                                                        name="passengername"
-                                                        className="form-control"
-                                                        placeholder='Name'
-                                                        value={currentPassenger.passengername}
-                                                        onChange={handlePassengerInput}
-                                                    />
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <input
-                                                        type="number"
-                                                        name="passengerage"
-                                                        className="form-control"
-                                                        placeholder='Age'
-                                                        value={currentPassenger.passengerage}
-                                                        onChange={handlePassengerInput}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row mb-4">
-                                                <div className="col-md-6">
-                                                    <select
-                                                        className="form-control"
-                                                        value={currentPassenger.seat ? currentPassenger.seat.name : ''}
-                                                        onChange={(e) => {
-                                                            const selectedSeat = availableSeats.find(seat => seat.name === e.target.value);
-                                                            handleSeatSelection(selectedSeat);
-                                                        }}
-                                                    >
-                                                        <option value="">Select a seat</option>
-                                                        {availableSeats.map((seat) => (
-                                                            <option key={seat.name} value={seat.name}>
-                                                                {seat.name} - ₹{seat.fare}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <button className="btn btn-primary mt-2" onClick={handleAddPassenger}>
-                                                {editingIndex !== null ? 'Update Passenger' : 'Save Passenger'}
-                                            </button>
-                                        </>
-                                    )}
                                 </div>
-                            )}
+                            </div>
+
+                            <div>
+                                {showPassengerInputs && (
+                                    <>
+                                        <div className="row mb-4">
+                                            <div className="col-md-4">
+                                                <input
+                                                    type="text"
+                                                    name="passengertitle"
+                                                    className="form-control"
+                                                    placeholder="Title"
+                                                    value={currentPassenger.passengertitle}
+                                                    onChange={handlePassengerInput}
+                                                />
+                                            </div>
+                                            <div className="col-md-4">
+                                                <input
+                                                    type="text"
+                                                    name="passengername"
+                                                    className="form-control"
+                                                    placeholder='Name'
+                                                    value={currentPassenger.passengername}
+                                                    onChange={handlePassengerInput}
+                                                />
+                                            </div>
+                                            <div className="col-md-4">
+                                                <input
+                                                    type="number"
+                                                    name="passengerage"
+                                                    className="form-control"
+                                                    placeholder='Age'
+                                                    value={currentPassenger.passengerage}
+                                                    onChange={handlePassengerInput}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row mb-4">
+                                            <div className="col-md-6">
+                                                <select
+                                                    className="form-control"
+                                                    value={currentPassenger.seat ? currentPassenger.seat.name : ''}
+                                                    onChange={(e) => {
+                                                        const selectedSeat = availableSeats.find(seat => seat.name === e.target.value);
+                                                        handleSeatSelection(selectedSeat);
+                                                    }}
+                                                >
+                                                    <option value="">Select a seat</option>
+                                                    {availableSeats.map((seat) => (
+                                                        <option key={seat.name} value={seat.name}>
+                                                            {seat.name} - ₹{seat.fare}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <button className="btn btn-primary mb-2" onClick={handleAddPassenger}>
+                                            {editingIndex !== null ? 'Update Passenger' : 'Save Passenger'}
+                                        </button>
+                                    </>
+                                )}
+                            </div>
 
                             {passengers.length > 0 && (
                                 <div>
-                                    <h5 className="mt-4">Passengers:</h5>
                                     <ul className="list-group">
                                         {passengers.map((passenger, index) => (
                                             <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                                {`${passenger.passengertitle} ${passenger.passengername}, Age: ${passenger.passengerage}, Seat: ${passenger.seat ? passenger.seat.name : 'Not selected'}`}
+                                                {`${passenger.passengertitle} ${passenger.passengername} ${passenger.passengerage}, Seat: ${passenger.seat ? passenger.seat.name : 'Not selected'}`}
                                                 <div>
-                                                    <button className="btn btn-warning btn-sm mx-1" onClick={() => handleEditPassenger(index)}>Edit</button>
-                                                    <button className="btn btn-danger btn-sm mx-1" onClick={() => handleRemovePassenger(index)}>Remove</button>
+                                                    <button className="btn btn-warning btn-sm mx-1" onClick={() => handleEditPassenger(index)}><CiEdit /></button>
+                                                    <button className="btn btn-danger btn-sm mx-1" onClick={() => handleRemovePassenger(index)}><IoPersonRemove /></button>
                                                 </div>
                                             </li>
                                         ))}
@@ -335,6 +334,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                     <button className="btn btn-success mt-3" onClick={handleBook}>Book Seats</button>
                                 </div>
                             )}
+
                         </>
                     )}
                 </div>

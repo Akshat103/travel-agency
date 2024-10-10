@@ -29,7 +29,7 @@ const FlightSearchForm = ({
       <div >
 
         <div className='row justify-content-center align-items-center'>
-          <div className="col-lg-2 col-md-6 col-sm-12 col-12">
+          <div className="col-lg-3 col-md-6 col-sm-12 col-12">
             <div className="flight_Search_boxed">
               <LocationInput label="From" onSelect={handleSelectOrigin} />
               <div className="plan_icon_posation">
@@ -38,7 +38,7 @@ const FlightSearchForm = ({
             </div>
           </div>
 
-          <div className="col-lg-2 col-md-6 col-sm-12 col-12">
+          <div className="col-lg-3 col-md-6 col-sm-12 col-12">
             <div className="flight_Search_boxed">
               <LocationInput label="To" onSelect={handleSelectDestination} />
               <div className="plan_icon_posation">
@@ -49,18 +49,19 @@ const FlightSearchForm = ({
               </div>
             </div>
           </div>
-          
-          <div className="col-lg-2 col-md-6 col-sm-12 col-12">
-            <DateRangeInput
-              isRoundTrip={isRoundTrip}
-              startDate={flightDetails.TravelDate}
-              endDate={flightDetails.DepartureDate}
-              onChange={handleDateChange}
-              onColumn="col"
-            />
-          </div>
 
-          <div className="col-lg-2 col-md-6 col-sm-12 col-12">
+          <DateRangeInput
+            isRoundTrip={isRoundTrip}
+            startDate={flightDetails.TravelDate}
+            endDate={flightDetails.DepartureDate}
+            onChange={handleDateChange}
+            onHome={true}
+          />
+
+        </div>
+
+        <div className='row justify-content-center align-items-center m-2'>
+          <div className="col-lg-3 col-md-6 col-sm-12 col-12">
             <PassengerDetails
               flightDetails={flightDetails}
               onPassengerCountChange={handlePassengerCountChange}
@@ -68,10 +69,6 @@ const FlightSearchForm = ({
               useDropdown={true}
             />
           </div>
-        </div>
-
-        <div className='row justify-content-center align-items-center m-2'>
-          
 
           <div className="col-lg-2 col-md-6 col-sm-12 col-12">
             <input

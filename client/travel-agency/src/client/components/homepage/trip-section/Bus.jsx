@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSource, setDestination, setJourneyDate, setSourceList, setDestinationList } from '../../../../redux/busSlice';
+import { setSource, setDestination, setJourneyDate, setSourceList, setDestinationList, setSourceName, setDestinationName } from '../../../../redux/busSlice';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -70,12 +70,14 @@ const Bus = ({ layout, onSearch }) => {
     const handleDestinationSuggestionClick = (suggestion) => {
         setDestinationInput(suggestion.name);
         dispatch(setDestination(suggestion.id));
+        dispatch(setDestinationName(suggestion.name));
         setDestinationSuggestions([]);
     };
 
     const handleSourceSuggestionClick = (suggestion) => {
         setSourceInput(suggestion.name);
         dispatch(setSource(suggestion.id));
+        dispatch(setSourceName(suggestion.name));
         setSourceSuggestions([]);
         fetchDestinationList(suggestion.id);
         setDestinationInput('');
@@ -109,88 +111,113 @@ const Bus = ({ layout, onSearch }) => {
     return (
         <div className="tab-pane" id="bus" role="tabpanel" aria-labelledby="bus-tab">
             <div className="row">
-                <div className="col-lg-10">
-                    <div className="tour_search_form">
-                        <div className="row">
-                            <div className="col-lg-12">
-                                <div className="oneway_search_form">
-                                    <div className={`${layout === 'col' ? 'col justify-content-center' : 'row justify-content-center'}`}>
-                                        <div className={`${layout === 'col' ? "" : "col-lg-3 col-md-6 col-sm-12 mb-3"}`}>
-                                            <div className="flight_Search_boxed">
-                                                <p>From</p>
-                                                <input
-                                                    type="text"
-                                                    value={sourceInput}
-                                                    onChange={handleSourceChange}
-                                                    placeholder="Type to search..."
-                                                    className="form-control"
-                                                />
-                                                {sourceSuggestions.length > 0 && (
-                                                    <ul className="suggestions-list" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                                                        {sourceSuggestions.map((suggestion) => (
-                                                            <li key={suggestion.id} onClick={() => handleSourceSuggestionClick(suggestion)} style={{ cursor: 'pointer' }}>
-                                                                {suggestion.name}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                )}
-                                                <div className="plan_icon_posation">
-                                                    <i className="fas fa-bus"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className={`${layout === 'col' ? "" : "col-lg-3 col-md-6 col-sm-12 mb-3"}`}>
-                                            <div className="flight_Search_boxed">
-                                                <p>To</p>
-                                                <input
-                                                    type="text"
-                                                    value={destinationInput}
-                                                    onChange={handleDestinationChange}
-                                                    placeholder="Type to search..."
-                                                    className="form-control"
-                                                />
-                                                {destinationSuggestions.length > 0 && (
-                                                    <ul className="suggestions-list" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                                                        {destinationSuggestions.map((suggestion) => (
-                                                            <li key={suggestion.id} onClick={() => handleDestinationSuggestionClick(suggestion)} style={{ cursor: 'pointer' }}>
-                                                                {suggestion.name}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                )}
-                                                <div className="plan_icon_posation">
-                                                    <i className="fas fa-bus"></i>
-                                                </div>
-                                                {layout == "col" ?
-                                                    <></> :
-                                                    <div className="range_plan">
-                                                        <i className="fas fa-exchange-alt"></i>
-                                                    </div>}
-                                            </div>
-                                        </div>
-                                        <div className={`${layout === 'col' ? "" : "col-lg-3 col-md-6 col-sm-12 mb-3"}`}>
-                                            <div className="form_search_date">
-                                                <div className="flight_Search_boxed date_flex_area">
-                                                    <div className="Journey_date">
-                                                        <p>Journey date</p>
-                                                        <input
-                                                            type="date"
-                                                            value={journeyDate}
-                                                            onChange={handleJourneyDateChange}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="top_form_search_button">
-                                            <button className="btn btn_theme btn_md" onClick={handleSearchClick}>
-                                                Search
-                                            </button>
-                                        </div>
+                <div className="col-lg-12">
+                    <div className={`${layout === 'col' ? 'col justify-content-center' : 'row justify-content-center'}`}>
+                        <div className={`${layout === 'col' ? "" : "col-lg-3 col-md-6 col-sm-12"} mb-3`}>
+                            <div className="flight_Search_boxed">
+                                <p>From</p>
+                                <input
+                                    type="text"
+                                    value={sourceInput}
+                                    onChange={handleSourceChange}
+                                    placeholder="Type to search..."
+                                />
+                                {sourceSuggestions.length > 0 && (
+                                    <ul className="suggestions-list"
+                                        style={{
+                                            maxHeight: '150px',
+                                            overflowY: 'auto',
+                                            margin: 0,
+                                            padding: 0,
+                                            listStyleType: 'none',
+                                            position: 'absolute',
+                                            top: '100%',
+                                            left: 0,
+                                            zIndex: 10,
+                                            backgroundColor: 'white',
+                                            border: '1px solid #ddd',
+                                        }}>
+                                        {sourceSuggestions.map((suggestion) => (
+                                            <li key={suggestion.id} onClick={() => handleSourceSuggestionClick(suggestion)}
+                                                style={{
+                                                    cursor: 'pointer',
+                                                    padding: '8px',
+                                                    borderBottom: '1px solid #ddd'
+                                                }}>
+                                                {suggestion.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                                <div className="plan_icon_posation">
+                                    <i className="fas fa-bus"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={`${layout === 'col' ? "" : "col-lg-3 col-md-6 col-sm-12"} mb-3`}>
+                            <div className="flight_Search_boxed">
+                                <p>To</p>
+                                <input
+                                    type="text"
+                                    value={destinationInput}
+                                    onChange={handleDestinationChange}
+                                    placeholder="Type to search..."
+                                />
+                                {destinationSuggestions.length > 0 && (
+                                    <ul className="suggestions-list"
+                                        style={{
+                                            maxHeight: '150px',
+                                            overflowY: 'auto',
+                                            margin: 0,
+                                            padding: 0,
+                                            listStyleType: 'none',
+                                            position: 'absolute',
+                                            top: '100%',
+                                            left: 0,
+                                            zIndex: 10,
+                                            backgroundColor: 'white',
+                                            border: '1px solid #ddd',
+                                        }}>
+                                        {destinationSuggestions.map((suggestion) => (
+                                            <li key={suggestion.id} onClick={() => handleDestinationSuggestionClick(suggestion)}
+                                                style={{
+                                                    cursor: 'pointer',
+                                                    padding: '8px',
+                                                    borderBottom: '1px solid #ddd'
+                                                }}>
+                                                {suggestion.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                                <div className="plan_icon_posation">
+                                    <i className="fas fa-bus"></i>
+                                </div>
+                                {layout == "col" ?
+                                    <></> :
+                                    <div className="range_plan">
+                                        <i className="fas fa-exchange-alt"></i>
+                                    </div>}
+                            </div>
+                        </div>
+                        <div className={`${layout === 'col' ? "" : "col-lg-3 col-md-6 col-sm-12"} mb-3`}>
+                            <div className="form_search_date">
+                                <div className="flight_Search_boxed date_flex_area">
+                                    <div className="Journey_date">
+                                        <p>Journey date</p>
+                                        <input
+                                            type="date"
+                                            value={journeyDate}
+                                            onChange={handleJourneyDateChange}
+                                        />
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div className="top_form_search_button">
+                            <button className="btn btn_theme btn_md" onClick={handleSearchClick}>
+                                Search
+                            </button>
                         </div>
                     </div>
                 </div>

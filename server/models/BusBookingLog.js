@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const bookingLogSchema = new mongoose.Schema({
     source: String,
+    sourceName: String,
+    destinationName: String,
     destination: String,
     doj: Date,
     tripid: String,

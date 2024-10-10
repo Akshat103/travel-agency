@@ -41,7 +41,6 @@ const Filter = ({ onSearch }) => {
 
   return (
     <div className="container p-3">
-      <h4 className="mb-4">Filter</h4>
       <div className="row row-cols-1 g-4">
         <div className="col">
           <div className="flight_Search_boxed position-relative">
@@ -61,7 +60,7 @@ const Filter = ({ onSearch }) => {
         </div>
         <div className="col">
           <DateRangeInput
-            onColumn={false}
+            onHome={false}
             isRoundTrip={isRoundTrip}
             startDate={flightDetails.TravelDate}
             endDate={flightDetails.DepartureDate}

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Recharge from '../components/homepage/trip-section/Recharge';
-import Banner from '../components/Banner';
 import ListPlans from '../components/rechargepage/ListPlans';
 import RechargeFilter from '../components/rechargepage/RechargeFilter';
 import { setNumber, setOperator, setCircle } from '../../redux/rechargeSlice';
@@ -91,15 +90,15 @@ const RechargePage = () => {
 
   return (
     <div>
-      <Banner
-        title="Recharge"
-        breadcrumbs={[
-          { text: 'Home', link: '/' },
-          { text: 'Recharge' },
-        ]}
-      />
       <div className="container-fluid">
         <div className="row p-2">
+        <div className="row">
+            <div className="col-12 text-center">
+              <h3 className="fw-bold text-white px-1 py-1 rounded" style={{background:"#8c3eea"}}>
+                Get Your Recharge Done
+              </h3>
+            </div>
+          </div>
           <div className="col-md-3 mt-4" style={{ borderRadius: '20px' }}>
             <Recharge
               context="recharge"

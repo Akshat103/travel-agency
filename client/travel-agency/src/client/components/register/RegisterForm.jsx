@@ -48,9 +48,7 @@ const RegisterForm = () => {
             <div className="common_author_boxed">
               <div className="common_author_heading">
                 <h3>Register account</h3>
-                <h2>Register your account</h2>
               </div>
-              <div className="common_author_form">
                 <form id="main_author_form" onSubmit={handleSubmit}>
                   <div className="form-group">
                     <input
@@ -170,7 +168,6 @@ const RegisterForm = () => {
                     </p>
                   </div>
                 </form>
-              </div>
             </div>
           </div>
         </div>
