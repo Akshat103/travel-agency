@@ -56,11 +56,13 @@ const usePayment = () => {
                                 razorpay_signature: response.razorpay_signature,
                                 serviceType
                             });
-                            if (data.success) {
-                                console.log(data)
-                                // navigate('/success', { state: { message: data.message } });
-                                resolve(success);
-                            } else {
+                            if (data.success && serviceType === "bookbus") {
+                                navigate('/success', { state: { message: `Booking ID: ${data.data.booking_id}` } });
+                            }
+                            else if (data.success) {
+                                navigate('/success', { state: { message: data.message } });
+                            }
+                            else {
                                 toast.error("Order completion failed.");
                                 reject("Order completion failed.");
                             }

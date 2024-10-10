@@ -40,7 +40,7 @@ const SuccessPage = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setSecondsLeft((prev) => prev - 1);
-        }, 500);
+        }, 1000);
 
         if (secondsLeft === 0) {
             navigate('/dashboard');

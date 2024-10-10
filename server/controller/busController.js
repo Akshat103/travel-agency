@@ -143,7 +143,7 @@ const seatLayout = async (req, res) => {
 const busSeatbook = async (details, clientId) => {
     try {
         const {
-            source, destination, doj, tripid, bpid, dpid,
+            source, sourceName, destinationName, destination, doj, tripid, bpid, dpid,
             mobile, email, idtype, idnumber, address, Search_Key, seats
         } = details;
 
@@ -196,10 +196,11 @@ const busSeatbook = async (details, clientId) => {
                 if (ticketResponse.status === 200) {
                     const ticketResponseData = ticketResponse.data;
                     cleanedData = typeof ticketResponseData === 'string' ? JSON.parse(ticketResponseData) : ticketResponseData;
-console.log("ticketResponseData: ", ticketResponseData, "cleanedData: ",cleanedData)
-                    // Log the booking details
+
                     const bookingLog = new BookingLog({
                         source,
+                        sourceName,
+                        destinationName,
                         destination,
                         doj,
                         tripid,
