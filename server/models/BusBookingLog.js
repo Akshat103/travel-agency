@@ -18,6 +18,7 @@ const bookingLogSchema = new mongoose.Schema({
     seats: Object,
     booking_id: String,
     agentid: String,
+    bookingData: { type: mongoose.Schema.Types.Mixed },
     createdAt: { type: Date, default: Date.now }
 });
 

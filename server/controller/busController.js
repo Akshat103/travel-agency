@@ -214,12 +214,12 @@ console.log("ticketResponseData: ", ticketResponseData, "cleanedData: ",cleanedD
                         seats,
                         booking_id: bookingId,
                         agentid: clientId,
-                        bookingData: ticketResponseData.data
+                        bookingData: cleanedData.data
                     });
 
                     await bookingLog.save();
 
-                    return cleanedData;
+                    return cleanedData.data;
                 } else {
                     throw new Error(`Failed to book the ticket: ${ticketResponse.statusText}`);
                 }
