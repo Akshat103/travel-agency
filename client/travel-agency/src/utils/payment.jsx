@@ -4,31 +4,10 @@ import axios from "axios";
 
 const VITE_RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
-let razorpayScriptLoaded = false;
-
-const loadRazorpayScript = () => {
-    if (!razorpayScriptLoaded) {
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.async = true;
-        script.onload = () => {
-            razorpayScriptLoaded = true;
-        };
-        script.onerror = () => {
-            toast.error("Failed to load Razorpay. Please try again later.");
-        };
-        document.head.appendChild(script);
-    }
-};
-
 const usePayment = () => {
     const navigate = useNavigate();
 
     const payment = async (amount, receipt, serviceType, serviceDetails) => {
-        if (!razorpayScriptLoaded) {
-            loadRazorpayScript();
-        }
-
         try {
             const { data: { order_id } } = await axios.post('/api/create-order', {
                 amount,

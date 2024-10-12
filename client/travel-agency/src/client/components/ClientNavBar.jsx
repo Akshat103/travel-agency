@@ -1,15 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from '/img/logo.png';
 import { Link } from 'react-router-dom';
 
 const ClientNavBar = () => {
+
+    const [isNavVisible, setIsNavVisible] = useState(false);
+
+    const toggleNav = () => {
+        setIsNavVisible(!isNavVisible);
+    };
+
     return (
         <>
             {/* Navbar Bar */}
             <div className="navbar-area">
                 <div className="main-responsive-nav">
                     <div className="container">
-                        <div className="main-responsive-menu">
+                        <div className="main-responsive-menu mean-container">
+                            <div className="mean-bar">
+                                <Link
+                                    className="meanmenu-reveal"
+                                    style={{ right: '0px', left: 'auto', textAlign: 'center', textIndent: '0px', fontSize: '18px' }}
+                                    onClick={toggleNav}
+                                >
+                                    <span><span><span></span></span></span>
+                                </Link>
+                                <nav className="mean-nav">
+                                    <ul className="navbar-nav" style={{ display: isNavVisible ? 'block' : 'none' }}>
+                                        <li className="nav-item">
+                                            <Link to="/" className="nav-link">Home <i className="fas fa-angle-down"></i></Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to="/flights" className="nav-link">Flights <i className="fas fa-angle-down"></i></Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to="/mobile-recharge" className="nav-link">Recharge <i className="fas fa-angle-down"></i></Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to="/hotel" className="nav-link">Hotel <i className="fas fa-angle-down"></i></Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to="/bus" className="nav-link">Bus <i className="fas fa-angle-down"></i></Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to="/contact" className="nav-link">Contact <i className="fas fa-angle-down"></i></Link>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
                             <div className="logo">
                                 <Link to="/">
                                     <img src={logo} alt="logo" />
@@ -24,64 +62,45 @@ const ClientNavBar = () => {
                             <Link className="navbar-brand" to="/">
                                 <img src={logo} alt="logo" />
                             </Link>
-                            <div className="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+                            <div className="mean-push"></div>
+                            <div className="collapse navbar-collapse mean-menu" id="navbarSupportedContent" style={{ display: "none" }}>
                                 <ul className="navbar-nav">
                                     <li className="nav-item">
                                         <Link to="/" className="nav-link">
-                                            <strong> Home </strong>
+                                            Home
                                         </Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link to="/flights" className="nav-link">
-                                            <strong>Flights</strong>
+                                            Flights
                                         </Link>
                                     </li>
+
                                     <li className="nav-item">
                                         <Link to="/mobile-recharge" className="nav-link">
-                                            <strong>Recharge</strong>
+                                            Recharge
+                                        </Link>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <Link to="/hotel" classNameName="nav-link">
+                                            Hotel
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/hotel" className="nav-link">
-                                            <strong>Hotel</strong>
+                                        <Link to="/bus" classNameName="nav-link">
+                                            Bus
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/bus" className="nav-link">
-                                            <strong>Bus</strong>
+                                        <Link to="/contact" classNameName="nav-link">
+                                            Contact
                                         </Link>
                                     </li>
-                                    <li className="nav-item">
-                                        <Link to="/contact" className="nav-link">
-                                            <strong>Contact</strong>
-                                        </Link>
-                                    </li>
+
                                 </ul>
                             </div>
                         </nav>
-                    </div>
-                </div>
-                <div className="others-option-for-responsive">
-                    <div className="container">
-                        <div className="dot-menu">
-                            <div className="inner">
-                                <div className="circle circle-one"></div>
-                                <div className="circle circle-two"></div>
-                                <div className="circle circle-three"></div>
-                            </div>
-                        </div>
-                        <div className="container">
-                            <div className="option-inner">
-                                <div className="others-options d-flex align-items-center">
-                                    <div className="option-item">
-                                        <a href="#" className="search-box"><i className="fas fa-search"></i></a>
-                                    </div>
-                                    <div className="option-item">
-                                        <a href="contact.html" className="btn  btn_navber">Get free quote</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -24,6 +24,7 @@ const busRoutes = require('./routes/busRoutes');
 const hotelRoutes = require('./routes/hotelRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const userDashboardRoutes = require('./routes/userDashboardRoutes');
 
 // Use the routes
@@ -35,6 +36,7 @@ app.use('/api', busRoutes);
 app.use('/api', hotelRoutes);
 app.use('/api', paymentRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/orders', orderRoutes);
 app.use('/api/dashboard', userDashboardRoutes);
 
 // Serve index.html at the root

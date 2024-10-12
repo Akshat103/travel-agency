@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -6,35 +6,50 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import countryList from '../../../assets/data/countries_name_flag.json';
 import { MdEdit } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
 import { toast } from 'react-toastify';
 
-// BookFlights component
 const BookFlights = () => {
     const location = useLocation();
     const { fareId, flightKey, reprice, price } = location.state || { fareId: null, flightKey: null, reprice: null, price: null };
     const searchKey = useSelector((state) => state.flights.searchKey);
-
+    const flightDetails = useSelector((state) => state.flights.flightDetails);
     const navigate = useNavigate();
-    const [passengers, setPassengers] = useState([
-        {
-            Pax_type: '',
-            Title: '',
-            First_Name: '',
-            Last_Name: '',
-            Gender: '',
-            Age: '',
-            DOB: null,
-            Passport_Number: '',
-            Passport_Issuing_Country: '',
-            Passport_Expiry: null,
-            Nationality: '',
-            saved: false,
-            SSR_Key:'',
-            price: price || 0
-        }
-    ]);
+    const [passengers, setPassengers] = useState([]);
     const [submitting, setSubmitting] = useState(false);
+
+    useEffect(() => {
+        // Initialize passengers based on flightDetails
+        let count = 1;
+        const initialPassengers = [];
+        for (let i = 0; i < flightDetails.Adult_Count; i++) {
+            initialPassengers.push(createPassenger('0', count++));
+        }
+        for (let i = 0; i < flightDetails.Child_Count; i++) {
+            initialPassengers.push(createPassenger('1', count++));
+        }
+        for (let i = 0; i < flightDetails.Infant_Count; i++) {
+            initialPassengers.push(createPassenger('2', count++));
+        }
+        setPassengers(initialPassengers);
+    }, [flightDetails]);
+
+    const createPassenger = (paxType, count) => ({
+        passengerCount: count,
+        Pax_type: paxType,
+        Title: '',
+        First_Name: '',
+        Last_Name: '',
+        Gender: '',
+        Age: '',
+        DOB: null,
+        Passport_Number: '',
+        Passport_Issuing_Country: '',
+        Passport_Expiry: null,
+        Nationality: '',
+        saved: false,
+        SSR_Key: '',
+        price: price || 0
+    });
 
     const handlePassengerChange = (index, e) => {
         const { name, value } = e.target;
@@ -46,7 +61,6 @@ const BookFlights = () => {
     const savePassenger = (index) => {
         const passenger = passengers[index];
         if (
-            passenger.Pax_type &&
             passenger.Title &&
             passenger.First_Name &&
             passenger.Last_Name &&
@@ -69,35 +83,6 @@ const BookFlights = () => {
         return passengers.reduce((total, passenger) => total + (passenger.price || 0), 0);
     };
 
-    const addPassenger = () => {
-        if (passengers.every((p) => p.saved)) {
-            setPassengers([
-                ...passengers,
-                {
-                    Pax_type: '',
-                    Title: '',
-                    First_Name: '',
-                    Last_Name: '',
-                    Gender: '',
-                    Age: '',
-                    DOB: null,
-                    Passport_Number: '',
-                    Passport_Issuing_Country: '',
-                    Passport_Expiry: null,
-                    Nationality: '',
-                    saved: false,
-                    price: price || 0
-                }
-            ]);
-        } else {
-            toast.warn('Please save all passengers before adding a new one.');
-        }
-    };
-
-    const cancelAddingPassenger = () => {
-        setPassengers(passengers.slice(0, -1));
-    };
-
     const calculateAge = (dob) => {
         if (!dob) return '';
         const today = new Date();
@@ -117,13 +102,13 @@ const BookFlights = () => {
         setPassengers(newPassengers);
     };
 
-    const deletePassenger = (index) => {
-        const newPassengers = passengers.filter((_, i) => i !== index);
-        setPassengers(newPassengers);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (passengers.some(p => !p.saved)) {
+            toast.error('Please save all passenger details before proceeding.');
+            return;
+        }
+
         setSubmitting(true);
         try {
             const response = await axios.post('/api/getairseatmap', {
@@ -135,10 +120,9 @@ const BookFlights = () => {
             });
             setSubmitting(false);
 
-            // Navigate only after confirming seat data is set
             if (response.data) {
                 navigate('/flight/seats', {
-                    state: { passengers, seatData: response.data.data, fareId, searchKey, flightKey:response.data.updatedflightKey, totalPrice: calculateTotalPrice() }
+                    state: { passengers, seatData: response.data.data, fareId, searchKey, flightKey: response.data.updatedflightKey, totalPrice: calculateTotalPrice() }
                 });
             }
         } catch (error) {
@@ -147,11 +131,19 @@ const BookFlights = () => {
         }
     };
 
-    // Enable editing passenger details
     const enableEditing = (index) => {
         const newPassengers = [...passengers];
         newPassengers[index].saved = false;
         setPassengers(newPassengers);
+    };
+
+    const getPaxTypeLabel = (paxType) => {
+        switch (paxType) {
+            case '0': return 'Adult';
+            case '1': return 'Child';
+            case '2': return 'Infant';
+            default: return 'Unknown';
+        }
     };
 
     return (
@@ -159,21 +151,17 @@ const BookFlights = () => {
             <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-3">
                 Back
             </button>
-            <div className="d-flex justify-content-between align-items-center">
-                <h4 className="mb-4">Add Passenger</h4>
-                <button type="button" onClick={addPassenger} className="btn btn-primary">
-                    Add New
-                </button>
-            </div>
+            <h4 className="mb-4">Passenger Details</h4>
 
             <form onSubmit={handleSubmit}>
                 {passengers.map((passenger, index) => (
-                    <div key={index} className="passenger-form mb-2">
+                    <div key={index} className="passenger-form mb-4">
+                        <h5>{`${getPaxTypeLabel(passenger.Pax_type)} ${index + 1}`}</h5>
                         {passenger.saved ? (
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <h5 style={{ marginRight: '8px' }}>
+                                <h6 style={{ marginRight: '8px' }}>
                                     {`${passenger.First_Name} ${passenger.Last_Name}`}
-                                </h5>
+                                </h6>
                                 <button
                                     type="button"
                                     onClick={() => enableEditing(index)}
@@ -181,33 +169,9 @@ const BookFlights = () => {
                                 >
                                     <MdEdit />
                                 </button>
-                                <button
-                                    type="button"
-                                    onClick={() => deletePassenger(index)}
-                                    className="btn btn-danger"
-                                >
-                                    <MdDelete />
-                                </button>
                             </div>
-                        ) : null}
-
-                        {passenger.saved ? null : (
+                        ) : (
                             <div className="row">
-                                <div className="col-md-6 mb-3">
-                                    <label className="form-label">Pax Type</label>
-                                    <select
-                                        name="Pax_type"
-                                        value={passenger.Pax_type}
-                                        onChange={(e) => handlePassengerChange(index, e)}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Type</option>
-                                        <option value="0">Adult</option>
-                                        <option value="1">Child</option>
-                                        <option value="2">Infant</option>
-                                    </select>
-                                </div>
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label">Title</label>
                                     <select
@@ -334,27 +298,18 @@ const BookFlights = () => {
                                             </option>
                                         ))}
                                     </select>
-
                                 </div>
                             </div>
                         )}
 
-                        {passenger.saved ? (
-                            <>
-                            </>
-                        ) : (
-                            <>
-                                <button
-                                    type="button"
-                                    onClick={() => savePassenger(index)}
-                                    className="btn btn-primary m-2"
-                                >
-                                    Save
-                                </button>
-                                <button type="button" onClick={cancelAddingPassenger} className="btn btn-secondary m-2">
-                                    Cancel
-                                </button>
-                            </>
+                        {!passenger.saved && (
+                            <button
+                                type="button"
+                                onClick={() => savePassenger(index)}
+                                className="btn btn-primary mt-2"
+                            >
+                                Save Passenger Details
+                            </button>
                         )}
                     </div>
                 ))}

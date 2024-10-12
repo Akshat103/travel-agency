@@ -17,6 +17,7 @@ import NotFound from '../pages/NotFound';
 import UserDashboard from '../client/pages/UserDashboard.jsx';
 import BookFlights from '../client/components/flightpage/BookFlights.jsx';
 import SeatSelection from '../client/components/flightpage/SeatSelection.jsx';
+import Test from '../client/pages/test.jsx';
 
 const ClientRoutes = () => {
   return (
@@ -36,6 +37,7 @@ const ClientRoutes = () => {
       <Route path="mobile-recharge" element={<ClientLayout><RechargePage /></ClientLayout>} />
       <Route path="dashboard" element={<ClientLayout><UserDashboard /></ClientLayout>} />
       <Route path="success" element={<ClientLayout><SuccessPage /></ClientLayout>} />
+      <Route path="test" element={<Test />} />
       <Route path="*" element={<ClientLayout><NotFound /></ClientLayout>} />
     </Routes>
   );

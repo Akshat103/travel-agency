@@ -662,7 +662,7 @@
 
 .main-navbar .navbar .others-options .option-item .language-option .language-dropdown-menu .dropdown-item:active {
     color: #fff;
-    background-color: var(--main-color);
+    background-color: linear-gradient(90deg, #8c3eea, #d063f0),
 }
 
 .navbar-area.is-sticky {
@@ -673,7 +673,7 @@
     z-index: 99;
     -webkit-box-shadow: 0 2px 28px 0 rgba(0, 0, 0, .06);
     box-shadow: 0 2px 28px 0 rgba(0, 0, 0, .06);
-    background: var(--main-color) !important;
+    background: linear-gradient(90deg, #8c3eea, #d063f0) !important;
     -webkit-animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
     animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
     -webkit-transition: .6s;
@@ -1101,8 +1101,7 @@
 }
 
 .search-overlay .search-overlay-form form button:hover {
-    background-color: var(--main-color);
-    color: #fff
+    background-color: linear-gradient(90deg, #8c3eea, #d063f0)
 }
 
 .search-overlay.search-overlay-active.search-overlay {
@@ -1193,15 +1192,9 @@
     }
 
     .navbar-area {
-        background-color: var(--main-color);
         padding-top: 15px;
         padding-bottom: 15px
     }
-
-    .topbar-area {
-        background-color: var(--main-color);
-    }
-
 
     .main-navbar {
         display: none

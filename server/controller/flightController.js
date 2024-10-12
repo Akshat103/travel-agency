@@ -233,7 +233,7 @@ const bookFlight = async (data, clientId) => {
         }));
 
         if (ssrKeys.some(ssr => ssr.SSR_Key === "")) {
-            return res.status(400).json({ error: "SSR key is missing for one or more passengers." });
+            throw new Error("SSR key is missing for one or more passengers.");
         }
 
         const reqData = {

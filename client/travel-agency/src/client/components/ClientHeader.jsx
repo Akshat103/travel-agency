@@ -58,7 +58,7 @@ const ClientHeader = () => {
       <header className="main_header_arae"
       style={{
         position: isHomePage? 'absolute': 'relative',
-        background: !isHomePage? 'blueviolet': ''
+        background: !isHomePage? 'linear-gradient(90deg, #8c3eea, #d063f0)': ''
       }}
       >
         <div className="topbar-area">

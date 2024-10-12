@@ -11,36 +11,30 @@ const SeatSelection = () => {
         mobile: '',
         email: '',
     });
-    const [passengers, setPassengers] = useState([]);
     const { payment } = usePayment();
     const flightDetails = useSelector((state) => state.flights.flightDetails);
 
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { seatData, totalPrice, flightKey, searchKey, fareId } = location.state;
-
-    useEffect(() => {
-        // Initialize passengers state with the data from location.state
-        setPassengers(location.state.passengers);
-    }, [location.state.passengers]);
+    const { passengers, seatData, totalPrice, flightKey, searchKey, fareId } = location.state;
 
     useEffect(() => {
         const newFilteredSeats = {};
-        passengers.forEach((passenger) => {
-            newFilteredSeats[passenger.First_Name] = seatData.filter(
+        passengers.forEach((passenger, index) => {
+            newFilteredSeats[index] = seatData.filter(
                 (seat) =>
-                    seat.ApplicablePaxTypes.includes(Number(passenger.Pax_type)) && seat.Total_Amount > 0
+                    seat.ApplicablePaxTypes.includes(Number(passenger.Pax_type))
             );
         });
         setFilteredSeats(newFilteredSeats);
     }, [passengers, seatData]);
 
     // Handle seat selection for each passenger
-    const handleSeatSelection = (passengerFirstName, seat) => {
+    const handleSeatSelection = (passengerIndex, seat) => {
         setSelectedSeats((prev) => ({
             ...prev,
-            [passengerFirstName]: {
+            [passengerIndex]: {
                 ...seat,
                 SSR_Key: seat.SSR_Key
             }
@@ -48,8 +42,8 @@ const SeatSelection = () => {
 
         // Update the passengers array with the selected seat's SSR_Key
         setPassengers((prevPassengers) =>
-            prevPassengers.map((passenger) =>
-                passenger.First_Name === passengerFirstName
+            prevPassengers.map((passenger, index) =>
+                index === passengerIndex
                     ? { ...passenger, SSR_Key: seat.SSR_Key }
                     : passenger
             )
@@ -100,19 +94,19 @@ const SeatSelection = () => {
             <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-3">
                 Back
             </button>
-            {passengers.map((passenger) => (
-                <Card key={passenger.First_Name} className="mb-3">
+            {passengers.map((passenger, index) => (
+                <Card key={index} className="mb-3">
                     <Card.Body>
                         <Card.Title>{`${passenger.First_Name} ${passenger.Last_Name}`}</Card.Title>
                         <Form.Group>
                             <Form.Label>Select a seat:</Form.Label>
                             <Form.Control
                                 as="select"
-                                onChange={(e) => handleSeatSelection(passenger.First_Name, JSON.parse(e.target.value))}
-                                value={selectedSeats[passenger.First_Name] ? JSON.stringify(selectedSeats[passenger.First_Name]) : ''}
+                                onChange={(e) => handleSeatSelection(index, JSON.parse(e.target.value))}
+                                value={selectedSeats[index] ? JSON.stringify(selectedSeats[index]) : ''}
                             >
                                 <option value="">Choose a seat</option>
-                                {filteredSeats[passenger.First_Name]?.map((seat) => (
+                                {filteredSeats[index]?.map((seat) => (
                                     <option key={seat.SSR_Key} value={JSON.stringify(seat)}>
                                         {seat.SSR_TypeDesc} - {seat.Currency_Code} {seat.Total_Amount}
                                     </option>

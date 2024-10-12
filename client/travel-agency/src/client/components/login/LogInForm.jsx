@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
 
 const LogInForm = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +24,7 @@ const LogInForm = () => {
     try {
       const response = await axios.post('/api/login', formData);
       const { userType } = response.data;
-      localStorage.setItem('userType', userType); 
+      localStorage.setItem('userType', userType);
       navigate('/');
       toast.success('Login successful!');
     } catch (error) {
@@ -30,53 +32,66 @@ const LogInForm = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    // Implement Google login logic here
+    toast.info('Google login not implemented yet.');
+  };
+
   return (
-    <section id="common_author_area" className="section_padding">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-8 offset-lg-2">
-            <div className="common_author_boxed">
-              <div className="common_author_heading">
-                <h3>Login to your account</h3>
+    <Container className="py-5">
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Card className="shadow-sm">
+            <Card.Body className="p-5">
+              <h4 className="text-center mb-4">Welcome Back!</h4>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                  <Form.Label>
+                    <FaEnvelope className="me-2" />
+                    Email or Mobile
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="emailOrMobile"
+                    value={formData.emailOrMobile}
+                    onChange={handleChange}
+                    placeholder="Enter email or mobile number"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>
+                    <FaLock className="me-2" />
+                    Password
+                  </Form.Label>
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Enter password"
+                    required
+                  />
+                </Form.Group>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <Link to="/forgot-password" className="text-primary">Forgot password?</Link>
+                </div>
+                <Button type="submit" className="w-100 mb-3" style={{background:"#8c3eea", borderColor:"#8c3eea"}}>
+                  Log in
+                </Button>
+                <Button variant="outline-secondary" className="w-100" onClick={handleGoogleLogin}>
+                  <FaGoogle className="me-2" />
+                  Login with Google
+                </Button>
+              </Form>
+              <div className="text-center mt-3">
+                <p>Don't have an account? <Link to="/register">Register now</Link></p>
               </div>
-              <div className="common_author_form">
-                <form id="main_author_form" onSubmit={handleSubmit}>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Enter mobile number or email"
-                      name="emailOrMobile"
-                      value={formData.emailOrMobile}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Enter password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                    />
-                    <Link to="/forgot-password" className="forgot-password-link">Forgot password?</Link>
-                  </div>
-                  <div className="common_form_submit">
-                    <button className="btn btn_theme btn_md" type="submit">Log in</button>
-                  </div>
-                  <div className="have_acount_area">
-                    <p>Don't have an account? <Link to="/register">Register now</Link></p>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

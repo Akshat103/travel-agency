@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import google from '/img/icon/google.png';
-import facebook from '/img/icon/facebook.png';
-import twitter from '/img/icon/twitter.png';
 import axios from 'axios';
+import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { FaUser, FaMobile, FaEnvelope, FaVenusMars, FaBirthdayCake, FaMapMarkerAlt, FaLock, FaGoogle, FaFacebook, FaTwitter } from 'react-icons/fa';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -41,138 +40,134 @@ const RegisterForm = () => {
   };
 
   return (
-    <section id="common_author_area" className="section_padding">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-8 offset-lg-2">
-            <div className="common_author_boxed">
-              <div className="common_author_heading">
-                <h3>Register account</h3>
-              </div>
-                <form id="main_author_form" onSubmit={handleSubmit}>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Enter full name*"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      onBlur={() => setFormData(prev => ({
-                        ...prev,
-                        name: prev.name.replace(/\b\w/g, char => char.toUpperCase()) // Convert to Sentence Case
-                      }))}
-                      required
-                    />
+    <Container className="py-5 justify-content-center">
+      <Row className="justify-content-center">
+        <Col md={10}>
+          <Card className="shadow-sm">
+            <Card.Body className="p-5">
+              <h4 className="text-center mb-4">Register Account</h4>
+              <Form onSubmit={handleSubmit}>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label><FaUser className="me-2" />Full Name*</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        onBlur={() => setFormData(prev => ({
+                          ...prev,
+                          name: prev.name.replace(/\b\w/g, char => char.toUpperCase())
+                        }))}
+                        placeholder="Enter full name"
+                        required
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label><FaMobile className="me-2" />Mobile Number*</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="mobileNumber"
+                        value={formData.mobileNumber}
+                        onChange={handleChange}
+                        placeholder="Enter mobile number"
+                        required
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label><FaEnvelope className="me-2" />Email Address</Form.Label>
+                      <Form.Control
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="Enter email address"
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label><FaVenusMars className="me-2" />Gender*</Form.Label>
+                      <Form.Select
+                        name="gender"
+                        value={formData.gender}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label><FaBirthdayCake className="me-2" />Date of Birth*</Form.Label>
+                      <Form.Control
+                        type="date"
+                        name="dateOfBirth"
+                        value={formData.dateOfBirth}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label><FaMapMarkerAlt className="me-2" />State*</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleChange}
+                        onBlur={() => setFormData(prev => ({
+                          ...prev,
+                          state: prev.state.replace(/\b\w/g, char => char.toUpperCase())
+                        }))}
+                        placeholder="Enter state"
+                        required
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label><FaLock className="me-2" />Password*</Form.Label>
+                      <Form.Control
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="Enter password"
+                        required
+                      />
+                    </Form.Group>
+
+                  </Col>
+
+                </Row>
+                <div className="d-flex justify-content-center">
+                  <Button variant="primary" type="submit" className="w-50 mb-3">
+                    Register
+                  </Button>
+                </div>
+
+                <div className="text-center mt-3">
+                  <p>Or register with:</p>
+                  <div className="d-flex justify-content-center mb-3">
+                    <Button variant="outline-secondary" className="mx-2">
+                      <FaGoogle /> Google
+                    </Button>
                   </div>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Enter mobile number*"
-                      name="mobileNumber"
-                      value={formData.mobileNumber}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="Enter your email address"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <select
-                      className="form-control"
-                      name="gender"
-                      value={formData.gender}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="" disabled>Select gender*</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="date"
-                      className="form-control"
-                      placeholder="Date of Birth*"
-                      name="dateOfBirth"
-                      value={formData.dateOfBirth}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="State*"
-                      name="state"
-                      value={formData.state}
-                      onChange={handleChange}
-                      onBlur={() => setFormData(prev => ({
-                        ...prev,
-                        state: prev.state.replace(/\b\w/g, char => char.toUpperCase()) // Convert to Sentence Case
-                      }))}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Password*"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="common_form_submit">
-                    <button className="btn btn_theme btn_md" type="submit">
-                      Register
-                    </button>
-                  </div>
-                  <div className="have_acount_area other_author_option">
-                    <div className="line_or">
-                      <span>or</span>
-                    </div>
-                    <ul>
-                      <li>
-                        <a href="#!">
-                          <img src={google} alt="Google icon" />
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!">
-                          <img src={facebook} alt="Facebook icon" />
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!">
-                          <img src={twitter} alt="Twitter icon" />
-                        </a>
-                      </li>
-                    </ul>
-                    <p>
-                      Already have an account? <Link to="/login">Log in now</Link>
-                    </p>
-                  </div>
-                </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+                  <p>Already have an account? <Link to="/login">Log in now</Link></p>
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

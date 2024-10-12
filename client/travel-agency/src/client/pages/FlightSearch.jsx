@@ -36,7 +36,6 @@ const FlightSearch = () => {
         const fieldValue = checkField(flightDetails, field);
         if (fieldValue === null || fieldValue === '') {
           toast.dismiss(toastId);
-          toast.error('Please fill in all required fields.');
           setIsSearching(false);
           return;
         }
@@ -70,9 +69,17 @@ const FlightSearch = () => {
       <div className="container-fluid">
         <div className="row p-2">
           <div className="row">
-            <div className="col-12 text-center mb-2">
-              <h3 className="fw-bold text-white px-1 py-1 rounded" style={{ background: '#8c3eea' }}>
-                Get Your Flights
+            <div className="col-12 text-center">
+              <h3
+                className="fw-bold text-white p-4 rounded"
+                style={{
+                  background: 'linear-gradient(90deg, #8c3eea, #d063f0)',
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+                  borderRadius: '10px',
+                  fontSize: '1.2rem'
+                }}
+              >
+                Soar to New Heights: Unbeatable Flight Deals Await!
               </h3>
             </div>
           </div>

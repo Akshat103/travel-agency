@@ -23,7 +23,7 @@ const FlightDetails = () => {
             <h4 className="mt-2 mb-2">Fare Details</h4>
             {segment.Fares.map((fare, idx) => (
                 <div key={idx} className="card mb-3">
-                    <div className="card-body">
+                    <div className="card-body  d-flex gap-2 justify-content-evenly align-item-center">
                         <h5 className="card-title">Fare Type: {fare.ProductClass}</h5>
                         <p><strong>{Math.ceil(fare.Seats_Available)}</strong> Seats</p>
                         <button onClick={() => bookFare(fare.Fare_Id, segment.Flight_Key, Math.ceil(fare.FareDetails[0].Total_Amount))} className="btn btn-outline-success">
