@@ -11,4 +11,6 @@ router.post('/flightsearch', authMiddleware, flightController.searchFlights);
 
 router.post('/getairseatmap', flightController.getAirSeatMap);
 
+router.post('/bookflight', flightController.bookFlight);
+
 module.exports = router;

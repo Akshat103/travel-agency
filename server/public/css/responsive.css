@@ -23,7 +23,6 @@
 
     .flight_Search_boxed input {
         font-size: 18px;
-        width: 70%;
     }
 
     .dropdown_passenger_area button {
@@ -72,7 +71,7 @@
         content: " ";
     }
 
-    .amazing_end_bottom .amazing_tour_box .amazing_tour_box_content .rating_outof i{
+    .amazing_end_bottom .amazing_tour_box .amazing_tour_box_content .rating_outof i {
         font-size: 10px;
     }
 
@@ -94,77 +93,82 @@
         padding: 74px 26px;
         gap: 8px;
     }
+
     .countre_seven_item h3 {
         font-size: 36px;
         font-weight: 500;
     }
 
-    .news_admin ::before{
+    .news_admin ::before {
         height: 0px;
-        }
+    }
 
-        .home_seven_news_content h3 a {
-            font-size: 20px;
-        }
-        .padding_img{
-            margin-bottom: -20px;
-        }
+    .home_seven_news_content h3 a {
+        font-size: 20px;
+    }
 
-        .banner_nine_text h1 {
-            font-size: 163px;
-        }
+    .padding_img {
+        margin-bottom: -20px;
+    }
 
-        .subcribe_form_area {
-            padding: 100px 119px 100px 30px;
-        }
+    .banner_nine_text h1 {
+        font-size: 163px;
+    }
 
-        .theme_search_form_two{
-            width: 100%;
-            margin: auto;
-        }
+    .subcribe_form_area {
+        padding: 100px 119px 100px 30px;
+    }
 
-        .banner_ten_text h1 {
-            font-size: 40px;
-            line-height: 55px;
-        }
+    .theme_search_form_two {
+        width: 100%;
+        margin: auto;
+    }
 
-        .banner_ten_slider_item {
-            width: 100%;
-            margin: auto;
-        }
-        .question_ten_wrapper {
-            padding: 30px 0;
-        }
+    .banner_ten_text h1 {
+        font-size: 40px;
+        line-height: 55px;
+    }
 
-        .banner_eleven_text h1 {
-            font-size: 70px;
-            line-height: 96px;
-        }
-        .slider-slide-btn .owl-carousel .owl-nav button.owl-prev {
-            position: absolute;
-            top: 64%;
-            left: 30%;
-        }
-        .slider-slide-btn .owl-carousel .owl-nav button.owl-next {
-            position: absolute;
-            top: 64%;
-            right: 30%;
-        }
+    .banner_ten_slider_item {
+        width: 100%;
+        margin: auto;
+    }
 
-        .banner_thirteen_text h1 {
-            font-size: 120px;
-            left: 17%;
-        }
+    .question_ten_wrapper {
+        padding: 30px 0;
+    }
 
-        .news_card_thirteen_top {
-            top: -71px;
-            right: 0px;
-        }
+    .banner_eleven_text h1 {
+        font-size: 70px;
+        line-height: 96px;
+    }
 
-        .banner_fourteen_text h1 span::after {
-            right: 15%;
-            bottom: 24px;
-        }
+    .slider-slide-btn .owl-carousel .owl-nav button.owl-prev {
+        position: absolute;
+        top: 64%;
+        left: 30%;
+    }
+
+    .slider-slide-btn .owl-carousel .owl-nav button.owl-next {
+        position: absolute;
+        top: 64%;
+        right: 30%;
+    }
+
+    .banner_thirteen_text h1 {
+        font-size: 120px;
+        left: 17%;
+    }
+
+    .news_card_thirteen_top {
+        top: -71px;
+        right: 0px;
+    }
+
+    .banner_fourteen_text h1 span::after {
+        right: 15%;
+        bottom: 24px;
+    }
 }
 
 @media (max-width: 1199px) {
@@ -273,30 +277,31 @@
         padding: 18px 0;
     }
 
-    .hotel_img, .flight_img {
+    .hotel_img,
+    .flight_img {
         width: 50%;
     }
 
     .navbar_color_black .main-navbar .navbar .navbar-nav .nav-item a {
         color: var(--white-color);
     }
-    
+
     .navbar_color_black .topbar-list li a {
         color: var(--white-color);
     }
-    
+
     .navbar_color_black .topbar-list li i {
         color: var(--white-color);
     }
-    
+
     .navbar_color_black .topbar-others-options li a {
         color: var(--white-color);
     }
-    
+
     .navbar_color_black .topbar-others-options li .language-option button {
         color: var(--white-color);
     }
-    
+
     #top_place .section_heading_five h2::before {
         left: 45%;
     }
@@ -310,12 +315,14 @@
     .benefit_list:last-child {
         padding-bottom: 0;
     }
+
     .trending_destinations_wrapper {
         justify-content: center;
         gap: 20px;
     }
+
     .amazing_end_bottom .amazing_tour_box .amazing_tour_box_content .amazing_tour_content h5 {
-       display: none;
+        display: none;
     }
 
     .banner_seven_text h1 {
@@ -330,6 +337,7 @@
     .banner_seven_text p {
         width: 100%;
     }
+
     .home_seven_video_area {
         position: absolute;
         bottom: 34%;
@@ -343,19 +351,23 @@
     .banner_nine_text h1 {
         font-size: 120px;
     }
+
     #home_nine_banner {
         padding: 160px 0px 240px 0px;
     }
+
     .subcribe_form_area {
         padding: 60px 30px 60px 30px;
     }
 
     .banner_ten_slider_item {
-       padding: 128px 0px 230px 0px;
+        padding: 128px 0px 230px 0px;
     }
+
     .banner_ten_button_style.owl-theme .owl-nav {
         bottom: 29%;
     }
+
     .banner_ten_text {
         width: 80%;
     }
@@ -368,23 +380,30 @@
     .about_mission_vission_item {
         display: block;
     }
-    .about_mission_icon, .about_vission_icon {
+
+    .about_mission_icon,
+    .about_vission_icon {
         width: 30%;
     }
+
     .about_experience h3 {
         padding-right: 0px;
     }
-    .about_mission_area{
+
+    .about_mission_area {
         margin-bottom: 16px;
     }
+
     .testimonial_eleven_text p {
         font-size: 20px;
         line-height: 32px;
     }
+
     .banner_twelve_text h1 {
         font-size: 60px;
         line-height: 100px;
     }
+
     .banner_twelve_text h1 span {
         font-size: 60px;
     }
@@ -392,9 +411,11 @@
     #banner_twelve {
         padding: 150px 0px 250px 0px;
     }
-    .travel_service_content p{
+
+    .travel_service_content p {
         display: none;
     }
+
     .about_twelve_list_item {
         display: block;
     }
@@ -409,6 +430,7 @@
     .discount_timer_text {
         width: 100%;
     }
+
     .testimonial_thirteen_text p {
         font-size: 20px;
         line-height: 36px;
@@ -515,10 +537,6 @@
         padding-top: 30px;
     }
 
-    .flight_Search_boxed {
-        margin-bottom: 30px;
-    }
-
     .imagination_boxed {
         padding-top: 30px;
     }
@@ -622,7 +640,8 @@
         padding-bottom: 68px;
     }
 
-    .hotel_img, .flight_img {
+    .hotel_img,
+    .flight_img {
         width: 30%;
     }
 
@@ -630,23 +649,24 @@
         padding: 70px 0px 0px 0;
     }
 
-    #our_partners{
+    #our_partners {
         padding: 60px 0;
     }
 
-    .why_choose_andtour_card{
+    .why_choose_andtour_card {
         margin-bottom: 30px;
         text-align: center;
     }
 
-    .discount_img{
+    .discount_img {
         margin-top: 30px;
     }
+
     .discount_left_area {
         padding: 0px;
     }
 
-    .amazing_end_bottom .amazing_tour_box .amazing_tour_box_content .rating_outof i{
+    .amazing_end_bottom .amazing_tour_box .amazing_tour_box_content .rating_outof i {
         font-size: 14px;
     }
 
@@ -712,51 +732,65 @@
         margin-bottom: 30px;
     }
 
-    .news_card_nine_wrapper{
+    .news_card_nine_wrapper {
         margin-bottom: 30px;
     }
+
     .banner_ten_text {
         width: 90%;
     }
 
-    .visa_service_card_wrapper{
+    .visa_service_card_wrapper {
         margin-bottom: 30px;
     }
 
     .home_ten_about_left {
         margin-bottom: 30px;
     }
+
     .check_form_img {
         margin-top: 30px;
     }
+
     .question_img img {
         display: none;
     }
-    .banner_eleven_text{
+
+    .banner_eleven_text {
         text-align: center;
     }
+
     .banner_eleven_text h1 {
         font-size: 50px;
         line-height: 76px;
     }
 
-    .home_eleven_video_area{display: none;}
+    .home_eleven_video_area {
+        display: none;
+    }
+
     .banner_eleven_text p {
         width: 100%;
     }
-    .home_ten_about_right{
+
+    .home_ten_about_right {
         margin-top: 30px;
     }
-    .about_mission_icon, .about_vission_icon {
+
+    .about_mission_icon,
+    .about_vission_icon {
         width: 15%;
     }
+
     .home_eleven_service_boxed {
         text-align: center;
     }
+
     .section_heading_eight {
         padding-bottom: 30px;
         text-align: center;
     }
+
     .section_heading_eight h2::after {
         position: absolute;
         content: " ";
@@ -768,40 +802,45 @@
     }
 
     .gallery_eleven_boxed_area {
-       display: block;
+        display: block;
     }
-    .gallery_eleven_boxed_wrapper{
+
+    .gallery_eleven_boxed_wrapper {
         display: flex;
         gap: 30px;
     }
 
-    .news_card_eleven_wrapper{
+    .news_card_eleven_wrapper {
         margin-bottom: 30px;
     }
 
-    .travel_service_content p{
+    .travel_service_content p {
         display: block;
     }
+
     .travael_serevice_twelve_wrapper {
         margin-bottom: 30px;
     }
-    .home_twelve_about_right{
+
+    .home_twelve_about_right {
         margin-top: 30px;
     }
+
     .about_twelve_list_item {
         display: flex;
         align-items: center;
         gap: 100px;
     }
-    .faq_img_twelve img{
-        position: initial;
-     }
 
-     .certification_twelve_wrapper {
+    .faq_img_twelve img {
+        position: initial;
+    }
+
+    .certification_twelve_wrapper {
         margin-bottom: 30px;
     }
 
-    .news_card_twelve_wrapper{
+    .news_card_twelve_wrapper {
         margin-bottom: 30px;
     }
 
@@ -812,21 +851,26 @@
     #home_ten_team_area {
         padding: 100px 0;
     }
+
     .banner_thirteen_text h1 {
         position: initial;
         font-size: 90px;
         line-height: 120px;
     }
+
     .banner_thirteen_text h3 {
         margin-bottom: 0;
     }
+
     .section_heading_thirteen h2::after {
         left: 36%;
     }
+
     .destination_card_thirteen {
         margin-bottom: 30px;
     }
-    .discount_timer_text h2{
+
+    .discount_timer_text h2 {
         font-size: 28px;
         line-height: 30px;
     }
@@ -849,10 +893,12 @@
     .news_card_thirteen {
         margin-bottom: 30px;
     }
+
     .banner_fourteen_text h1 {
         font-size: 60px;
         line-height: 80px;
     }
+
     .banner_fourteen_text h1 span::after {
         width: 300px;
     }
@@ -861,9 +907,10 @@
         margin-bottom: 30px;
     }
 
-    .home_fourteen_about_right{
+    .home_fourteen_about_right {
         margin-bottom: 30px;
     }
+
     .special_offer_fourteen_wrapper {
         margin-bottom: 30px;
     }
@@ -1025,6 +1072,7 @@
     #theme_search_form {
         margin-top: 50px;
     }
+
     #theme_search_form_eleven {
         margin-top: 50px;
     }
@@ -1105,22 +1153,24 @@
     .home_six_section_heading h5 {
         margin-bottom: 8px;
     }
+
     .phone_img {
-      display: none;
+        display: none;
     }
 
-    .partner_logo{
+    .partner_logo {
         text-align: center;
     }
 
-    .hotel_img, .flight_img {
+    .hotel_img,
+    .flight_img {
         width: 45%;
     }
 
     #Nearby_destination .button_style_top_left.owl-theme .owl-nav {
         margin-top: 25px;
         position: initial;
-       
+
     }
 
     .section_heading_seven h2 {
@@ -1132,7 +1182,7 @@
         line-height: 50px;
     }
 
-   
+
     #home_seven_banner {
         padding: 100px 0px 162px 0px;
     }
@@ -1167,6 +1217,7 @@
     .section_heading_eight h2 {
         font-size: 30px;
     }
+
     .section_heading_eight h5 {
         padding-bottom: 10px;
     }
@@ -1183,7 +1234,7 @@
     }
 
     .news_card_nine_heading h3 {
-       font-size: 20px;
+        font-size: 20px;
     }
 
     .banner_ten_slider_item {
@@ -1198,18 +1249,20 @@
     .check_form_img {
         display: none;
     }
+
     #check_form_area {
-       padding-top: 40px;
+        padding-top: 40px;
     }
 
-    .question_ten_text h2{
+    .question_ten_text h2 {
         font-size: 30px;
     }
 
-    .home_ten_section_heading h2{
+    .home_ten_section_heading h2 {
         font-size: 30px;
         line-height: 44px;
     }
+
     .check_form_head {
         width: 100%;
     }
@@ -1217,65 +1270,78 @@
     .about_ten_list_item {
         display: block;
     }
+
     .banner_eleven_text h1 {
         font-size: 36px;
         line-height: 60px;
     }
+
     #home_eleven_banner {
         padding: 100px 0px 101px 0px;
     }
-    .about_mission_icon, .about_vission_icon {
+
+    .about_mission_icon,
+    .about_vission_icon {
         width: 30%;
     }
 
-    .gallery_eleven_boxed_wrapper{
+    .gallery_eleven_boxed_wrapper {
         display: block;
     }
+
     .testimonial_eleven_text p {
         font-size: 16px;
         line-height: 32px;
     }
+
     .slider-slide-btn .owl-carousel .owl-nav button.owl-prev {
         position: absolute;
         top: 64%;
         left: 24%;
     }
+
     .slider-slide-btn .owl-carousel .owl-nav button.owl-next {
         position: absolute;
         top: 64%;
         right: 25%;
     }
+
     .banner_twelve_text h1 {
         font-size: 36px;
         line-height: 70px;
     }
-    .banner_twelve_text h1 span{
+
+    .banner_twelve_text h1 span {
         font-size: 36px;
     }
 
     #banner_twelve {
         padding: 120px 0px 120px 0px;
     }
+
     .about_twelve_list_item {
         display: block;
     }
 
-    .section_heading_twelve h2{
+    .section_heading_twelve h2 {
         font-size: 30px;
         line-height: 40px;
     }
+
     .banner_thirteen_text h1 {
         font-size: 56px;
         line-height: 90px;
     }
+
     #home_thirteen_banner {
         padding: 131px 0px 140px 0px;
     }
 
-    .section_heading_thirteen h2{
+    .section_heading_thirteen h2 {
         font-size: 30px;
         line-height: 40px;
     }
+
     .section_heading_thirteen h2::after {
         left: 30%;
     }
@@ -1284,6 +1350,7 @@
         line-height: 46px;
         padding: 12px 0;
     }
+
     .counter_thirteen_area {
         width: 50%;
     }
@@ -1316,7 +1383,7 @@
         margin-bottom: 30px;
     }
 
-    .testimonial-text p{
+    .testimonial-text p {
         font-size: 16px;
     }
 }
@@ -1547,11 +1614,13 @@
         position: absolute;
         content: " ";
     }
+
     .about_six_list_item {
         display: block;
     }
 
-    .couple_tour h2, .group_tour h2 {
+    .couple_tour h2,
+    .group_tour h2 {
         font-size: 28px;
         padding-bottom: 12px;
     }
@@ -1586,11 +1655,12 @@
     }
 
     .banner_fourteen_text h1 span::after {
-       display: none;
+        display: none;
     }
-.tour_category_fourteen_card{
-    margin-bottom: 30px;
-}
+
+    .tour_category_fourteen_card {
+        margin-bottom: 30px;
+    }
 
 }
 
@@ -1681,11 +1751,13 @@
         font-weight: bold;
         padding: 0px 0;
     }
+
     .slider-slide-btn .owl-carousel .owl-nav button.owl-prev {
         position: absolute;
         top: 68%;
         left: 18%;
     }
+
     .slider-slide-btn .owl-carousel .owl-nav button.owl-next {
         position: absolute;
         top: 68%;
@@ -1696,17 +1768,19 @@
         font-size: 30px;
         line-height: 70px;
     }
-    .banner_twelve_text h1 span{
+
+    .banner_twelve_text h1 span {
         font-size: 30px;
     }
 
     #banner_twelve {
         padding: 80px 0px 80px 0px;
     }
+
     .banner_thirteen_text h1 {
         font-size: 44px;
         line-height: 68px;
-    }    
+    }
 
     .counter_thirteen_area {
         width: 100%;

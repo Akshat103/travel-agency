@@ -1,12 +1,15 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaPlaneDeparture, FaPlaneArrival, FaCalendarDay, FaMoneyBillWave, FaSuitcase, FaClock } from 'react-icons/fa';
-import { ArrowLeft, CreditCard } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 const FlightDetails = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { segment, searchKey } = location.state || {};
+    const { segment } = location.state || {};
+
+    const bookFare = (fareId, flightKey, price) => {
+        navigate('/book-flight', { state: { fareId, flightKey, reprice:segment.Repriced, price } });
+    }
 
     if (!segment) {
         return <div>Flight not found</div>;
@@ -22,8 +25,10 @@ const FlightDetails = () => {
                 <div key={idx} className="card mb-3">
                     <div className="card-body">
                         <h5 className="card-title">Fare Type: {fare.ProductClass}</h5>
-                        <p><CreditCard className="me-2 text-success" /> <strong>Total Amount:</strong> {fare.FareDetails[0].Total_Amount} {fare.FareDetails[0].Currency_Code}</p>
-                        <p><FaSuitcase className="me-2 text-warning" /> <strong>Baggage Allowance:</strong> {fare.FareDetails[0].Free_Baggage.Check_In_Baggage} (Check-in), {fare.FareDetails[0].Free_Baggage.Hand_Baggage} (Hand)</p>
+                        <p><strong>{Math.ceil(fare.Seats_Available)}</strong> Seats</p>
+                        <button onClick={() => bookFare(fare.Fare_Id, segment.Flight_Key, Math.ceil(fare.FareDetails[0].Total_Amount))} className="btn btn-outline-success">
+                            {Math.ceil(fare.FareDetails[0].Total_Amount)} {fare.FareDetails[0].Currency_Code}
+                        </button>
                     </div>
                 </div>
             ))}

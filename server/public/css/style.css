@@ -183,14 +183,6 @@ section {
     position: relative;
 }
 
-.form-control {
-    height: 50px;
-    border: none;
-    box-shadow: 0px 1px 13px 0px #0000000d;
-    padding: 10px 22px;
-    font-size: 16px;
-}
-
 .form-control:focus {
     color: var(--heading-color);
     background-color: #fff;
@@ -596,7 +588,6 @@ section {
     padding: 10px 10px 10px 20px;
     border-radius: 10px;
     position: relative;
-
 }
 
 .plan_icon_posation {
@@ -4013,13 +4004,6 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .edit_person p {
     color: var(--main-color);
     cursor: pointer;
-}
-
-.form-control {
-    height: 55px;
-    border: 2px dashed #dddddd75;
-    padding: 10px 22px;
-    font-size: 16px;
 }
 
 .bg_input {

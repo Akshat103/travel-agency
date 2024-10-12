@@ -1,40 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-export const searchFlights = createAsyncThunk(
-  'flights/searchFlights',
-  async (flightDetails, { rejectWithValue }) => {
-    
-    const requiredFields = [
-      'Origin.AIRPORTCODE', 
-      'Origin.COUNTRYCODE', 
-      'Destination.AIRPORTCODE', 
-      'Destination.COUNTRYCODE', 
-      'TravelDate', 
-      'Booking_Type', 
-      'Adult_Count', 
-      'Class_Of_Travel'
-    ];
-    
-    const checkField = (obj, fieldPath) => fieldPath.split('.').reduce((o, key) => (o !== undefined && o[key] !== undefined) ? o[key] : null, obj);
-    
-    for (const field of requiredFields) {
-      const fieldValue = checkField(flightDetails, field);
-      if (fieldValue === null || fieldValue === '') {
-        return;
-      }
-    }
-
-    try {
-      const response = await axios.post('/api/flightsearch', { requestdata: flightDetails });
-      return response.data.data[0].Flights;
-    } catch (error) {
-      return rejectWithValue('Error searching flights');
-    }
-  }
-);
-
-
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   flightDetails: {
@@ -51,6 +15,7 @@ const initialState = {
   searchResult: null,
   loading: false,
   error: null,
+  searchKey:null
 };
 
 const flightSlice = createSlice({
@@ -60,24 +25,15 @@ const flightSlice = createSlice({
     updateFlightDetails: (state, action) => {
       state.flightDetails = { ...state.flightDetails, ...action.payload };
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(searchFlights.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(searchFlights.fulfilled, (state, action) => {
-        state.loading = false;
-        state.searchResult = action.payload;
-      })
-      .addCase(searchFlights.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
+    updateSearchResult: (state, action) => {
+      state.searchResult = action.payload;
+    },
+    updateSearchKey: (state, action) => {
+      state.searchKey = action.payload;
+    },
   },
 });
 
-export const { updateFlightDetails } = flightSlice.actions;
+export const { updateFlightDetails, updateSearchResult, updateSearchKey } = flightSlice.actions;
 
 export default flightSlice.reducer;

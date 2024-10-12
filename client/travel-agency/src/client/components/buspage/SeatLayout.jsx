@@ -17,7 +17,6 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
         idNumber: '',
         address: ''
     });
-    const [showContactForm, setShowContactForm] = useState(false);
     const [passengers, setPassengers] = useState([]);
     const [currentPassenger, setCurrentPassenger] = useState({
         passengertitle: '',
@@ -26,7 +25,6 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
         seat: null,
     });
     const [totalAmount, setTotalAmount] = useState(0);
-    const [showPassengerForm, setShowPassengerForm] = useState(false);
     const [editingIndex, setEditingIndex] = useState(null);
     const [availableSeats, setAvailableSeats] = useState([]);
     const [showPassengerInputs, setShowPassengerInputs] = useState(false);

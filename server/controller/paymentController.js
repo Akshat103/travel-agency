@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const OrderSchema = require('../models/Order');
 const { rechargeRequest } = require('./rechargeController');
 const { busSeatbook } = require('./busController');
+const { bookFlight } = require('./flightController');
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -87,6 +88,13 @@ module.exports.verifyOrder = async (req, res) => {
             return res.status(201).json({
                 success: true,
                 message: "Bus booking done successfully.",
+                data: response
+            });
+        } else if (serviceType === 'bookflight') {
+            const response = await bookFlight(updatedOrder.serviceDetails, clientId);
+            return res.status(201).json({
+                success: true,
+                message: "Flight booking done successfully.",
                 data: response
             });
         }

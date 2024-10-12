@@ -1,21 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { FaPlaneDeparture, FaPlaneArrival } from 'react-icons/fa';
 import { Clock10Icon } from 'lucide-react';
 import NoFlights from './NoFlights';
+import { useSelector } from 'react-redux';
 
-const ListFlights = ({ flights, isSearching }) => {
-    const [displayedSegments, setDisplayedSegments] = React.useState([]);
+const ListFlights = ({ isSearching }) => {
+    const flights = useSelector((state) => state.flights.searchResult);
+    const [displayedSegments, setDisplayedSegments] = useState([]);
     const flightsPerPage = 6;
     const navigate = useNavigate();
     const containerRef = useRef(null);
-
-    const extractTime = (arrivalDateTime) => {
-        const parts = arrivalDateTime.split(' ');
-        return parts[1];
-    };
 
     const handleViewDetails = (segment) => {
         navigate('/flight-details', { state: { segment } });
@@ -28,6 +25,8 @@ const ListFlights = ({ flights, isSearching }) => {
                     ...segment,
                     TravelDate: flight.TravelDate,
                     Fares: flight.Fares,
+                    Flight_Key: flight.Flight_Key,
+                    Repriced:flight.Repriced
                 }))
             );
             setDisplayedSegments(allSegments.slice(0, flightsPerPage));
@@ -76,9 +75,17 @@ const ListFlights = ({ flights, isSearching }) => {
     if (!flights || flights.length === 0) {
         return (
             <div className="p-3">
-                <NoFlights/>
+                <NoFlights />
             </div>
         );
+    }
+
+    function convertDuration(duration) {
+        const [hours, minutes] = duration.split(':');
+        const h = parseInt(hours, 10);
+        const m = parseInt(minutes, 10);
+
+        return `${h}h ${m}m`;
     }
 
     return (
@@ -88,40 +95,44 @@ const ListFlights = ({ flights, isSearching }) => {
                     <div key={index} className="col-12 mb-3">
                         <div className="card h-100 shadow-sm">
                             <div className="card-body">
-                                <h5 className="card-title mb-3"><strong>{segment.Airline_Name}</strong></h5>
+                                <h5 className="card-title mb-3"><strong>{segment.Airline_Name}</strong> {segment.Airline_Code}-{segment.Flight_Number}</h5>
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-5">
                                         <div className="inner-div">
                                             <div>
-                                                <FaPlaneDeparture className="me-2 text-primary" /> <strong>From:</strong> {segment.Origin_City} ({segment.Origin})
+                                                <FaPlaneDeparture className="me-2 text-primary" />{segment.Origin_City} ({segment.Origin})
                                             </div>
                                             <div>
-                                                <Clock10Icon className="me-2 text-primary" /> {extractTime(segment.Arrival_DateTime)}
+                                                <Clock10Icon className="me-2 text-primary" /> {segment.Departure_DateTime}
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-2">
                                         <div className="inner-div">
-                                            <div>
-                                                <FaPlaneArrival className="me-2 text-primary" /> <strong>To:</strong> {segment.Destination_City} ({segment.Destination})
-                                            </div>
-                                            <div>
-                                                <Clock10Icon className="me-2 text-primary" /> {extractTime(segment.Departure_DateTime)}
+                                            <div className="text-decoration-underline">
+                                                {convertDuration(segment.Duration)}
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="row mt-2">
-                                    <div className="col-md-6 d-flex justify-content-start">
-                                        <strong>₹{segment.Fares[0].FareDetails[0].Total_Amount}</strong>
-                                    </div>
-                                    <div className="col-md-6 d-flex justify-content-end">
-                                        <button
-                                            onClick={() => handleViewDetails(segment)}
-                                            className="btn btn-primary d-flex align-items-center"
-                                        >
-                                            Book
-                                        </button>
+                                    <div className="col-md-5">
+                                        <div className="inner-div">
+                                            <div>
+                                                <FaPlaneArrival className="me-2 text-primary" /> {segment.Destination_City}
+                                            </div>
+                                            <div>
+                                                <Clock10Icon className="me-2 text-primary" /> {segment.Arrival_DateTime}
+                                            </div>
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-md-6 ms-auto">
+                                                <button
+                                                    onClick={() => handleViewDetails(segment)}
+                                                    className="btn btn-primary d-flex align-items-center"
+                                                >
+                                                    <strong>₹{segment.Fares[0].FareDetails[0].Total_Amount}</strong>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
