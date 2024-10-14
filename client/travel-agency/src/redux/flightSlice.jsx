@@ -11,11 +11,13 @@ const initialState = {
     Child_Count: 0,
     Infant_Count: 0,
     Class_Of_Travel: '0',
+    Travel_Type: ''
   },
   searchResult: null,
   loading: false,
   error: null,
-  searchKey:null
+  searchKey: null,
+  passengers: [],
 };
 
 const flightSlice = createSlice({
@@ -31,9 +33,30 @@ const flightSlice = createSlice({
     updateSearchKey: (state, action) => {
       state.searchKey = action.payload;
     },
+    updatePassengers: (state, action) => {
+      state.passengers = action.payload;
+    },
+    addPassenger: (state, action) => {
+      state.passengers.push(action.payload);
+    },
+    updatePassenger: (state, action) => {
+      const { index, data } = action.payload;
+      state.passengers[index] = { ...state.passengers[index], ...data };
+    },
+    removePassenger: (state, action) => {
+      state.passengers = state.passengers.filter((_, index) => index !== action.payload);
+    },
   },
 });
 
-export const { updateFlightDetails, updateSearchResult, updateSearchKey } = flightSlice.actions;
+export const {
+  updateFlightDetails,
+  updateSearchResult,
+  updateSearchKey,
+  updatePassengers,
+  addPassenger,
+  updatePassenger,
+  removePassenger,
+} = flightSlice.actions;
 
 export default flightSlice.reducer;

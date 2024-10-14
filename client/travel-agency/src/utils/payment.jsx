@@ -49,13 +49,17 @@ const usePayment = () => {
                                 reject("Order completion failed.");
                             }
                         } catch (error) {
-                            console.log(error)
                             if (error.response && error.response.status === 401) {
                                 const { redirect } = error.response.data;
                                 if (redirect) {
                                     navigate(redirect);
                                 }
-                            } else {
+                            } else if(error.response.data.order===false){
+                                toast.error(error.response.data.message);
+                                navigate('/failure')
+                                reject(error);
+                            }
+                            else {
                                 toast.error("Error occurred during order processing.");
                                 reject(error);
                             }
@@ -80,7 +84,8 @@ const usePayment = () => {
                 if (redirect) {
                     navigate(redirect);
                 }
-            } else {
+            }
+            else {
                 toast.error("Error occurred while creating order.");
                 console.error(error);
             }

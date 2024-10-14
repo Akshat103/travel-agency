@@ -1,0 +1,233 @@
+{
+    "statuscode": "100",
+    "msg": "SUCCESS",
+    "data": [
+        {
+            "Flight": {
+                "Airline_Code": "AI",
+                "Block_Ticket_Allowed": true,
+                "Cached": true,
+                "Destination": "NYC",
+                "Fares": [
+                    {
+                        "FareDetails": [
+                            {
+                                "AirportTax_Amount": 19234,
+                                "AirportTaxes": [
+                                    {
+                                        "Tax_Amount": 12595,
+                                        "Tax_Code": "YQ",
+                                        "Tax_Desc": "YQ"
+                                    },
+                                    {
+                                        "Tax_Amount": 330,
+                                        "Tax_Code": "YR",
+                                        "Tax_Desc": "YR"
+                                    },
+                                    {
+                                        "Tax_Amount": 62,
+                                        "Tax_Code": "IN",
+                                        "Tax_Desc": "IN"
+                                    },
+                                    {
+                                        "Tax_Amount": 1598,
+                                        "Tax_Code": "K3",
+                                        "Tax_Desc": "K3"
+                                    },
+                                    {
+                                        "Tax_Amount": 1189,
+                                        "Tax_Code": "P2",
+                                        "Tax_Desc": "P2"
+                                    },
+                                    {
+                                        "Tax_Amount": 91,
+                                        "Tax_Code": "WO",
+                                        "Tax_Desc": "WO"
+                                    },
+                                    {
+                                        "Tax_Amount": 1864,
+                                        "Tax_Code": "US",
+                                        "Tax_Desc": "US"
+                                    },
+                                    {
+                                        "Tax_Amount": 312,
+                                        "Tax_Code": "XA",
+                                        "Tax_Desc": "XA"
+                                    },
+                                    {
+                                        "Tax_Amount": 588,
+                                        "Tax_Code": "XY",
+                                        "Tax_Desc": "XY"
+                                    },
+                                    {
+                                        "Tax_Amount": 605,
+                                        "Tax_Code": "YC",
+                                        "Tax_Desc": "YC"
+                                    }
+                                ],
+                                "Basic_Amount": 19030,
+                                "Currency_Code": "INR",
+                                "FareClasses": [
+                                    {
+                                        "Class_Code": "S",
+                                        "Class_Desc": "S",
+                                        "FareBasis": "SU3YXRDY",
+                                        "Privileges": null,
+                                        "Segment_Id": 0
+                                    },
+                                    {
+                                        "Class_Code": "S",
+                                        "Class_Desc": "S",
+                                        "FareBasis": "SU3YXRDY",
+                                        "Privileges": null,
+                                        "Segment_Id": 1
+                                    }
+                                ],
+                                "Free_Baggage": {
+                                    "Check_In_Baggage": "2 PC",
+                                    "Hand_Baggage": "7 Kg"
+                                },
+                                "GST": 11.81,
+                                "Gross_Commission": 77.41,
+                                "Net_Commission": 65.6,
+                                "PAX_Type": 0,
+                                "Promo_Discount": 0,
+                                "Service_Fee_Amount": 0,
+                                "TDS": 1.31,
+                                "Total_Amount": 38264,
+                                "Trade_Markup_Amount": 0,
+                                "YQ_Amount": 12595
+                            }
+                        ],
+                        "FareType": 0,
+                        "Fare_Id": "5383538951031730954",
+                        "Fare_Key": null,
+                        "Food_onboard": "",
+                        "GSTMandatory": false,
+                        "LastFewSeats": "",
+                        "ProductClass": "S",
+                        "PromptMessage": "",
+                        "Refundable": false,
+                        "Seats_Available": "9",
+                        "Warning": "Arriving to a Nearby Airport"
+                    }
+                ],
+                "Flight_Id": "5697824097852403241",
+                "Flight_Key": "KEYvgI9q4yYjhRbzNujX9bsVK3T3OBeBewLtICN+/KtIJL+F1jh/YRmREcren8LbJIhxWjdIknSgJb/VZh8fipa1bFOu6fU0fu0ERBea5pM4TuicjA2WsbhuGih8ukxViJ/OJGEuev1d5jsGXsS1+Xk4+41VEOlcORScY4x/uMf+58cbUQtlVRqTJAKnt+fP0oEUWHKne5Z8ntoWWevrvkMkQnP+7iInxnzSCkjb+kELt1vvF0XlLOd9biS70AMp62ouIw3e2WoDnpC1KPzzFv1yeG2IztNZbECcCvYmMb63AeWkCTGN5K1bgTOgydvQ6v/ydO8dH+VrOzQNvkGK5lH7kWi8cQ9dCvqAok374BpyIFn34noHiuTNHn5qwUdR9hy0NsIUlML74Q5c3sWJh6JN4Fd4hE11K3K3jU0JcXv4T9lzzGVWUr+OILRID6uxs3o29jqaE4CKgTc+nLdvCjTmwQtLNNTBozLMQ1iNKW7EpeQYMWNUn7WBL0WVWikgPWqY0Z6Wm5bE+lvuR9k4BuNpXO8EI2jnav2yB6j4Jrdk4iGG6Tw+xFot/tN18bsOmVcRktZwqw2ofy9z3man3uY5RjUeg/k1VOpRzSGVo+zCtsgXcjgk45IxLLDmbUeoNwNLWsMgwGUkZ4yEWSawh+HOH+eM3uzYetrkFAlCxTokh+IMZKN+7Da26Z8D5exrIxUR6mlWFpWbKUkICcN2om7m0CDtwz1b/f0YnINVPalTE5CrVds6WAu+2skufcpcHGakKQXmgW09+mE9LATfto70SCq7CIw+sXyG2xdCsHye0KnuKpnCacf2s4j3d/wYt1oJo7aCnoL0APFeEjBujNzHE/t/8M47u51/QKNCV5WX5y1BDTZoa8DZjwllRbsxLgD5SHIu/Rox1DxcLIG9Dkeooh+WdboyiJvVfUeVBEywBu2dITERLl0OOo7vNwVUufVCV1e8rtmDYw1UNkSEByWkPjn/QWHWaU+elPxWG5ivYADZ1rJqyu0Sx9SQrD5sflaMdQbyrp5QkFULBqHqOyDgH9f/MjMXNjnL53N80DSYIdZ95s6NKfp/r633QSqrdhzHz66ManMyhhvM07yWCTkm0NU0kDRBvp3P/btVqoOlQGpBMKFYNCFO3W/rJWUKz6q3clumZNeNNohuOySAQBRe0dFsLfX1u0O+HnW0z1XQxnllvS1gRVTKGAR8WltfYBvW0oM7Rtvs6JpUsyW9TBp5nhHEukhugmlrm+EvxRiUhb5t7kc/Cha6O7Eq0Fao7ar8VmKmMQ2tqqwS+Dk1+D4jw==",
+                "Flight_Numbers": null,
+                "GST_Entry_Allowed": true,
+                "HasMoreClass": true,
+                "InventoryType": 2,
+                "IsLCC": false,
+                "Origin": "DEL",
+                "Repriced": true,
+                "Segments": [
+                    {
+                        "Aircraft_Type": "77W",
+                        "Airline_Code": "AI",
+                        "Airline_Name": "Air India",
+                        "Arrival_DateTime": "10/20/2024 22:25",
+                        "Departure_DateTime": "10/20/2024 20:00",
+                        "Destination": "BOM",
+                        "Destination_City": "MUMBAI",
+                        "Destination_Terminal": "2",
+                        "Duration": "02:25",
+                        "Flight_Number": "805",
+                        "Leg_Index": 0,
+                        "OperatedBy": null,
+                        "Origin": "DEL",
+                        "Origin_City": "DELHI",
+                        "Origin_Terminal": "3",
+                        "Return_Flight": false,
+                        "Segment_Id": 0,
+                        "Stop_Over": null
+                    },
+                    {
+                        "Aircraft_Type": "77W",
+                        "Airline_Code": "AI",
+                        "Airline_Name": "Air India",
+                        "Arrival_DateTime": "10/21/2024 07:40",
+                        "Departure_DateTime": "10/21/2024 01:40",
+                        "Destination": "JFK",
+                        "Destination_City": "NEW YORK (JFK)",
+                        "Destination_Terminal": "4",
+                        "Duration": "15:30",
+                        "Flight_Number": "119",
+                        "Leg_Index": 0,
+                        "OperatedBy": null,
+                        "Origin": "BOM",
+                        "Origin_City": "MUMBAI",
+                        "Origin_Terminal": "2",
+                        "Return_Flight": false,
+                        "Segment_Id": 1,
+                        "Stop_Over": null
+                    }
+                ],
+                "TravelDate": "10/20/2024"
+            },
+            "Frequent_Flyer_Accepted": true,
+            "Required_PAX_Details": [
+                {
+                    "Age": false,
+                    "DOB": true,
+                    "DefenceExpiryDate": false,
+                    "DefenceIssueDate": false,
+                    "DefenceServiceId": false,
+                    "First_Name": true,
+                    "Gender": true,
+                    "IdProof_Number": false,
+                    "Last_Name": true,
+                    "Mandatory_SSRs": null,
+                    "Nationality": true,
+                    "PanCard_No": false,
+                    "Passport_Expiry": true,
+                    "Passport_Issuing_Country": true,
+                    "Passport_Number": true,
+                    "Pax_type": 0,
+                    "Student_Id": false,
+                    "Title": true
+                },
+                {
+                    "Age": true,
+                    "DOB": true,
+                    "DefenceExpiryDate": false,
+                    "DefenceIssueDate": false,
+                    "DefenceServiceId": false,
+                    "First_Name": true,
+                    "Gender": true,
+                    "IdProof_Number": false,
+                    "Last_Name": true,
+                    "Mandatory_SSRs": null,
+                    "Nationality": true,
+                    "PanCard_No": false,
+                    "Passport_Expiry": true,
+                    "Passport_Issuing_Country": true,
+                    "Passport_Number": true,
+                    "Pax_type": 1,
+                    "Student_Id": false,
+                    "Title": true
+                },
+                {
+                    "Age": false,
+                    "DOB": true,
+                    "DefenceExpiryDate": false,
+                    "DefenceIssueDate": false,
+                    "DefenceServiceId": false,
+                    "First_Name": true,
+                    "Gender": true,
+                    "IdProof_Number": false,
+                    "Last_Name": true,
+                    "Mandatory_SSRs": null,
+                    "Nationality": true,
+                    "PanCard_No": false,
+                    "Passport_Expiry": true,
+                    "Passport_Issuing_Country": true,
+                    "Passport_Number": true,
+                    "Pax_type": 2,
+                    "Student_Id": false,
+                    "Title": true
+                }
+            ]
+        }
+    ]
+}

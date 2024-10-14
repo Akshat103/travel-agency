@@ -102,7 +102,7 @@ const HotelDetails = () => {
         });
     };
     return (
-        <div className="container my-5">
+        <div className="container m-5">
             <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-4">
                 <ArrowLeft size={18} className="me-2" /> Back to Hotels
             </button>
@@ -118,8 +118,7 @@ const HotelDetails = () => {
                     <h3 className="card-title mb-4">
                         {hotel.HotelName} <span className="text-warning"><FaStar /> {hotel.StarCategoryId || 'N/A'}</span>
                     </h3>
-                    <p><FaMapMarkedAlt className="me-2 text-primary" /> <strong>Address:</strong> {hotel.Address || 'N/A'}</p>
-                    <p><strong>Pincode:</strong> {hotel.Pincode || 'N/A'}</p>
+                    <p><FaMapMarkedAlt className="me-2 text-primary" />{hotel.Address || 'N/A'}</p>
                     <div className="row mb-4">
                         <div className="col-md-6">
                             {hotel.CheckInTime && (
@@ -132,7 +131,6 @@ const HotelDetails = () => {
                     </div>
                     {facilities.length > 0 && (
                         <>
-                            <h4 className="mb-3">Hotel Facilities</h4>
                             <div className="row">
                                 {facilities.map((facility, idx) => (
                                     <div key={idx} className="col-md-6 mb-2">
@@ -150,7 +148,6 @@ const HotelDetails = () => {
                     <>
                         {displayedRecommendations.length > 0 && (
                             <>
-                                <h4 className="mt-4 mb-3">Plans</h4>
                                 <div ref={containerRef} style={{ height: '300px', overflowY: 'auto' }} className="recommendations-container">
                                     <div className="row">
                                         {displayedRecommendations.map((recHotel, index) => (
@@ -195,15 +192,11 @@ const HotelDetails = () => {
                     </>
                     {extraData && (
                         <>
-                            <h4 className="mt-4 mb-3">About the Hotel</h4>
                             <p>{extraData.AboutHotel}</p>
-                            <h4 className="mt-4 mb-3">City:</h4>
                             <p>{extraData.City}, {extraData.Country}</p>
-                            <h4 className="mt-4 mb-3">Amenities</h4>
                             <p>{extraData.Amenities.split(',').map((amenity, index) => (
                                 <span key={index} className="badge bg-secondary me-1">{amenity.trim()}</span>
                             ))}</p>
-                            <h4 className="mt-4 mb-3">Hotel Gallery</h4>
                             <div id="hotelGalleryCarousel" className="carousel slide" data-bs-ride="carousel" height="10rem">
                                 <div className="carousel-inner">
                                     {extraData.HotelGallery && extraData.HotelGallery.map((image, idx) => (

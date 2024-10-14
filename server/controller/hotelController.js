@@ -71,7 +71,6 @@ const searchByCity = async (req, res) => {
     }
 
     const cityid = city.id;
-
     const data = {
         MerchantID: MEMBER_ID,
         Merchantkey: HOTEL_KEY,
@@ -225,11 +224,12 @@ const bookHotel = async (req, res) => {
         data: data
     };
 
-    console.log(data)
+    console.log(config)
 
     try {
-        // const response = await axios(config);
-        return res.status(200).json(data);
+        const response = await axios(config);
+        console.log(response)
+        return res.status(200).json(response);
     } catch (error) {
         console.error('Error making request to external API:', error);
         return res.status(500).json({ error: 'Error fetching data from the hotel service.' });

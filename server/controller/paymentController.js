@@ -50,7 +50,16 @@ module.exports.createOrder = async (req, res) => {
     }
 };
 
-// Generalized verifyOrder function
+async function initiateRefund(paymentId) {
+    try {
+        const refund = await razorpay.payments.refund(paymentId);
+        return refund;
+    } catch (error) {
+        console.error('Refund failed:', error);
+        throw error;
+    }
+}
+
 module.exports.verifyOrder = async (req, res) => {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature, serviceType } = req.body;
     const clientId = req.user.clientId;
@@ -76,29 +85,45 @@ module.exports.verifyOrder = async (req, res) => {
             });
         }
 
-        if (serviceType === 'recharge') {
-            const { number, operator, circle, amount } = updatedOrder.serviceDetails;
-            await rechargeRequest(number, operator, circle, amount, orderid = razorpay_order_id, clientId);
-            return res.status(201).json({
-                success: true,
-                message: "Recharge done successfully."
-            });
-        } else if (serviceType === 'bookbus') {
-            const response = await busSeatbook(updatedOrder.serviceDetails, clientId);
-            return res.status(201).json({
-                success: true,
-                message: "Bus booking done successfully.",
-                data: response
-            });
-        } else if (serviceType === 'bookflight') {
-            const response = await bookFlight(updatedOrder.serviceDetails, clientId);
-            return res.status(201).json({
-                success: true,
-                message: "Flight booking done successfully.",
-                data: response
+        try {
+            let response;
+            if (serviceType === 'recharge') {
+                const { number, operator, circle, amount } = updatedOrder.serviceDetails;
+                await rechargeRequest(number, operator, circle, amount, razorpay_order_id, clientId);
+                return res.status(201).json({
+                    success: true,
+                    message: "Recharge done successfully."
+                });
+            } else if (serviceType === 'bookbus') {
+                response = await busSeatbook(updatedOrder.serviceDetails, clientId);
+                return res.status(201).json({
+                    success: true,
+                    message: "Bus booking done successfully.",
+                    data: response
+                });
+            } else if (serviceType === 'bookflight') {
+                response = await bookFlight(updatedOrder.serviceDetails, clientId);
+                return res.status(201).json({
+                    success: true,
+                    message: "Flight booking done successfully.",
+                    data: response
+                });
+            }
+        } catch (error) {
+            // Initiate refund on failure
+            await initiateRefund(razorpay_payment_id); // Implement this function to handle refunds
+            await OrderSchema.findOneAndUpdate(
+                { orderId: razorpay_order_id },
+                { status: 'failed' }
+            );
+
+            return res.status(400).json({
+                order: false,
+                success: false,
+                message: "Booking failed, refund initiated.",
+                error: error.message // Optionally include the error message for debugging
             });
         }
-
     } else {
         await OrderSchema.findOneAndUpdate(
             { orderId: razorpay_order_id },
@@ -111,4 +136,5 @@ module.exports.verifyOrder = async (req, res) => {
         });
     }
 };
+
 

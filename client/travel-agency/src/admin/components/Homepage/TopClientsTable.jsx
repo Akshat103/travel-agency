@@ -9,7 +9,12 @@ const TopClientsTable = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/analytics/top-clients');
-        setData(response.data);
+        if (response.data.success) {
+          setData(response.data.data);
+        }
+        else {
+          toast.error('Failed to fetch Top Clients');
+        }
       } catch (error) {
         console.error('Error fetching top clients:', error);
       }

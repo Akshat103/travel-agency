@@ -12,10 +12,14 @@ const Filter = ({ onSearch }) => {
   
   const handleSelectOrigin = (airport) => {
     dispatch(updateFlightDetails({ Origin: { AIRPORTCODE: airport.AIRPORTCODE, COUNTRYCODE: airport.COUNTRYCODE } }));
+    const travelType = flightDetails.Origin.COUNTRYCODE === flightDetails.Destination.COUNTRYCODE ? "0" : "1";
+    dispatch(updateFlightDetails({Travel_Type: travelType}))
   };
   
   const handleSelectDestination = (airport) => {
     dispatch(updateFlightDetails({ Destination: { AIRPORTCODE: airport.AIRPORTCODE, COUNTRYCODE: airport.COUNTRYCODE } }));
+    const travelType = flightDetails.Origin.COUNTRYCODE === flightDetails.Destination.COUNTRYCODE ? "0" : "1";
+    dispatch(updateFlightDetails({Travel_Type: travelType}))
   };
   
   const handleDateChange = (startDate, endDate) => {

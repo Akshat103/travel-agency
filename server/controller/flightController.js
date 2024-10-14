@@ -38,14 +38,13 @@ const searchFlights = async (req, res) => {
         return res.status(400).json({ error: 'Invalid request data' });
     }
 
-    const Travel_Type = requestdata.Origin.COUNTRYCODE === requestdata.Destination.COUNTRYCODE ? "0" : "1";
     const travelDate = formatDate(requestdata.TravelDate);
 
     let transformedData;
 
     if (!requestdata.DepartureDate) {
         transformedData = {
-            Travel_Type: Travel_Type,
+            Travel_Type: requestdata.Travel_Type,
             TripInfo: [
                 {
                     Origin: requestdata.Origin.AIRPORTCODE,
@@ -91,7 +90,6 @@ const searchFlights = async (req, res) => {
             Filtered_Airline: []
         };
     }
-
     try {
         const response = await axios.post(FLIGHT_API_SERVICE_URL, {
             methodname: 'FLIGHTSEARCH',
@@ -140,7 +138,6 @@ const getAirSeatMap = async (req, res) => {
 
     try {
         let updatedflightKey = flightKey;
-
         if (!reprice) {
             const airReprice = {
                 method: 'POST',
@@ -208,7 +205,6 @@ const getAirSeatMap = async (req, res) => {
                 };
 
                 const airMapResponse = await axios(airMapReq);
-
                 if (airMapResponse.data.statuscode === "100") {
                     const Seat_Details = airMapResponse.data.data.AirSeatMaps[0].Seat_Segments[0].Seat_Row;
                     const data = getSeatDetails(Seat_Details);
@@ -274,7 +270,7 @@ const bookFlight = async (data, clientId) => {
                     ],
                     BookingRemark: null,
                     Booking_Request_Json: {
-                        Travel_Type: "0",
+                        Travel_Type: data.Travel_Type,
                         TripInfo: [
                             {
                                 Origin: data.flightDetails.Origin.AIRPORTCODE,
@@ -297,13 +293,13 @@ const bookFlight = async (data, clientId) => {
         };
         // Send the request to the flight API service
         const response = await axios(reqData);
-        if (response.data.statuscode ===100) {
+        if (response.data.statuscode === 100) {
             return response.data;
         } else {
             throw new Error(`Failed to book the ticket: ${response.statusText}`);
         }
     } catch (error) {
-        throw new Error(`Bus seat booking failed: ${error.message}`);
+        throw new Error(`Flight seat booking failed: ${error.message}`);
     }
 };
 

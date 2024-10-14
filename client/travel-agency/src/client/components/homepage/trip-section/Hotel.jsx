@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFormData, updateRoomDetail, addRoom, removeRoom, updateFormField } from '../../../../redux/hotelSlice';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Hotel = ({ isVertical, onSearch }) => {
     const dispatch = useDispatch();
@@ -124,17 +126,22 @@ const Hotel = ({ isVertical, onSearch }) => {
             <div className="row">
                 <div className="col-lg-12">
                     <div className="tour_search_form">
-                        <div className={`row ${isVertical ? 'flex-column gap-4' : 'm-4 justify-content-center align-items-center gap-4'}`}>
+                        <div className={`row ${isVertical ? 'flex-column gap-4' : ' justify-content-center align-items-center gap-4'}`}>
                             <div className={`${isVertical ? '' : 'col-md-2'} flight_Search_boxed date_flex_area`}>
                                 <div className="Journey_date">
                                     <p>Check-in Date</p>
-                                    <input
-                                        type="date"
+                                    <DatePicker
                                         id="CheckInDate"
                                         name="CheckInDate"
-                                        value={formData.CheckInDate}
-                                        onChange={handleInputChange}
-                                        required
+                                        selected={formData.CheckInDate || new Date(new Date().setDate(new Date().getDate() + 1))}
+                                        onChange={(date) => {
+                                            dispatch(updateFormField({ field: 'CheckInDate', value: date }));
+                                        }}
+                                        dateFormat="MM/dd/yyyy"
+                                        placeholderText='MM/DD/YYYY'
+                                        showMonthDropdown
+                                        minDate={new Date()}
+                                        scrollableYearDropdown
                                     />
                                 </div>
                             </div>
@@ -142,14 +149,20 @@ const Hotel = ({ isVertical, onSearch }) => {
                             <div className={`${isVertical ? '' : 'col-md-2'} flight_Search_boxed date_flex_area`}>
                                 <div className="Journey_date">
                                     <p>Check-out Date</p>
-                                    <input
-                                        type="date"
+                                    <DatePicker
                                         id="CheckOutDate"
                                         name="CheckOutDate"
-                                        value={formData.CheckOutDate}
-                                        onChange={handleInputChange}
-                                        required
+                                        selected={formData.CheckOutDate || new Date(new Date().setDate(new Date().getDate() + 1))}
+                                        onChange={(date) => {
+                                            dispatch(updateFormField({ field: 'CheckOutDate', value: date }));
+                                        }}
+                                        dateFormat="MM/dd/yyyy"
+                                        placeholderText='MM/DD/YYYY'
+                                        showMonthDropdown
+                                        minDate={new Date()}
+                                        scrollableYearDropdown
                                     />
+
                                 </div>
                             </div>
 
@@ -198,7 +211,7 @@ const Hotel = ({ isVertical, onSearch }) => {
                                 )}
                             </div>
 
-                            <div className={`${isVertical ? '' : 'col-md-2'} mb-4 flight_Search_boxed`}>
+                            <div className={`${isVertical ? '' : 'col-md-2'} flight_Search_boxed`}>
                                 <p className="mb-0 me-2">Rooms</p>
                                 <div className="d-flex align-items-center">
                                     <button onClick={() => dispatch(removeRoom())} disabled={formData.RoomCount <= 1} style={{ border: "none" }}>
@@ -214,7 +227,7 @@ const Hotel = ({ isVertical, onSearch }) => {
 
                         <div className={`row ${isVertical ? 'flex-column gap-4' : 'justify-content-center align-items-center gap-4'}`}>
                             {formData.HotelRoomDetail.map((room, roomIndex) => (
-                                <div key={roomIndex} className={`${isVertical ? '' : 'col-md-2'} flight_Search_boxed`}>
+                                <div key={roomIndex} className={`${isVertical ? '' : 'col-md-2'} mt-2 flight_Search_boxed`}>
                                     <p><strong>Room {roomIndex + 1}</strong></p>
                                     <div className="space-y-2">
                                         <div className="d-flex align-items-center">
@@ -229,11 +242,11 @@ const Hotel = ({ isVertical, onSearch }) => {
                                         </div>
 
                                         <div className="d-flex align-items-center">
-                                            <p className="pe-4">Children</p>
                                             <button onClick={() => removeChild(roomIndex)} disabled={room.ChildCount <= 0} style={{ border: "none" }}>
                                                 <MinusCircleIcon />
                                             </button>
-                                            <span className="mx-2">{room.ChildCount}</span>
+                                            <p>Children</p>
+                                            <strong className="mx-2">{room.ChildCount}</strong>
                                             <button onClick={() => addChild(roomIndex)} style={{ border: "none" }}>
                                                 <PlusCircleIcon />
                                             </button>

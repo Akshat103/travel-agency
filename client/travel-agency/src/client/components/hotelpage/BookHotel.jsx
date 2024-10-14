@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, Form, Row, Col, Container } from 'react-bootstrap';
+import { ArrowLeft } from 'lucide-react';
 
 const BookHotel = () => {
     const location = useLocation();
-    const { hotelId,
-        hotelKey,
-        recommendationId,
-        rateplanId,
-        hotelSearchDetails,
-        searchKey } = location.state || {};
+    const { hotelId, hotelKey, recommendationId, rateplanId, hotelSearchDetails, searchKey } = location.state || {};
 
     let occupantCounter = 1;
     let adultCounter = 1;
     let childCounter = 1;
+    const navigate = useNavigate();
 
     const initialOccupantDetails = hotelSearchDetails.HotelRoomDetail
         ? hotelSearchDetails.HotelRoomDetail.flatMap((room, roomIndex) => {
@@ -83,15 +80,7 @@ const BookHotel = () => {
             });
 
             const result = await response.json();
-            console.log(result)
-
-            // if (result.statuscode === "TXN" && result.msg === "SUCCESS") {
-            //     setExtraData(result.data);
-            //     setRecommendations(result.data.RatePlanRecommendations || []);
-            //     setHotelKey(result.data.HotelKey);
-            // } else {
-            //     console.error("Error fetching hotel details:", result.msg);
-            // }
+            console.log(result);
         } catch (error) {
             console.error("Fetch error:", error);
         }
@@ -104,132 +93,127 @@ const BookHotel = () => {
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Book Hotel</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="OccupantEmail" className="form-label">
-                        <FaEnvelope /> Occupant Email
-                    </label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="OccupantEmail"
-                        name="OccupantEmail"
-                        value={formData.OccupantEmail}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="mb-3">
-                    <label htmlFor="OccupantMobile" className="form-label">
-                        <FaPhone /> Occupant Mobile
-                    </label>
-                    <input
-                        type="tel"
-                        className="form-control"
-                        id="OccupantMobile"
-                        name="OccupantMobile"
-                        value={formData.OccupantMobile}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="mb-3">
-                    <label htmlFor="CustomerAddress" className="form-label">
-                        <FaMapMarkerAlt /> Customer Address
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="CustomerAddress"
-                        name="CustomerAddress"
-                        value={formData.CustomerAddress}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="mb-3">
-                    <label htmlFor="CustomerName" className="form-label">
-                        <FaUser /> Customer Name
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="CustomerName"
-                        name="CustomerName"
-                        value={formData.CustomerName}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="mb-3">
-                    <label htmlFor="CustomerPostalCode" className="form-label">
-                        Postal Code
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="CustomerPostalCode"
-                        name="CustomerPostalCode"
-                        value={formData.CustomerPostalCode}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+        <Container className="mt-4">
+            <Button onClick={() => navigate(-1)} variant="outline-primary" className="mb-4">
+                <ArrowLeft size={18} className="me-2" /> Back
+            </Button>
+            <Form onSubmit={handleSubmit}>
+                <Row>
+                    <Col md={6} className="mb-3">
+                        <Form.Group controlId="CustomerName">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="CustomerName"
+                                value={formData.CustomerName}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col md={6} className="mb-3">
+                        <Form.Group controlId="OccupantEmail">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                type="email"
+                                name="OccupantEmail"
+                                value={formData.OccupantEmail}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
+                    
+                </Row>
+                <Row>
+                    <Col md={6} className="mb-3">
+                        <Form.Group controlId="CustomerAddress">
+                            <Form.Label>Address</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="CustomerAddress"
+                                value={formData.CustomerAddress}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col md={6} className="mb-3">
+                        <Form.Group controlId="OccupantMobile">
+                            <Form.Label>Mobile</Form.Label>
+                            <Form.Control
+                                type="tel"
+                                name="OccupantMobile"
+                                value={formData.OccupantMobile}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={6} className="mb-3">
+                        <Form.Group controlId="CustomerPostalCode">
+                            <Form.Label>Postal Code</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="CustomerPostalCode"
+                                value={formData.CustomerPostalCode}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
 
                 <h4>Occupant Details</h4>
                 {formData.OccupantDetails.map((occupant, index) => (
                     <div key={occupant.OccupantID} className="mb-3">
                         <h5>Occupant {index + 1} ({occupant.OccupantType})</h5>
-                        <div className="row">
-                            <div className="col">
-                                <label htmlFor={`Title-${index}`} className="form-label">Title</label>
-                                <select
-                                    className="form-select"
-                                    id={`Title-${index}`}
-                                    value={occupant.Title}
-                                    onChange={(e) => handleOccupantChange(index, 'Title', e.target.value)}
-                                    required
-                                >
-                                    <option value="Mr">Mr</option>
-                                    <option value="Mrs">Mrs</option>
-                                    <option value="Miss">Miss</option>
-                                </select>
-                            </div>
-                            <div className="col">
-                                <label htmlFor={`FirstName-${index}`} className="form-label">First Name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id={`FirstName-${index}`}
-                                    value={occupant.FirstName}
-                                    onChange={(e) => handleOccupantChange(index, 'FirstName', e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="col">
-                                <label htmlFor={`LastName-${index}`} className="form-label">Last Name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id={`LastName-${index}`}
-                                    value={occupant.LastName}
-                                    onChange={(e) => handleOccupantChange(index, 'LastName', e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </div>
+                        <Row>
+                            <Col md={4}>
+                                <Form.Group controlId={`Title-${index}`}>
+                                    <Form.Label>Title</Form.Label>
+                                    <Form.Select
+                                        value={occupant.Title}
+                                        onChange={(e) => handleOccupantChange(index, 'Title', e.target.value)}
+                                        required
+                                    >
+                                        <option value="Mr">Mr</option>
+                                        <option value="Mrs">Mrs</option>
+                                        <option value="Miss">Miss</option>
+                                    </Form.Select>
+                                </Form.Group>
+                            </Col>
+                            <Col md={4}>
+                                <Form.Group controlId={`FirstName-${index}`}>
+                                    <Form.Label>First Name</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={occupant.FirstName}
+                                        onChange={(e) => handleOccupantChange(index, 'FirstName', e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col md={4}>
+                                <Form.Group controlId={`LastName-${index}`}>
+                                    <Form.Label>Last Name</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={occupant.LastName}
+                                        onChange={(e) => handleOccupantChange(index, 'LastName', e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
                     </div>
                 ))}
 
-                <button type="submit" className="btn btn-primary">Book Now</button>
-            </form>
-        </div>
+                <Button type="submit" variant="primary">Book Now</Button>
+            </Form>
+        </Container>
     );
 };
 

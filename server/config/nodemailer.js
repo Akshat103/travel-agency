@@ -1,8 +1,17 @@
 const nodemailer = require('nodemailer');
+const logger = require('../utils/logger');
+require('dotenv').config();
 
 let transporter;
 
 try {
+    // Ensure email credentials are present
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        logger.error('Email user or password is missing in environment variables');
+        throw new Error('EMAIL_USER and EMAIL_PASS must be set in environment variables');
+    }
+
+    // Create transporter
     transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -11,18 +20,25 @@ try {
         }
     });
 
+    // Verify transporter
     transporter.verify((error, success) => {
         if (error) {
-            console.error('Error verifying email transporter:', error);
-            process.exit(1);
+            logger.error('Error verifying email transporter:', error);
+            process.exit(1); // Exit process if transporter fails verification
         } else {
-            console.log('Email transporter is ready to send emails.');
+            logger.info('Email transporter is ready to send emails.');
         }
     });
 
 } catch (error) {
-    console.error('Error creating email transporter:', error);
-    process.exit(1);
+    logger.error('Error creating email transporter:', error.message);
+
+    // Optional: Log the full error stack in case of development mode
+    if (process.env.NODE_ENV !== 'production') {
+        logger.error(error.stack);
+    }
+
+    process.exit(1); // Exit process on transporter creation failure
 }
 
 module.exports = transporter;

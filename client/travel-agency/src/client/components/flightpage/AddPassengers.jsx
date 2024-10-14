@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import countryList from '../../../assets/data/countries_name_flag.json';
 import { MdEdit } from "react-icons/md";
 import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    updatePassengers,
+    updatePassenger,
+} from '../../../redux/flightSlice';
 
-const BookFlights = () => {
+const AddPassengers = () => {
     const location = useLocation();
     const { fareId, flightKey, reprice, price } = location.state || { fareId: null, flightKey: null, reprice: null, price: null };
     const searchKey = useSelector((state) => state.flights.searchKey);
     const flightDetails = useSelector((state) => state.flights.flightDetails);
     const navigate = useNavigate();
-    const [passengers, setPassengers] = useState([]);
+    const dispatch = useDispatch();
+    const passengers = useSelector((state) => state.flights.passengers);
     const [submitting, setSubmitting] = useState(false);
-
+    console.log(flightDetails)
     useEffect(() => {
         // Initialize passengers based on flightDetails
         let count = 1;
@@ -30,8 +35,8 @@ const BookFlights = () => {
         for (let i = 0; i < flightDetails.Infant_Count; i++) {
             initialPassengers.push(createPassenger('2', count++));
         }
-        setPassengers(initialPassengers);
-    }, [flightDetails]);
+        dispatch(updatePassengers(initialPassengers));
+    }, [flightDetails, dispatch]);
 
     const createPassenger = (paxType, count) => ({
         passengerCount: count,
@@ -53,9 +58,7 @@ const BookFlights = () => {
 
     const handlePassengerChange = (index, e) => {
         const { name, value } = e.target;
-        const newPassengers = [...passengers];
-        newPassengers[index] = { ...newPassengers[index], [name]: value };
-        setPassengers(newPassengers);
+        dispatch(updatePassenger({ index, data: { [name]: value } }));
     };
 
     const savePassenger = (index) => {
@@ -71,9 +74,7 @@ const BookFlights = () => {
             passenger.Passport_Expiry &&
             passenger.Nationality
         ) {
-            const newPassengers = [...passengers];
-            newPassengers[index].saved = true;
-            setPassengers(newPassengers);
+            dispatch(updatePassenger({ index, data: { saved: true } }));
         } else {
             toast.warn('Please fill in all fields before saving.');
         }
@@ -96,10 +97,19 @@ const BookFlights = () => {
     };
 
     const updateDOB = (index, date) => {
-        const newPassengers = [...passengers];
-        newPassengers[index].DOB = date;
-        newPassengers[index].Age = calculateAge(date);
-        setPassengers(newPassengers);
+        const updatedPassenger = {
+            ...passengers[index],
+            DOB: date,
+            Age: calculateAge(date),
+        };
+
+        const newPassengers = [
+            ...passengers.slice(0, index),
+            updatedPassenger,
+            ...passengers.slice(index + 1)
+        ];
+
+        dispatch(updatePassengers(newPassengers));
     };
 
     const handleSubmit = async (e) => {
@@ -122,7 +132,7 @@ const BookFlights = () => {
 
             if (response.data) {
                 navigate('/flight/seats', {
-                    state: { passengers, seatData: response.data.data, fareId, searchKey, flightKey: response.data.updatedflightKey, totalPrice: calculateTotalPrice() }
+                    state: { seatData: response.data.data, fareId, searchKey, flightKey: response.data.updatedflightKey, totalPrice: calculateTotalPrice() }
                 });
             }
         } catch (error) {
@@ -132,10 +142,12 @@ const BookFlights = () => {
     };
 
     const enableEditing = (index) => {
-        const newPassengers = [...passengers];
-        newPassengers[index].saved = false;
-        setPassengers(newPassengers);
+        const newPassengers = passengers.map((passenger, i) =>
+            i === index ? { ...passenger, saved: false } : passenger
+        );
+        dispatch(updatePassengers(newPassengers));
     };
+
 
     const getPaxTypeLabel = (paxType) => {
         switch (paxType) {
@@ -173,7 +185,7 @@ const BookFlights = () => {
                         ) : (
                             <div className="row">
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Title</label>
+                                    <p><label className="form-label">Title</label></p>
                                     <select
                                         name="Title"
                                         value={passenger.Title}
@@ -190,7 +202,7 @@ const BookFlights = () => {
                                     </select>
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">First Name</label>
+                                    <p><label className="form-label">First Name</label></p>
                                     <input
                                         type="text"
                                         name="First_Name"
@@ -201,7 +213,7 @@ const BookFlights = () => {
                                     />
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Last Name</label>
+                                    <p><label className="form-label">Last Name</label></p>
                                     <input
                                         type="text"
                                         name="Last_Name"
@@ -212,7 +224,7 @@ const BookFlights = () => {
                                     />
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Gender</label>
+                                    <p><label className="form-label">Gender</label></p>
                                     <select
                                         name="Gender"
                                         value={passenger.Gender}
@@ -240,7 +252,7 @@ const BookFlights = () => {
                                     />
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Passport Number</label>
+                                    <p><label className="form-label">Passport Number</label></p>
                                     <input
                                         type="text"
                                         name="Passport_Number"
@@ -250,7 +262,7 @@ const BookFlights = () => {
                                     />
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Passport Issuing Country</label>
+                                    <p><label className="form-label">Passport Issuing Country</label></p>
                                     <select
                                         name="Passport_Issuing_Country"
                                         value={passenger.Passport_Issuing_Country}
@@ -267,13 +279,21 @@ const BookFlights = () => {
                                     </select>
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Passport Expiry Date</label>
+                                    <p><label className="form-label">Passport Expiry Date</label></p>
                                     <DatePicker
                                         selected={passenger.Passport_Expiry}
                                         onChange={(date) => {
-                                            const newPassengers = [...passengers];
-                                            newPassengers[index].Passport_Expiry = date;
-                                            setPassengers(newPassengers);
+                                            const updatedPassenger = {
+                                                ...passengers[index],
+                                                Passport_Expiry: date,
+                                            };
+                                            const newPassengers = [
+                                                ...passengers.slice(0, index),
+                                                updatedPassenger,
+                                                ...passengers.slice(index + 1)
+                                            ];
+
+                                            dispatch(updatePassengers(newPassengers));
                                         }}
                                         className="form-control"
                                         dateFormat="MM/dd/yyyy"
@@ -282,8 +302,9 @@ const BookFlights = () => {
                                         yearDropdownItemNumber={200}
                                     />
                                 </div>
+
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Nationality</label>
+                                    <p><label className="form-label">Nationality</label></p>
                                     <select
                                         name="Nationality"
                                         value={passenger.Nationality}
@@ -324,4 +345,4 @@ const BookFlights = () => {
     );
 };
 
-export default BookFlights;
+export default AddPassengers;

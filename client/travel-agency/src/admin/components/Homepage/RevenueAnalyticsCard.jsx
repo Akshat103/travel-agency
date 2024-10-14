@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 const RevenueAnalyticsCard = () => {
   const [revenueAnalytics, setRevenueAnalytics] = useState({ totalRevenue: 0, avgOrderValue: 0 });
@@ -9,7 +10,14 @@ const RevenueAnalyticsCard = () => {
     const fetchRevenueAnalytics = async () => {
       try {
         const response = await axios.get('/api/analytics/revenue-analytics');
-        setRevenueAnalytics(response.data);
+        if (response.data.success) {
+          setRevenueAnalytics({
+            totalRevenue: response.data.totalRevenue,
+            avgOrderValue: response.data.avgOrderValue,
+          });
+        } else {
+          toast.error('Failed to fetch Revenue');
+        }
       } catch (error) {
         console.error('Error fetching revenue analytics:', error);
       }

@@ -12,17 +12,22 @@ const RevenueByServiceTypeChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/analytics/revenue-by-service-type');
-        const transformedData = response.data.map(item => ({
-          ...item,
-          _id: 
-            item._id === 'bookbus' ? 'Bus' : 
-            item._id === 'bookflight' ? 'Flight' : 
-            item._id === 'bookhotel' ? 'Hotel' : 
-            item._id === 'recharge' ? 'Recharge' : 
-            item._id === 'booktrain' ? 'Train' : 
-            item._id
-        }));
-        setData(transformedData);
+        if (response.data.success) {
+          const transformedData = response.data.data.map(item => ({
+            ...item,
+            _id:
+              item._id === 'bookbus' ? 'Bus' :
+                item._id === 'bookflight' ? 'Flight' :
+                  item._id === 'bookhotel' ? 'Hotel' :
+                    item._id === 'recharge' ? 'Recharge' :
+                      item._id === 'booktrain' ? 'Train' :
+                        item._id
+          }));
+          setData(transformedData);
+        }
+        else{
+          toast.error('Failed to fetch Revenue');
+        }
       } catch (error) {
         console.error('Error fetching revenue by service type:', error);
       }

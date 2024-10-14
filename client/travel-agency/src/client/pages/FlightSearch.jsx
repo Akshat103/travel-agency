@@ -1,49 +1,60 @@
 import React, { useState } from 'react';
 import Filter from '../components/flightpage/Filter';
 import ListFlights from '../components/flightpage/ListFlights';
-import { useDispatch } from 'react-redux';
-import { updateSearchResult, updateSearchKey } from '../../redux/flightSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateSearchResult, updateSearchKey, updateFlightDetails } from '../../redux/flightSlice';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const FlightSearch = () => {
   const [isSearching, setIsSearching] = useState(false);
   const dispatch = useDispatch();
+  const flightDetails = useSelector((state) => state.flights.flightDetails);
 
-  const handleSearch = async (flightDetails) => {
+  const handleSearch = async (details) => {
     setIsSearching(true);
     const toastId = toast.info('Searching...', { autoClose: false });
 
-    // Move API call here instead of the Redux thunk
-    try {
-      const requiredFields = [
-        'Origin.AIRPORTCODE',
-        'Origin.COUNTRYCODE',
-        'Destination.AIRPORTCODE',
-        'Destination.COUNTRYCODE',
-        'TravelDate',
-        'Booking_Type',
-        'Adult_Count',
-        'Class_Of_Travel',
-      ];
+    // Calculate travel type based on origin and destination
+    const travelType = details.Origin.COUNTRYCODE === details.Destination.COUNTRYCODE ? "0" : "1";
+    
+    // Add travelType directly to details
+    const updatedDetails = { ...details, Travel_Type: travelType };
+    
+    // Update flight details in Redux
+    dispatch(updateFlightDetails(updatedDetails));
 
-      const checkField = (obj, fieldPath) =>
-        fieldPath
-          .split('.')
-          .reduce((o, key) => (o !== undefined && o[key] !== undefined ? o[key] : null), obj);
+    // Check required fields before calling the API
+    const requiredFields = [
+      'Origin.AIRPORTCODE',
+      'Origin.COUNTRYCODE',
+      'Destination.AIRPORTCODE',
+      'Destination.COUNTRYCODE',
+      'TravelDate',
+      'Booking_Type',
+      'Adult_Count',
+      'Class_Of_Travel'
+    ];
 
-      for (const field of requiredFields) {
-        const fieldValue = checkField(flightDetails, field);
-        if (fieldValue === null || fieldValue === '') {
-          toast.dismiss(toastId);
-          setIsSearching(false);
-          return;
-        }
+    const checkField = (obj, fieldPath) =>
+      fieldPath
+        .split('.')
+        .reduce((o, key) => (o !== undefined && o[key] !== undefined ? o[key] : null), obj);
+
+    // Check all required fields
+    for (const field of requiredFields) {
+      const fieldValue = checkField(details, field);
+      if (fieldValue === null || fieldValue === '') {
+        toast.dismiss(toastId);
+        setIsSearching(false);
+        return;
       }
+    }
 
-      // Make the API call
+    // Proceed to search after validating fields
+    try {
       const response = await axios.post('/api/flightsearch', {
-        requestdata: flightDetails,
+        requestdata: updatedDetails,
       });
 
       const flights = response.data.data[0].Flights;
@@ -63,6 +74,7 @@ const FlightSearch = () => {
       setIsSearching(false);
     }
   };
+
 
   return (
     <>

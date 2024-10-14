@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 const OrdersOverTimeChart = () => {
   const [data, setData] = useState([]);
@@ -10,7 +11,13 @@ const OrdersOverTimeChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/analytics/orders-over-time');
-        setData(response.data);
+        if (response.data.success) {
+          console.log(response.data)
+          setData(response.data.data);
+        }
+        else {
+          toast.error("Failed to get Orders Over Time")
+        }
       } catch (error) {
         console.error('Error fetching orders over time:', error);
       }

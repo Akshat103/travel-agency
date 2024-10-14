@@ -1,12 +1,15 @@
 const Order = require('../models/Order');
+const logger = require('../utils/logger');
 
 // Get total orders count
 exports.getTotalOrdersCount = async (req, res) => {
     try {
         const count = await Order.countDocuments();
-        res.json({ totalOrders: count });
+        logger.info('Fetched total order count');
+        res.status(200).json({ success: true, totalOrders: count });
     } catch (error) {
-        res.status(500).json({ error: 'Server error' });
+        logger.error(`Error fetching total order count: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 };
 
@@ -16,9 +19,11 @@ exports.getOrdersPerServiceType = async (req, res) => {
         const result = await Order.aggregate([
             { $group: { _id: '$serviceType', count: { $sum: 1 } } }
         ]);
-        res.json(result);
+        logger.info('Fetched orders per service type');
+        res.status(200).json({ success: true, data: result });
     } catch (error) {
-        res.status(500).json({ error: 'Server error' });
+        logger.error(`Error fetching orders per service type: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 };
 
@@ -26,9 +31,11 @@ exports.getOrdersPerServiceType = async (req, res) => {
 exports.getTotalOrders = async (req, res) => {
     try {
         const totalOrders = await Order.countDocuments({});
-        res.status(200).json({ totalOrders });
+        logger.info('Fetched total orders');
+        res.status(200).json({ success: true, totalOrders });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch total orders' });
+        logger.error(`Error fetching total orders: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Failed to fetch total orders' });
     }
 };
 
@@ -45,12 +52,15 @@ exports.getRevenueAnalytics = async (req, res) => {
             { $group: { _id: null, avgValue: { $avg: '$amount' } } }
         ]);
 
+        logger.info('Fetched revenue analytics');
         res.status(200).json({
+            success: true,
             totalRevenue: totalRevenue[0]?.total || 0,
             avgOrderValue: avgOrderValue[0]?.avgValue || 0
         });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch revenue analytics' });
+        logger.error(`Error fetching revenue analytics: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Failed to fetch revenue analytics' });
     }
 };
 
@@ -61,9 +71,11 @@ exports.getOrdersByServiceType = async (req, res) => {
             { $group: { _id: '$serviceType', count: { $sum: 1 } } }
         ]);
 
-        res.status(200).json(ordersByServiceType);
+        logger.info('Fetched orders by service type');
+        res.status(200).json({ success: true, data: ordersByServiceType });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch orders by service type' });
+        logger.error(`Error fetching orders by service type: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Failed to fetch orders by service type' });
     }
 };
 
@@ -75,9 +87,11 @@ exports.getRevenueByServiceType = async (req, res) => {
             { $group: { _id: '$serviceType', totalRevenue: { $sum: '$amount' } } }
         ]);
 
-        res.status(200).json(revenueByServiceType);
+        logger.info('Fetched revenue by service type');
+        res.status(200).json({ success: true, data: revenueByServiceType });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch revenue by service type' });
+        logger.error(`Error fetching revenue by service type: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Failed to fetch revenue by service type' });
     }
 };
 
@@ -94,9 +108,11 @@ exports.getOrdersOverTime = async (req, res) => {
             { $sort: { _id: 1 } }
         ]);
 
-        res.status(200).json(ordersOverTime);
+        logger.info('Fetched orders over time');
+        res.status(200).json({ success: true, data: ordersOverTime });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch orders over time' });
+        logger.error(`Error fetching orders over time: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Failed to fetch orders over time' });
     }
 };
 
@@ -107,15 +123,17 @@ exports.getRevenueOverTime = async (req, res) => {
             {
                 $group: {
                     _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-                    totalRevenue: { $sum: "$amount" } // Assuming 'amount' is the field representing the revenue in your Order model
+                    totalRevenue: { $sum: "$amount" } 
                 }
             },
             { $sort: { _id: 1 } }
         ]);
 
-        res.status(200).json(revenueOverTime);
+        logger.info('Fetched revenue over time');
+        res.status(200).json({ success: true, data: revenueOverTime });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch revenue over time' });
+        logger.error(`Error fetching revenue over time: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Failed to fetch revenue over time' });
     }
 };
 
@@ -129,10 +147,10 @@ exports.getTopClients = async (req, res) => {
             { $limit: 5 }
         ]);
 
-        res.status(200).json(topClients);
+        logger.info('Fetched top clients');
+        res.status(200).json({ success: true, data: topClients });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch top clients' });
+        logger.error(`Error fetching top clients: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Failed to fetch top clients' });
     }
 };
-
-

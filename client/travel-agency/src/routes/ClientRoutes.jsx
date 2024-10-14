@@ -15,9 +15,10 @@ import HotelDetails from '../client/components/hotelpage/HotelDetails';
 import BookHotel from '../client/components/hotelpage/BookHotel.jsx';
 import NotFound from '../pages/NotFound';
 import UserDashboard from '../client/pages/UserDashboard.jsx';
-import BookFlights from '../client/components/flightpage/BookFlights.jsx';
+import AddPassengers from '../client/components/flightpage/AddPassengers.jsx';
 import SeatSelection from '../client/components/flightpage/SeatSelection.jsx';
 import Test from '../client/pages/test.jsx';
+import FailurePage from '../pages/FailurePage.jsx';
 
 const ClientRoutes = () => {
   return (
@@ -27,7 +28,7 @@ const ClientRoutes = () => {
       <Route path="login" element={<ClientLayout><LogIn /></ClientLayout>} />
       <Route path="flights" element={<ClientLayout><FlightSearch /></ClientLayout>} />
       <Route path="flight-details" element={<ClientLayout><FlightDetails /></ClientLayout>} />
-      <Route path="book-flight" element={<ClientLayout><BookFlights /></ClientLayout>} />
+      <Route path="flight/add-passengers" element={<ClientLayout><AddPassengers/></ClientLayout>} />
       <Route path="flight/seats" element={<ClientLayout><SeatSelection /></ClientLayout>} />
       <Route path="bus" element={<ClientLayout><BusSearch /></ClientLayout>} />
       <Route path="hotel" element={<ClientLayout><HotelSearch /></ClientLayout>} />
@@ -37,6 +38,7 @@ const ClientRoutes = () => {
       <Route path="mobile-recharge" element={<ClientLayout><RechargePage /></ClientLayout>} />
       <Route path="dashboard" element={<ClientLayout><UserDashboard /></ClientLayout>} />
       <Route path="success" element={<ClientLayout><SuccessPage /></ClientLayout>} />
+      <Route path="failure" element={<ClientLayout><FailurePage /></ClientLayout>} />
       <Route path="test" element={<Test />} />
       <Route path="*" element={<ClientLayout><NotFound /></ClientLayout>} />
     </Routes>
