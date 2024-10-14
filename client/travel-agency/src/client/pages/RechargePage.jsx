@@ -82,7 +82,7 @@ const RechargePage = () => {
         circle: initialCircle,
         amount,
       };
-      payment(amount, receipt, serviceType, serviceDetails)      
+      payment(amount, receipt, serviceType, serviceDetails)
     } else {
       toast.error("Invalid amount. Please enter a valid amount for recharge.");
     }
@@ -92,10 +92,18 @@ const RechargePage = () => {
     <div>
       <div className="container-fluid">
         <div className="row p-2">
-        <div className="row">
+          <div className="row">
             <div className="col-12 text-center">
-              <h3 className="fw-bold text-white px-1 py-1 rounded" style={{background:"#8c3eea"}}>
-                Get Your Recharge Done
+              <h3
+                className="fw-bold text-white p-4 rounded"
+                style={{
+                  background: 'linear-gradient(90deg, #8c3eea, #d063f0)',
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+                  borderRadius: '10px',
+                  fontSize: '1.2rem'
+                }}
+              >
+                Stay Connected with Quick Mobile Top-Ups
               </h3>
             </div>
           </div>

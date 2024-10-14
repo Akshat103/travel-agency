@@ -57,13 +57,21 @@ const BusSearch = () => {
     <div>
       <div className="container-fluid">
         <div className="row p-2">
-          <div className="row mb-2">
-            <div className="col-12 text-center">
-              <h3 className="fw-bold text-white px-1 py-1 rounded" style={{ background: "#8c3eea" }}>
-                Start Adventure
-              </h3>
-            </div>
+        <div className="row">
+          <div className="col-12 text-center">
+            <h3
+              className="fw-bold text-white p-4 rounded"
+              style={{
+                background: 'linear-gradient(90deg, #8c3eea, #d063f0)',
+                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+                borderRadius: '10px',
+                fontSize: '1.2rem'
+              }}
+            >
+              Find and Book Your Next Bus Journey
+            </h3>
           </div>
+        </div>
           <div className="col-md-3" style={{ borderRadius: '20px' }}>
             <Bus layout="col" onSearch={handleSearch} />
           </div>

@@ -43,7 +43,10 @@ const ClientNavBar = () => {
                                             <Link to="/bus" className="nav-link">Bus <i className="fas fa-angle-down"></i></Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/contact" className="nav-link">Contact <i className="fas fa-angle-down"></i></Link>
+                                            <Link to="/contact-us" className="nav-link">Contact <i className="fas fa-angle-down"></i></Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to="/about-us" className="nav-link">About Us<i className="fas fa-angle-down"></i></Link>
                                         </li>
                                     </ul>
                                 </nav>
@@ -93,11 +96,15 @@ const ClientNavBar = () => {
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/contact" classNameName="nav-link">
+                                        <Link to="/contact-us" classNameName="nav-link">
                                             Contact
                                         </Link>
                                     </li>
-
+                                    <li className="nav-item">
+                                        <Link to="/about-us" classNameName="nav-link">
+                                            About Us
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
                         </nav>

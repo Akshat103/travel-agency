@@ -65,7 +65,7 @@ const searchFlights = async (req, res) => {
     } else {
         const returnDate = formatDate(requestdata.DepartureDate);
         transformedData = {
-            Travel_Type: Travel_Type,
+            Travel_Type: requestdata.Travel_Type,
             TripInfo: [
                 {
                     Origin: requestdata.Origin.AIRPORTCODE,
@@ -90,6 +90,7 @@ const searchFlights = async (req, res) => {
             Filtered_Airline: []
         };
     }
+
     try {
         const response = await axios.post(FLIGHT_API_SERVICE_URL, {
             methodname: 'FLIGHTSEARCH',

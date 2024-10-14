@@ -60,8 +60,16 @@ const HotelSearch = () => {
       <div className="row p-2">
         <div className="row">
           <div className="col-12 text-center">
-            <h3 className="fw-bold text-white px-1 py-1 rounded" style={{ background: "#8c3eea" }}>
-              Hotel
+            <h3
+              className="fw-bold text-white p-4 rounded"
+              style={{
+                background: 'linear-gradient(90deg, #8c3eea, #d063f0)',
+                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+                borderRadius: '10px',
+                fontSize: '1.2rem'
+              }}
+            >
+              Comfort and Luxury Awaits – Book Your Hotel Now
             </h3>
           </div>
         </div>

@@ -1,39 +1,53 @@
 import React from 'react';
+import DatePicker from 'react-datepicker';
 
 const DateRangeInput = ({ onHome, isRoundTrip, startDate, endDate, onChange }) => {
+
+  const formatDate = (date) => {
+    return date ? new Date(date).toLocaleDateString() : '';
+  };
+
   return (
     <div className={`${!onHome ? '' : isRoundTrip ? 'col-lg-5 col-md-6 col-sm-12 col-12' : 'col-lg-3 col-md-6 col-sm-12 col-12'}`}>
-    <div className={`${onHome ? 'row' : 'col'}`}>
-    <div className={`${!onHome ? '' : isRoundTrip ? 'col-12 col-md-6' : ''}`}>
-        <div className="flight_Search_boxed m-2">
-          <div className="Journey_date">
-            <p>Journey date</p>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => onChange(e.target.value, endDate)}
-            />
-            <span style={{ color: "transparent" }}>date</span>
-          </div>
-        </div>
-      </div>
-
-      {isRoundTrip && (
+      <div className={`${onHome ? 'row' : 'col'}`}>
         <div className={`${!onHome ? '' : isRoundTrip ? 'col-12 col-md-6' : ''}`}>
           <div className="flight_Search_boxed m-2">
-            <div className="Return_date">
-              <p>Return date</p>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => onChange(startDate, e.target.value)}
+            <div className="Journey_date">
+              <p>Journey date</p>
+              <DatePicker
+                selected={startDate ? new Date(startDate) : null}
+                onChange={(date) => onChange(date, endDate)} 
+                dateFormat="MM/dd/yyyy"
+                placeholderText='MM/DD/YYYY'
+                showYearDropdown
+                minDate={new Date()}
+                scrollableYearDropdown
               />
-              <span style={{ color: "transparent" }}>date</span>
+              <span>{startDate ? formatDate(startDate) : 'Date'}</span>
             </div>
           </div>
         </div>
-      )}
-    </div>
+
+        {isRoundTrip && (
+          <div className={`${!onHome ? '' : isRoundTrip ? 'col-12 col-md-6' : ''}`}>
+            <div className="flight_Search_boxed m-2">
+              <div className="Return_date">
+                <p>Return date</p>
+                <DatePicker
+                  selected={endDate ? new Date(endDate) : null}
+                  onChange={(date) => onChange(startDate, date)} 
+                  dateFormat="MM/dd/yyyy"
+                  placeholderText='MM/DD/YYYY'
+                  showYearDropdown
+                  minDate={startDate ? new Date(startDate) : new Date()}
+                  scrollableYearDropdown
+                />
+                <span>{endDate ? formatDate(endDate) : 'Date'}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
