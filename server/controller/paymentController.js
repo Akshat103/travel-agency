@@ -60,10 +60,6 @@ async function initiateRefund(paymentId) {
     }
 }
 
-const crypto = require('crypto');
-const OrderSchema = require('../models/Order');
-const { rechargeRequest, busSeatbook, bookFlight, initiateRefund } = require('../services');
- 
 module.exports.verifyOrder = async (req, res) => {
     try {
         // Destructure the necessary fields from the request body
