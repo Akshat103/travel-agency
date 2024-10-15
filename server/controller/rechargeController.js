@@ -100,7 +100,11 @@ const rechargeRequest = async (number, operator, circle, amount, orderid, Rechar
             throw new Error('Failed to update order with recharge response');
         }
 
-        return response.data.Status === 'Success' ? true : false;
+        if (response.data.Status === 'Success') {
+            return true;
+        } else {
+            return false;
+        }
     } catch (error) {
         console.error('Recharge Request Failed:', error.message);
 

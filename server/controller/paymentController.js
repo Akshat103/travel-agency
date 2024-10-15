@@ -121,11 +121,15 @@ module.exports.verifyOrder = async (req, res) => {
                         throw new Error("Missing recharge details");
                     }
 
-                    await rechargeRequest(number, operator, circle, amount, razorpay_order_id);
-                    return res.status(201).json({
-                        success: true,
-                        message: "Recharge done successfully."
-                    });
+                    const rechargeSuccess = await rechargeRequest(number, operator, circle, amount, razorpay_order_id);
+                    if (rechargeSuccess) {
+                        return res.status(201).json({
+                            success: true,
+                            message: "Recharge done successfully."
+                        });
+                    } else {
+                        throw new Error("Recharge failed");
+                    }
 
                 case 'bookbus':
                     response = await busSeatbook(updatedOrder.serviceDetails, clientId);
