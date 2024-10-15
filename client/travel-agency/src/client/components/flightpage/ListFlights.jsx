@@ -15,7 +15,6 @@ const ListFlights = ({ isSearching }) => {
     const containerRef = useRef(null);
 
     const handleViewDetails = (flight) => {
-        console.log(flight)
         navigate('/flight-details', { state: { flight } });
     };
 

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 const RechargeLog = require('../models/RechargeLog');
+const OrderSchema = require('../models/Order');
 
 const { MEMBER_ID, RECHARGE_PIN, RECHARGE_API_URL, RECHARGE_CR_OP_PASS, RECHARGE_PLAN_PASS } = process.env;
 
@@ -58,9 +59,10 @@ const getOperator = async (req, res) => {
     }
 };
 
-const rechargeRequest = async (number, operator, circle, amount, orderid, clientId, RechargeMode = 0) => {
+const rechargeRequest = async (number, operator, circle, amount, orderid, RechargeMode = 0) => {
 
     try {
+        console.log(number, operator, circle, amount, orderid, RechargeMode)
         const response = await axios.get(
             `${RECHARGE_API_URL}/services_cyapi/recharge_cyapi.aspx`,
             {
@@ -77,29 +79,36 @@ const rechargeRequest = async (number, operator, circle, amount, orderid, client
                 },
             }
         );
+        console.log(response)
 
-        const rechargeLog = new RechargeLog({
-            clientId: clientId,
-            usertx: orderid,
-            number,
-            amount,
-            status: response.data.Status || 'Unknown',
-            transaction: response.data.ApiTransID || 'No Transaction ID',
-            entryLog: response.data,
-        });
+        console.log(`${RECHARGE_API_URL}/services_cyapi/recharge_cyapi.aspx`,
+            {
+                params: {
+                    memberid: MEMBER_ID,
+                    pin: RECHARGE_PIN,
+                    number,
+                    operator,
+                    circle,
+                    amount,
+                    usertx: orderid,
+                    format: 'json',
+                    RechargeMode,
+                },
+            })
 
-        await rechargeLog.save();
+        await OrderSchema.findOneAndUpdate(
+            { orderId: razorpay_order_id },
+            { serviceResponse: response.data },
+            { new: true }
+        );
+
         return true;
     } catch (error) {
-        const errorLog = new RechargeLog({
-            clientId: clientId,
-            status: 'Failed',
-            transaction: 'No Transaction ID',
-            entryLog: { error: error.message },
-        });
-
-        await errorLog.save();
-
+        await OrderSchema.findOneAndUpdate(
+            { orderId: razorpay_order_id },
+            { serviceResponse: error.message },
+            { new: true }
+        );
         throw new Error(error.message);
     }
 };

@@ -89,7 +89,7 @@ module.exports.verifyOrder = async (req, res) => {
             let response;
             if (serviceType === 'recharge') {
                 const { number, operator, circle, amount } = updatedOrder.serviceDetails;
-                await rechargeRequest(number, operator, circle, amount, razorpay_order_id, clientId);
+                await rechargeRequest(number, operator, circle, amount, razorpay_order_id);
                 return res.status(201).json({
                     success: true,
                     message: "Recharge done successfully."
@@ -111,7 +111,7 @@ module.exports.verifyOrder = async (req, res) => {
             }
         } catch (error) {
             // Initiate refund on failure
-            await initiateRefund(razorpay_payment_id); // Implement this function to handle refunds
+            await initiateRefund(razorpay_payment_id);
             await OrderSchema.findOneAndUpdate(
                 { orderId: razorpay_order_id },
                 { status: 'failed' }
@@ -121,7 +121,7 @@ module.exports.verifyOrder = async (req, res) => {
                 order: false,
                 success: false,
                 message: "Booking failed, refund initiated.",
-                error: error.message // Optionally include the error message for debugging
+                error: error.message
             });
         }
     } else {

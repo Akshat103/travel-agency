@@ -104,7 +104,6 @@ const Hotel = ({ isVertical, onSearch }) => {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         if (isVertical) {
             onSearch();
         } else {
@@ -133,7 +132,7 @@ const Hotel = ({ isVertical, onSearch }) => {
                                     <DatePicker
                                         id="CheckInDate"
                                         name="CheckInDate"
-                                        selected={formData.CheckInDate || new Date(new Date().setDate(new Date().getDate() + 1))}
+                                        selected={formData.CheckInDate}
                                         onChange={(date) => {
                                             dispatch(updateFormField({ field: 'CheckInDate', value: date }));
                                         }}
@@ -152,14 +151,14 @@ const Hotel = ({ isVertical, onSearch }) => {
                                     <DatePicker
                                         id="CheckOutDate"
                                         name="CheckOutDate"
-                                        selected={formData.CheckOutDate || new Date(new Date().setDate(new Date().getDate() + 1))}
+                                        selected={formData.CheckOutDate}
                                         onChange={(date) => {
                                             dispatch(updateFormField({ field: 'CheckOutDate', value: date }));
                                         }}
                                         dateFormat="MM/dd/yyyy"
                                         placeholderText='MM/DD/YYYY'
                                         showMonthDropdown
-                                        minDate={new Date()}
+                                        minDate={formData.CheckInDate}
                                         scrollableYearDropdown
                                     />
 
@@ -167,7 +166,7 @@ const Hotel = ({ isVertical, onSearch }) => {
                             </div>
 
                             <div className={`${isVertical ? '' : 'col-md-2'} flight_Search_boxed`}>
-                                <p>City Name</p>
+                                <p>City or Place</p>
                                 <div style={{ overflow: 'hidden' }}>
                                     <input
                                         type="text"

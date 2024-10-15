@@ -15,11 +15,12 @@ const DateRangeInput = ({ onHome, isRoundTrip, startDate, endDate, onChange }) =
             <div className="Journey_date">
               <p>Journey date</p>
               <DatePicker
-                selected={startDate ? new Date(startDate) : null}
-                onChange={(date) => onChange(date, endDate)} 
+                selected={startDate}
+                onChange={(date) => onChange(date, endDate)}
                 dateFormat="MM/dd/yyyy"
-                placeholderText='MM/DD/YYYY'
+                placeholderText="MM/dd/yyyy"
                 showYearDropdown
+                showMonthDropdown
                 minDate={new Date()}
                 scrollableYearDropdown
               />
@@ -34,11 +35,12 @@ const DateRangeInput = ({ onHome, isRoundTrip, startDate, endDate, onChange }) =
               <div className="Return_date">
                 <p>Return date</p>
                 <DatePicker
-                  selected={endDate ? new Date(endDate) : null}
-                  onChange={(date) => onChange(startDate, date)} 
+                  selected={endDate}
+                  onChange={(date) => onChange(startDate, date)}
                   dateFormat="MM/dd/yyyy"
-                  placeholderText='MM/DD/YYYY'
+                  placeholderText="MM/dd/yyyy"
                   showYearDropdown
+                  showMonthDropdown
                   minDate={startDate ? new Date(startDate) : new Date()}
                   scrollableYearDropdown
                 />

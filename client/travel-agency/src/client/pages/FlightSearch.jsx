@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateSearchResult, updateSearchKey, updateFlightDetails } from '../../redux/flightSlice';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const FlightSearch = () => {
   const [isSearching, setIsSearching] = useState(false);
   const dispatch = useDispatch();
   const flightDetails = useSelector((state) => state.flights.flightDetails);
+  const navigate = useNavigate();
 
   const handleSearch = async (details) => {
     setIsSearching(true);
@@ -68,8 +70,13 @@ const FlightSearch = () => {
       toast.success('Flights found successfully!');
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error('Error searching flights. Please try again.');
-      console.error('Error searching flights:', error);
+      if(error.response.status===401){
+        toast.error(error.response.data.message);
+        navigate(error.response.data.redirect)
+      }else{
+        toast.error('Error searching flights. Please try again.');
+        console.error('Error searching flights:', error);
+      }
     } finally {
       setIsSearching(false);
     }

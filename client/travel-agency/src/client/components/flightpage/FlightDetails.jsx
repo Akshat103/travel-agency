@@ -15,8 +15,6 @@ const FlightDetails = () => {
   const location = useLocation();
   const { flight } = location.state || {};
   
-  console.log(flight);
-
   if (!flight) {
     return <div>Flight not found</div>;
   }

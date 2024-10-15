@@ -21,7 +21,7 @@ const AddPassengers = () => {
     const dispatch = useDispatch();
     const passengers = useSelector((state) => state.flights.passengers);
     const [submitting, setSubmitting] = useState(false);
-    console.log(flightDetails)
+
     useEffect(() => {
         // Initialize passengers based on flightDetails
         let count = 1;

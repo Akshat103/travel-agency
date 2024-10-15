@@ -13,6 +13,9 @@ const OrderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
         required: true
     },
+    serviceResponse: {
+        type: mongoose.Schema.Types.Mixed
+    },
     orderId: {
         type: String,
         required: true
