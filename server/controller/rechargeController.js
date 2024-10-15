@@ -60,59 +60,60 @@ const getOperator = async (req, res) => {
 };
 
 const rechargeRequest = async (number, operator, circle, amount, orderid, RechargeMode = 0) => {
-
     try {
-        console.log(number, operator, circle, amount, orderid, RechargeMode)
-        const response = await axios.get(
-            `${RECHARGE_API_URL}/services_cyapi/recharge_cyapi.aspx`,
-            {
-                params: {
-                    memberid: MEMBER_ID,
-                    pin: RECHARGE_PIN,
-                    number,
-                    operator,
-                    circle,
-                    amount,
-                    usertx: orderid,
-                    format: 'json',
-                    RechargeMode,
-                },
-            }
-        );
-        console.log(response)
+        // Input validation checks
+        if (!number || !operator || !circle || !amount || !orderid) {
+            throw new Error('Missing required recharge details: number, operator, circle, amount, or orderId');
+        }
 
-        console.log(`${RECHARGE_API_URL}/services_cyapi/recharge_cyapi.aspx`,
-            {
-                params: {
-                    memberid: MEMBER_ID,
-                    pin: RECHARGE_PIN,
-                    number,
-                    operator,
-                    circle,
-                    amount,
-                    usertx: orderid,
-                    format: 'json',
-                    RechargeMode,
-                },
-            })
+        console.log('Recharge Request:', { number, operator, circle, amount, orderid, RechargeMode });
 
-        await OrderSchema.findOneAndUpdate(
-            { orderId: razorpay_order_id },
+        const params = {
+            memberid: process.env.MEMBER_ID,
+            pin: process.env.RECHARGE_PIN,
+            number,
+            operator,
+            circle,
+            amount,
+            usertx: orderid,
+            format: 'json',
+            RechargeMode,
+        };
+
+        console.log('Recharge API Request Params:', params);
+
+        // Making the API call
+        const response = await axios.get(`${process.env.RECHARGE_API_URL}/services_cyapi/recharge_cyapi.aspx`, {
+            params,
+        });
+
+        console.log('Recharge API Response:', response.data);
+
+        // Update the order with the response from the API
+        const updatedOrder = await OrderSchema.findOneAndUpdate(
+            { orderId: orderid },
             { serviceResponse: response.data },
             { new: true }
         );
 
+        if (!updatedOrder) {
+            throw new Error('Failed to update order with recharge response');
+        }
+
         return true;
     } catch (error) {
+        console.error('Recharge Request Failed:', error.message);
+
+        // Update the order with the error message if the API request fails
         await OrderSchema.findOneAndUpdate(
-            { orderId: razorpay_order_id },
+            { orderId: orderid },
             { serviceResponse: error.message },
             { new: true }
         );
-        throw new Error(error.message);
+
+        throw new Error(`Recharge failed: ${error.message}`);
     }
 };
-
 
 // Dispute Request
 const disputeRequest = async (req, res) => {
