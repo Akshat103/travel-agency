@@ -60,24 +60,52 @@ async function initiateRefund(paymentId) {
     }
 }
 
+const crypto = require('crypto');
+const OrderSchema = require('../models/Order');
+const { rechargeRequest, busSeatbook, bookFlight, initiateRefund } = require('../services');
+ 
 module.exports.verifyOrder = async (req, res) => {
-    const { razorpay_payment_id, razorpay_order_id, razorpay_signature, serviceType } = req.body;
-    const clientId = req.user.clientId;
-console.log(razorpay_payment_id, razorpay_order_id, razorpay_signature, serviceType)
-    const body = razorpay_order_id + "|" + razorpay_payment_id;
-    const generated_signature = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_ID)
-        .update(body.toString())
-        .digest('hex');
+    try {
+        // Destructure the necessary fields from the request body
+        const { razorpay_payment_id, razorpay_order_id, razorpay_signature, serviceType } = req.body;
 
-    const isAuthentic = generated_signature === razorpay_signature;
+        // Check if all required fields are available
+        if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature || !serviceType) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing required payment or service information",
+                error: "Required fields: razorpay_payment_id, razorpay_order_id, razorpay_signature, serviceType"
+            });
+        }
 
-    if (isAuthentic) {
+        const clientId = req.user.clientId;
+
+        // Verify signature
+        const body = `${razorpay_order_id}|${razorpay_payment_id}`;
+        const generated_signature = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_ID)
+            .update(body.toString())
+            .digest('hex');
+
+        const isAuthentic = generated_signature === razorpay_signature;
+
+        if (!isAuthentic) {
+            await OrderSchema.findOneAndUpdate(
+                { orderId: razorpay_order_id },
+                { status: 'failed' }
+            );
+            return res.status(400).json({
+                success: false,
+                message: "Payment verification failed",
+                error: "Generated signature does not match the provided signature"
+            });
+        }
+
+        // Find and update the order status to 'paid'
         const updatedOrder = await OrderSchema.findOneAndUpdate(
             { orderId: razorpay_order_id },
             { status: 'paid' },
             { new: true }
         );
-        console.log(updatedOrder)
 
         if (!updatedOrder) {
             return res.status(404).json({
@@ -86,32 +114,44 @@ console.log(razorpay_payment_id, razorpay_order_id, razorpay_signature, serviceT
             });
         }
 
+        // Service-based handling
         try {
             let response;
-            if (serviceType === 'recharge') {
-                const { number, operator, circle, amount } = updatedOrder.serviceDetails;
-                await rechargeRequest(number, operator, circle, amount, razorpay_order_id);
-                return res.status(201).json({
-                    success: true,
-                    message: "Recharge done successfully."
-                });
-            } else if (serviceType === 'bookbus') {
-                response = await busSeatbook(updatedOrder.serviceDetails, clientId);
-                return res.status(201).json({
-                    success: true,
-                    message: "Bus booking done successfully.",
-                    data: response
-                });
-            } else if (serviceType === 'bookflight') {
-                response = await bookFlight(updatedOrder.serviceDetails, clientId);
-                return res.status(201).json({
-                    success: true,
-                    message: "Flight booking done successfully.",
-                    data: response
-                });
+            switch (serviceType) {
+                case 'recharge':
+                    const { number, operator, circle, amount } = updatedOrder.serviceDetails;
+
+                    if (!number || !operator || !circle || !amount) {
+                        throw new Error("Missing recharge details");
+                    }
+
+                    await rechargeRequest(number, operator, circle, amount, razorpay_order_id);
+                    return res.status(201).json({
+                        success: true,
+                        message: "Recharge done successfully."
+                    });
+
+                case 'bookbus':
+                    response = await busSeatbook(updatedOrder.serviceDetails, clientId);
+                    return res.status(201).json({
+                        success: true,
+                        message: "Bus booking done successfully.",
+                        data: response
+                    });
+
+                case 'bookflight':
+                    response = await bookFlight(updatedOrder.serviceDetails, clientId);
+                    return res.status(201).json({
+                        success: true,
+                        message: "Flight booking done successfully.",
+                        data: response
+                    });
+
+                default:
+                    throw new Error("Invalid service type");
             }
         } catch (error) {
-            // Initiate refund on failure
+            // Handle booking failure, initiate refund
             await initiateRefund(razorpay_payment_id);
             await OrderSchema.findOneAndUpdate(
                 { orderId: razorpay_order_id },
@@ -119,21 +159,16 @@ console.log(razorpay_payment_id, razorpay_order_id, razorpay_signature, serviceT
             );
 
             return res.status(400).json({
-                order: false,
                 success: false,
                 message: "Booking failed, refund initiated.",
                 error: error.message
             });
         }
-    } else {
-        await OrderSchema.findOneAndUpdate(
-            { orderId: razorpay_order_id },
-            { status: 'failed' }
-        );
-
-        return res.status(400).json({
+    } catch (error) {
+        return res.status(500).json({
             success: false,
-            message: "Payment verification failed"
+            message: "Internal server error",
+            error: error.message
         });
     }
 };
