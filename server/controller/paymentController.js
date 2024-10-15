@@ -63,7 +63,7 @@ async function initiateRefund(paymentId) {
 module.exports.verifyOrder = async (req, res) => {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature, serviceType } = req.body;
     const clientId = req.user.clientId;
-
+console.log(razorpay_payment_id, razorpay_order_id, razorpay_signature, serviceType)
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const generated_signature = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_ID)
         .update(body.toString())
@@ -77,6 +77,7 @@ module.exports.verifyOrder = async (req, res) => {
             { status: 'paid' },
             { new: true }
         );
+        console.log(updatedOrder)
 
         if (!updatedOrder) {
             return res.status(404).json({

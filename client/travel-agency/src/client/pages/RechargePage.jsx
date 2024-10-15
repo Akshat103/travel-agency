@@ -73,6 +73,11 @@ const RechargePage = () => {
   const uniqueTypes = [...new Set(plans.map(plan => plan.recharge_type))];
 
   const handleRecharge = async (amount) => {
+    if (!initialNumber || !initialOperator || !initialCircle) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+  
     if (Number(amount) > 0) {
       const receipt = `recharge_rcptid_${Math.floor(Math.random() * 10000)}`;
       const serviceType = "recharge";
@@ -82,7 +87,8 @@ const RechargePage = () => {
         circle: initialCircle,
         amount,
       };
-      payment(amount, receipt, serviceType, serviceDetails)
+  
+      payment(amount, receipt, serviceType, serviceDetails);
     } else {
       toast.error("Invalid amount. Please enter a valid amount for recharge.");
     }
