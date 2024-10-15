@@ -161,6 +161,7 @@ module.exports.verifyOrder = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Booking failed, refund initiated.",
+                recharge: false,
                 error: error.message
             });
         }

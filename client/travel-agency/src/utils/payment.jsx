@@ -54,7 +54,11 @@ const usePayment = () => {
                                 if (redirect) {
                                     navigate(redirect);
                                 }
-                            } else if(error.response.data.order===false){
+                            } else if (error.response.data.order === false) {
+                                toast.error(error.response.data.message);
+                                navigate('/failure')
+                                reject(error);
+                            } else if (error.response.data.recharge === false) {
                                 toast.error(error.response.data.message);
                                 navigate('/failure')
                                 reject(error);
