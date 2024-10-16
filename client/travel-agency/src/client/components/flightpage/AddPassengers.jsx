@@ -129,7 +129,7 @@ const AddPassengers = () => {
                 reprice
             });
             setSubmitting(false);
-
+console.log(response.data)
             if (response.data) {
                 navigate('/flight/seats', {
                     state: { seatData: response.data.data, fareId, searchKey, flightKey: response.data.updatedflightKey, totalPrice: calculateTotalPrice() }

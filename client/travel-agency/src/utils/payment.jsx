@@ -38,6 +38,7 @@ const usePayment = () => {
                             if (data.success && serviceType === "bookbus") {
                                 navigate('/success', { state: { message: `Booking ID: ${data.data.booking_id}` } });
                             }
+                            console.log(data)
                             if (data.success && serviceType === "bookflight") {
                                 navigate('/success', { state: { message: `Booking ID: ${data.data.Booking_RefNo}` } });
                             }

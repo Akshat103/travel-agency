@@ -1,196 +1,222 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Card } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, Form, Card, Container, Row, Col, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { ArrowLeft, Info } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
-import usePayment from '../../../utils/payment';
 import { updatePassenger } from '../../../redux/flightSlice';
-import { toast } from 'react-toastify';
 
-const SeatSelection = () => {
-    const [selectedSeats, setSelectedSeats] = useState({});
-    const [filteredSeats, setFilteredSeats] = useState({});
-    const [customerInfo, setCustomerInfo] = useState({
-        mobile: '',
-        email: '',
-    });
+const SeatSelection = ({ passengers, seatData, onBack }) => {
+  const dispatch = useDispatch();
+  const [selectedSeats, setSelectedSeats] = useState({});
+  const [showSeatMap, setShowSeatMap] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [selectedPassengerCount, setSelectedPassengerCount] = useState(passengers[0]?.passengerCount || 0);
+  console.log(passengers)
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-    const dispatch = useDispatch();
-    const { payment } = usePayment();
-    const flightDetails = useSelector((state) => state.flights.flightDetails);
-    const passengers = useSelector((state) => state.flights.passengers);
+  const handleSeatSelection = (passengerCount, seat) => {
+    setSelectedSeats((prev) => ({
+      ...prev,
+      [passengerCount]: seat,
+    }));
 
-    const location = useLocation();
-    const navigate = useNavigate();
+    const updatedPassengerIndex = passengers.findIndex(p => p.passengerCount === passengerCount);
 
-    const { seatData, totalPrice, flightKey, searchKey, fareId } = location.state;
-    const getUniqueSeats = (seats) => {
-        const seenKeys = new Set();
-        return seats.filter(seat => {
-            if (seenKeys.has(seat.SSR_Key)) {
-                return false;
-            } else {
-                seenKeys.add(seat.SSR_Key);
-                return true;
-            }
-        });
-    };
+    if (updatedPassengerIndex !== -1) {
+      const updatedPassenger = {
+        ...passengers[updatedPassengerIndex],
+        SSR_Key: seat.SSR_Key,
+        seatPrice: seat.Total_Amount,
+      };
 
-    useEffect(() => {
-        const newFilteredSeats = {};
-        passengers.forEach((passenger) => {
-            const uniqueSeats = getUniqueSeats(seatData.filter(
-                (seat) =>
-                    seat.ApplicablePaxTypes.includes(Number(passenger.Pax_type))
-            ));
-            newFilteredSeats[passenger.First_Name] = uniqueSeats;
-        });
-        setFilteredSeats(newFilteredSeats);
-    }, [passengers, seatData]);
+      dispatch(updatePassenger({
+        index: updatedPassengerIndex,
+        data: updatedPassenger
+      }));
+    } else {
+      console.error(`Passenger with count ${passengerCount} not found.`);
+    }
+  };
 
-    // Handle seat selection for each passenger
-    const handleSeatSelection = (passengerFirstName, seat) => {
-        setSelectedSeats((prev) => ({
-            ...prev,
-            [passengerFirstName]: {
-                ...seat,
-                SSR_Key: seat.SSR_Key
-            }
-        }));
+  const getSeatColor = (seat, passenger) => {
+    if (Object.values(selectedSeats).some((s) => s.SSR_Key === seat.SSR_Key)) return 'success';
+    if (!seat.ApplicablePaxTypes.includes(Number(passenger.Pax_type))) return 'light';
+    switch (seat.SSR_Status) {
+      case 0: return 'secondary';
+      case 1: return 'primary';
+      case 2: return 'warning';
+      case 3: return 'danger';
+      default: return 'light';
+    }
+  };
 
-        const passengerIndex = passengers.findIndex(passenger => passenger.First_Name === passengerFirstName);
-
-        // Dispatch the updatePassenger action to update the selected seat's SSR_Key
-        if (passengerIndex !== -1) {
-            dispatch(updatePassenger({
-                index: passengerIndex,
-                data: { SSR_Key: seat.SSR_Key }
-            }));
-        }
-    };
-
-    // Calculate the total price based on selected seats
-    const calculateTotalPrice = () => {
-        let seatPrice = Object.values(selectedSeats).reduce((acc, seat) => acc + seat.Total_Amount, 0);
-        return totalPrice + seatPrice;
-    };
-
-    // Handle customer info input change
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setCustomerInfo((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    // Confirm seat selection
-    const handleConfirm = async () => {
-        const total = calculateTotalPrice();
-
-        const bookingData = {
-            flightDetails,
-            passengers,
-            flightKey,
-            searchKey,
-            fareId,
-            mobile: customerInfo.mobile,
-            email: customerInfo.email,
-            totalPrice: total
-        };
-
-        // Validation for flightDetails and passengers
-        const isFlightDetailsValid = bookingData.flightDetails &&
-            bookingData.flightDetails.Origin?.AIRPORTCODE &&
-            bookingData.flightDetails.Origin?.COUNTRYCODE &&
-            bookingData.flightDetails.Destination?.AIRPORTCODE &&
-            bookingData.flightDetails.Destination?.COUNTRYCODE &&
-            bookingData.flightDetails.TravelDate;
-
-        const isPassengerValid = bookingData.passengers && bookingData.passengers.every(passenger =>
-            passenger.Pax_type !== undefined &&
-            passenger.First_Name &&
-            passenger.Last_Name &&
-            passenger.Gender !== undefined &&
-            passenger.DOB &&
-            passenger.Passport_Number &&
-            passenger.Passport_Issuing_Country &&
-            passenger.Passport_Expiry &&
-            passenger.Nationality && passenger.SSR_Key && passenger.Title
-        );
-
-        // Validate all required fields
-        if (!isFlightDetailsValid || !isPassengerValid ||
-            !bookingData.flightKey || !bookingData.searchKey || !bookingData.fareId ||
-            !bookingData.mobile || !bookingData.email || bookingData.totalPrice <= 0) {
-            toast.error('Error: Missing or invalid booking details. Try again.');
-            return;
-        }
-
-        try {
-            const receipt = `flight_booking_rcptid_${Math.floor(Math.random() * 10000)}`;
-            const serviceType = "bookflight";
-            const serviceDetails = bookingData;
-            payment(total, receipt, serviceType, serviceDetails);
-        } catch (error) {
-            console.error('Error booking:', error.response ? error.response.data : error.message);
-        }
-    };
+  const renderSeat = (seat, passenger) => {
+    const seatColor = getSeatColor(seat, passenger);
+    const isApplicable = seat.ApplicablePaxTypes.includes(Number(passenger.Pax_type));
 
     return (
-        <div className="m-4">
-            <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-3">
-                Back
-            </button>
-            {passengers.map((passenger) => (
-                <Card key={passenger.First_Name} className="mb-3">
-                    <Card.Body>
-                        <Card.Title>{`${passenger.First_Name} ${passenger.Last_Name}`}</Card.Title>
-                        <Form.Group>
-                            <Form.Label>Select a seat:</Form.Label>
-                            <Form.Control
-                                as="select"
-                                onChange={(e) => handleSeatSelection(passenger.First_Name, JSON.parse(e.target.value))}
-                                value={selectedSeats[passenger.First_Name] ? JSON.stringify(selectedSeats[passenger.First_Name]) : ''}
-                            >
-                                <option value="">Choose a seat</option>
-                                {filteredSeats[passenger.First_Name]?.map((seat) => (
-                                    <option key={seat.SSR_Key} value={JSON.stringify(seat)}>
-                                        {seat.SSR_TypeDesc} - {seat.Currency_Code} {seat.Total_Amount}
-                                    </option>
-                                ))}
-                            </Form.Control>
-
-                        </Form.Group>
-                    </Card.Body>
-                </Card>
-            ))}
-
-            <h5 className="mt-3">Total Price: INR {calculateTotalPrice()}</h5>
-            <div className="row gap-2 mt-2">
-                <Form.Group>
-                    <Form.Control
-                        type="text"
-                        name="mobile"
-                        value={customerInfo.mobile}
-                        onChange={handleInputChange}
-                        placeholder="Enter mobile number"
-                    />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Control
-                        type="email"
-                        name="email"
-                        value={customerInfo.email}
-                        onChange={handleInputChange}
-                        placeholder="Enter email address"
-                    />
-                </Form.Group>
-            </div>
-            <Button variant="primary" className="mt-3" onClick={handleConfirm}>
-                Book
-            </Button>
-        </div>
+      <OverlayTrigger
+        key={seat.SSR_Key}
+        placement="top"
+        overlay={
+          <Tooltip id={`tooltip-${seat.SSR_Key}`}>
+            {seat.SSR_TypeDesc}<br />
+            {seat.Currency_Code} {seat.Total_Amount}<br />
+          </Tooltip>
+        }
+      >
+        <Button
+          className="m-1"
+          style={{ width: '40px', height: '40px', padding: 0 }}
+          variant={seatColor}
+          disabled={!isApplicable || seat.SSR_Status !== 1}
+          onClick={() => handleSeatSelection(passenger.passengerCount, seat)}
+        >
+          {seat.SSR_TypeName}
+        </Button>
+      </OverlayTrigger>
     );
+  };
+
+  const renderSeatMap = (currentPassenger) => {
+    if (Array.isArray(seatData) && seatData.length > 0) {
+      const rows = {};
+
+      seatData.forEach((block) => {
+        block.Seat_Details.forEach((seat) => {
+          if (seat.SSR_TypeName && typeof seat.SSR_TypeName === 'string') {
+            const row = seat.SSR_TypeName.slice(0, -1);
+            const column = seat.SSR_TypeName.slice(-1);
+
+            if (!rows[row]) {
+              rows[row] = {};
+            }
+            rows[row][column] = seat;
+          }
+        });
+      });
+
+      const rowKeys = Object.keys(rows).sort((a, b) => a - b);
+      const columns = Array.from(
+        new Set(
+          seatData.flatMap((block) =>
+            block.Seat_Details
+              .filter((seat) => seat.SSR_TypeName && typeof seat.SSR_TypeName === 'string')
+              .map((seat) => seat.SSR_TypeName.slice(-1))
+          )
+        )
+      ).sort();
+
+      return (
+        <Container fluid>
+          <div style={{ overflowX: 'auto', overflowY: 'auto', maxHeight: '300px' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(${columns.length + 1}, auto)`,
+                gridAutoRows: 'auto',
+                gap: '10px',
+              }}
+            >
+              {rowKeys.map((rowKey) => (
+                <React.Fragment key={rowKey}>
+                  <div
+                    className="d-flex align-items-center justify-content-end"
+                    style={{ gridColumn: '1', marginRight: '10px' }}
+                  >
+                    <strong>{rowKey}</strong>
+                  </div>
+                  {columns.map((column) => (
+                    <div key={column} style={{ gridColumn: 'auto' }}>
+                      {rows[rowKey][column]
+                        ? renderSeat(rows[rowKey][column], currentPassenger)
+                        : <div style={{ width: '40px', height: '40px' }} />}
+                    </div>
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        </Container>
+      );
+    }
+
+    return null;
+  };
+
+  const handlePassengerChange = (e) => {
+    setSelectedPassengerCount(Number(e.target.value));
+  };
+
+  const currentPassenger = passengers.find(p => p.passengerCount === selectedPassengerCount);
+
+  return (
+    <Container fluid className="p-4">
+      <Button className="mb-4" onClick={onBack}>
+        <ArrowLeft className="mr-2" />
+        Back
+      </Button>
+
+      <Row>
+        <Col md={6}>
+          <h4>Passenger Information</h4>
+          <Form.Group>
+            <Form.Label>Select Passenger:</Form.Label>
+            <Form.Control as="select" value={selectedPassengerCount} onChange={handlePassengerChange}>
+              {passengers.map((passenger) => (
+                <option key={passenger.passengerCount} value={passenger.passengerCount}>
+                  {passenger.First_Name} {passenger.Last_Name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          {currentPassenger && (
+            <Card key={currentPassenger.passengerCount} className="mb-4">
+              <Card.Body>
+                <Card.Title>{`${currentPassenger.First_Name} ${currentPassenger.Last_Name}`}</Card.Title>
+                <Form.Group>
+                  <Form.Label>Selected Seat:</Form.Label>
+                  <Form.Control
+                    readOnly
+                    value={selectedSeats[currentPassenger.passengerCount] ? `${selectedSeats[currentPassenger.passengerCount].SSR_TypeName} - ${selectedSeats[currentPassenger.passengerCount].SSR_TypeDesc}` : 'Not selected'}
+                  />
+                </Form.Group>
+                {selectedSeats[currentPassenger.passengerCount] && (
+                  <div className="mt-2">
+                    <p>Price: {selectedSeats[currentPassenger.passengerCount].Currency_Code} {selectedSeats[currentPassenger.passengerCount].Total_Amount}</p>
+                    <p>Total Price: {currentPassenger.Currency_Code} {currentPassenger.price || 0}</p>
+                  </div>
+                )}
+              </Card.Body>
+            </Card>
+          )}
+        </Col>
+        <Col md={6}>
+          <h5>Seat Map</h5>
+          <Button variant="primary" className="mb-4" onClick={() => setShowSeatMap(!showSeatMap)}>
+            {showSeatMap ? 'Hide Seat Map' : 'Show Seat Map'}
+          </Button>
+          {showSeatMap && currentPassenger && renderSeatMap(currentPassenger)}
+        </Col>
+      </Row>
+
+      <Row className="mt-4">
+        <Col>
+          <div className="d-flex flex-wrap">
+            <Badge bg="primary" className="m-1 p-2">Available</Badge>
+            <Badge bg="warning" className="m-1 p-2">Blocked</Badge>
+            <Badge bg="danger" className="m-1 p-2">Booked</Badge>
+            <Badge bg="success" className="m-1 p-2">Selected</Badge>
+            <Badge bg="secondary" className="m-1 p-2">Isle</Badge>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  );
 };
 
 export default SeatSelection;
