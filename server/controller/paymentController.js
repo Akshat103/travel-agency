@@ -112,7 +112,6 @@ module.exports.verifyOrder = async (req, res) => {
 
         // Service-based handling
         try {
-            let response;
             switch (serviceType) {
                 case 'recharge':
                     const { number, operator, circle, amount } = updatedOrder.serviceDetails;
@@ -132,20 +131,28 @@ module.exports.verifyOrder = async (req, res) => {
                     }
 
                 case 'bookbus':
-                    response = await busSeatbook(updatedOrder.serviceDetails, clientId);
-                    return res.status(201).json({
-                        success: true,
-                        message: "Bus booking done successfully.",
-                        data: response
-                    });
+                    const busResponse = await busSeatbook(updatedOrder.serviceDetails, clientId, razorpay_order_id);
+                    if (busResponse.data.success === true) {
+                        return res.status(201).json({
+                            success: true,
+                            message: "Bus booking done successfully.",
+                            data: busResponse.data
+                        });
+                    } else {
+                        throw new Error("Recharge failed");
+                    }
 
                 case 'bookflight':
-                    response = await bookFlight(updatedOrder.serviceDetails, clientId);
-                    return res.status(201).json({
-                        success: true,
-                        message: "Flight booking done successfully.",
-                        data: response
-                    });
+                    const flightSuccess = await bookFlight(updatedOrder.serviceDetails, clientId, razorpay_order_id);
+                    if (flightSuccess.data.statuscode === 100) {
+                        return res.status(201).json({
+                            success: true,
+                            message: "Flight booking done successfully.",
+                            data: flightSuccess
+                        });
+                    } else {
+                        throw new Error("Recharge failed");
+                    }
 
                 default:
                     throw new Error("Invalid service type");

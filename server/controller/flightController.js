@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { formatDate } = require('../utils/utils');
+const OrderSchema = require('../models/Order');
 
 // Ensure environment variables are defined
 const FLIGHT_API_SERVICE_URL = process.env.FLIGHT_API_SERVICE_URL;
@@ -110,22 +111,6 @@ const searchFlights = async (req, res) => {
     }
 };
 
-function getSeatDetails(data) {
-    const seatDetailsArray = [];
-
-    data.forEach(item => {
-        if (item.Seat_Details) {
-            if (Array.isArray(item.Seat_Details)) {
-                seatDetailsArray.push(...item.Seat_Details.filter(seat => seat.ApplicablePaxTypes !== null));
-            } else if (item.Seat_Details.ApplicablePaxTypes !== null) {
-                seatDetailsArray.push(item.Seat_Details);
-            }
-        }
-    });
-
-    return seatDetailsArray;
-}
-
 const formatDateToMMDDYYYY = (dateString) => {
     const date = new Date(dateString);
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -206,9 +191,9 @@ const getAirSeatMap = async (req, res) => {
                 };
 
                 const airMapResponse = await axios(airMapReq);
+
                 if (airMapResponse.data.statuscode === "100") {
-                    const Seat_Details = airMapResponse.data.data.AirSeatMaps[0].Seat_Segments[0].Seat_Row;
-                    const data = getSeatDetails(Seat_Details);
+                    const data = airMapResponse.data.data.AirSeatMaps[0].Seat_Segments[0].Seat_Row;
                     res.status(200).json({ data, updatedflightKey });
                 } else {
                     throw new Error("Server Failure.");
@@ -222,7 +207,7 @@ const getAirSeatMap = async (req, res) => {
     }
 };
 
-const bookFlight = async (data, clientId) => {
+const bookFlight = async (data, clientId, orderid) => {
     try {
         const ssrKeys = data.passengers.map((passenger, index) => ({
             Pax_Id: index + 1,
@@ -294,11 +279,22 @@ const bookFlight = async (data, clientId) => {
         };
         // Send the request to the flight API service
         const response = await axios(reqData);
-        if (response.data.statuscode === 100) {
-            return response.data;
-        } else {
-            throw new Error(`Failed to book the ticket: ${response.statusText}`);
+        const updatedOrder = await OrderSchema.findOneAndUpdate(
+            { orderId: orderid },
+            { serviceResponse: response.data },
+            { new: true }
+        );
+
+        if (!updatedOrder) {
+            throw new Error('Failed to update order with recharge response');
         }
+
+        if (response.data.statuscode === 100) {
+            return response;
+        } else {
+            return false;
+        }
+
     } catch (error) {
         throw new Error(`Flight seat booking failed: ${error.message}`);
     }

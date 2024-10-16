@@ -66,8 +66,6 @@ const rechargeRequest = async (number, operator, circle, amount, orderid, Rechar
             throw new Error('Missing required recharge details: number, operator, circle, amount, or orderId');
         }
 
-        console.log('Recharge Request:', { number, operator, circle, amount, orderid, RechargeMode });
-
         const params = {
             memberid: process.env.MEMBER_ID,
             pin: process.env.RECHARGE_PIN,
@@ -80,14 +78,9 @@ const rechargeRequest = async (number, operator, circle, amount, orderid, Rechar
             RechargeMode,
         };
 
-        console.log('Recharge API Request Params:', params);
-
-        // Making the API call
         const response = await axios.get(`${process.env.RECHARGE_API_URL}/services_cyapi/recharge_cyapi.aspx`, {
             params,
         });
-
-        console.log('Recharge API Response:', response.data);
 
         // Update the order with the response from the API
         const updatedOrder = await OrderSchema.findOneAndUpdate(

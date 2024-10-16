@@ -1,4 +1,5 @@
 const BookingLog = require('../models/BusBookingLog');
+const OrderSchema = require('../models/Order');
 const axios = require('axios');
 require('dotenv').config();
 
@@ -140,7 +141,7 @@ const seatLayout = async (req, res) => {
     }
 };
 
-const busSeatbook = async (details, clientId) => {
+const busSeatbook = async (details, clientId, orderid) => {
     try {
         const {
             source, sourceName, destinationName, destination, doj, tripid, bpid, dpid,
@@ -193,34 +194,27 @@ const busSeatbook = async (details, clientId) => {
                 };
 
                 const ticketResponse = await axios.post(`${BUS_API_URL}/BookTicket`, bookTicketData);
+                
                 if (ticketResponse.status === 200) {
                     const ticketResponseData = ticketResponse.data;
+
                     cleanedData = typeof ticketResponseData === 'string' ? JSON.parse(ticketResponseData) : ticketResponseData;
 
-                    const bookingLog = new BookingLog({
-                        source,
-                        sourceName,
-                        destinationName,
-                        destination,
-                        doj,
-                        tripid,
-                        bpid,
-                        dpid,
-                        mobile,
-                        email,
-                        idtype,
-                        idnumber,
-                        address,
-                        Search_Key,
-                        seats,
-                        booking_id: bookingId,
-                        agentid: clientId,
-                        bookingData: cleanedData.data
-                    });
+                    const updatedOrder = await OrderSchema.findOneAndUpdate(
+                        { orderId: orderid },
+                        { serviceResponse: cleanedData.data },
+                        { new: true }
+                    );
 
-                    await bookingLog.save();
-
-                    return cleanedData.data;
+                    if (!updatedOrder) {
+                        throw new Error('Failed to update order with recharge response');
+                    }
+            
+                    if (cleanedData.data.success === true) {
+                        return cleanedData.data;
+                    } else {
+                        return false;
+                    }
                 } else {
                     throw new Error(`Failed to book the ticket: ${ticketResponse.statusText}`);
                 }
