@@ -44,7 +44,7 @@ const usePayment = () => {
                             toast.dismiss(processingToastId);
     
                             if (data.success && serviceType === "bookbus") {
-                                navigate('/success', { state: { message: `Booking ID: ${data.booking_id}` } });
+                                navigate('/success', { state: { message: `Booking ID: ${data.data.booking_id}` } });
                             } else if (data.success && serviceType === "bookflight") {
                                 navigate('/success', { state: { message: `Booking ID: ${data.data.Booking_RefNo}` } });
                             } else if (data.success) {
