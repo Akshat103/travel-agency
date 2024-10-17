@@ -132,11 +132,11 @@ module.exports.verifyOrder = async (req, res) => {
 
                 case 'bookbus':
                     const busResponse = await busSeatbook(updatedOrder.serviceDetails, clientId, razorpay_order_id);
-                    if (busResponse.data.success === true) {
+                    if (busResponse.booking_status === 'BOOKED') {
                         return res.status(201).json({
                             success: true,
                             message: "Bus booking done successfully.",
-                            data: busResponse.data
+                            data: busResponse
                         });
                     } else {
                         throw new Error("Recharge failed");

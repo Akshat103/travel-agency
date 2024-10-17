@@ -210,7 +210,7 @@ console.log(cleanedData.data)
                         throw new Error('Failed to update order with recharge response');
                     }
             
-                    if (cleanedData.data.success === true) {
+                    if (cleanedData.data.booking_status === 'BOOKED') {
                         return cleanedData.data;
                     } else {
                         return false;
