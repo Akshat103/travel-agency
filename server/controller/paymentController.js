@@ -144,6 +144,7 @@ module.exports.verifyOrder = async (req, res) => {
 
                 case 'bookflight':
                     const flightSuccess = await bookFlight(updatedOrder.serviceDetails, clientId, razorpay_order_id);
+                    console.log(flightSuccess)
                     if (flightSuccess.data.statuscode === 100) {
                         return res.status(201).json({
                             success: true,
@@ -168,7 +169,6 @@ module.exports.verifyOrder = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Booking failed, refund initiated.",
-                recharge: false,
                 error: error.message
             });
         }
