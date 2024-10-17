@@ -11,11 +11,11 @@ const ClientHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const logout = async() =>{
+  const logout = async () => {
     try {
       const response = await axios.post('/api/logout');
       const { message } = response.data;
-      localStorage.clear(); 
+      localStorage.clear();
       navigate('/');
       toast.success(message);
     } catch (error) {
@@ -36,7 +36,8 @@ const ClientHeader = () => {
     } else if (userType === '0') {
       return (
         <>
-          <li><Link to="/admin">Dashboard</Link></li>
+          <li><Link to="/dashboard">Dashboard</Link></li>
+          <li><Link to="/admin">Admin Panel</Link></li>
           <li><button onClick={logout} className='btn btn-dark'>
             Log Out
           </button></li>
@@ -56,10 +57,10 @@ const ClientHeader = () => {
   return (
     <>
       <header className="main_header_arae"
-      style={{
-        position: isHomePage? 'absolute': 'relative',
-        background: !isHomePage? 'linear-gradient(90deg, #8c3eea, #d063f0)': ''
-      }}
+        style={{
+          position: isHomePage ? 'absolute' : 'relative',
+          background: !isHomePage ? 'linear-gradient(90deg, #8c3eea, #d063f0)' : ''
+        }}
       >
         <div className="topbar-area">
           <div className="container">
