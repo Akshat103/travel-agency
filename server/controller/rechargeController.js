@@ -1,6 +1,5 @@
 require('dotenv').config();
 const axios = require('axios');
-const RechargeLog = require('../models/RechargeLog');
 const OrderSchema = require('../models/Order');
 
 const { MEMBER_ID, RECHARGE_PIN, RECHARGE_API_URL, RECHARGE_CR_OP_PASS, RECHARGE_PLAN_PASS } = process.env;

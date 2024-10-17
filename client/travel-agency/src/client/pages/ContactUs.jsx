@@ -59,7 +59,7 @@ const ContactUs = () => {
                     </div>
                 </Col>
                 <Col md={6} className="p-0">
-                    <div className="h-100 d-flex flex-column justify-content-center p-5" style={{ minHeight: '100vh' }}>
+                    <div className="h-100 d-flex flex-column justify-content-center p-5 pt-0" style={{ minHeight: '100vh' }}>
                         <h3 className="mb-4 text-center" style={{ color: '#8c3eea', fontSize: '2rem', fontWeight: 'bold' }}>Get in Touch</h3>
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="formName" className="mb-3">
@@ -90,7 +90,7 @@ const ContactUs = () => {
                                 <Form.Label>Message</Form.Label>
                                 <Form.Control 
                                     as="textarea" 
-                                    rows={3} 
+                                    rows={1} 
                                     name="message"
                                     value={formData.message}
                                     onChange={handleChange}

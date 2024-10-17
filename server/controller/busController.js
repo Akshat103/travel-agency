@@ -1,4 +1,3 @@
-const BookingLog = require('../models/BusBookingLog');
 const OrderSchema = require('../models/Order');
 const axios = require('axios');
 require('dotenv').config();
@@ -194,12 +193,10 @@ const busSeatbook = async (details, clientId, orderid) => {
                 };
 
                 const ticketResponse = await axios.post(`${BUS_API_URL}/BookTicket`, bookTicketData);
-                console.log(ticketResponse.data)
                 if (ticketResponse.status === 200) {
                     const ticketResponseData = ticketResponse.data;
 
                     cleanedData = typeof ticketResponseData === 'string' ? JSON.parse(ticketResponseData) : ticketResponseData;
-console.log(cleanedData.data)
                     const updatedOrder = await OrderSchema.findOneAndUpdate(
                         { orderId: orderid },
                         { serviceResponse: cleanedData.data },

@@ -39,10 +39,10 @@ const SeatSelectionPage = () => {
         let totalPrice = passengers.reduce((acc, passenger) => {
             return acc + (passenger.price ? passenger.price : 0) + (passenger.seatPrice ? passenger.seatPrice : 0);
         }, 0);
-        
+
         return totalPrice;
     };
-    
+
 
     // Handle customer info input change
     const handleInputChange = (e) => {
@@ -114,28 +114,33 @@ const SeatSelectionPage = () => {
                 onSeatSelect={handleSeatSelect}
                 onBack={() => navigate(-1)}
             />
-            
+
             <h5 className="mt-3">Total Price: INR {calculateTotalPrice()}</h5>
             <div className="row gap-2 mt-2">
-                <Form.Group>
-                    <Form.Control
-                        type="text"
-                        name="mobile"
-                        value={customerInfo.mobile}
-                        onChange={handleInputChange}
-                        placeholder="Enter mobile number"
-                    />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Control
-                        type="email"
-                        name="email"
-                        value={customerInfo.email}
-                        onChange={handleInputChange}
-                        placeholder="Enter email address"
-                    />
-                </Form.Group>
+                <div className="col-lg-3 col-md-12">
+                    <Form.Group>
+                        <Form.Control
+                            type="text"
+                            name="mobile"
+                            value={customerInfo.mobile}
+                            onChange={handleInputChange}
+                            placeholder="Enter mobile number"
+                        />
+                    </Form.Group>
+                </div>
+                <div className="col-lg-3 col-md-12">
+                    <Form.Group>
+                        <Form.Control
+                            type="email"
+                            name="email"
+                            value={customerInfo.email}
+                            onChange={handleInputChange}
+                            placeholder="Enter email address"
+                        />
+                    </Form.Group>
+                </div>
             </div>
+
             <Button variant="primary" className="mt-3" onClick={handleConfirm}>
                 Book
             </Button>

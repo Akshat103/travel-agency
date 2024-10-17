@@ -129,7 +129,7 @@ const AddPassengers = () => {
                 reprice
             });
             setSubmitting(false);
-console.log(response.data)
+
             if (response.data) {
                 navigate('/flight/seats', {
                     state: { seatData: response.data.data, fareId, searchKey, flightKey: response.data.updatedflightKey, totalPrice: calculateTotalPrice() }
@@ -163,12 +163,12 @@ console.log(response.data)
             <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-3">
                 Back
             </button>
-            <h4 className="mb-4">Passenger Details</h4>
+            <h4 className="mb-4">Complete Passenger Details</h4>
 
             <form onSubmit={handleSubmit}>
                 {passengers.map((passenger, index) => (
                     <div key={index} className="passenger-form mb-4">
-                        <h5>{`${getPaxTypeLabel(passenger.Pax_type)} ${index + 1}`}</h5>
+                        <h5>{`Passenger (${getPaxTypeLabel(passenger.Pax_type)})`}</h5>
                         {passenger.saved ? (
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <h6 style={{ marginRight: '8px' }}>
@@ -329,7 +329,7 @@ console.log(response.data)
                                 onClick={() => savePassenger(index)}
                                 className="btn btn-primary mt-2"
                             >
-                                Save Passenger Details
+                                Save
                             </button>
                         )}
                     </div>

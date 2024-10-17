@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import DatePicker from 'react-datepicker';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { FaUser, FaMobile, FaEnvelope, FaVenusMars, FaBirthdayCake, FaMapMarkerAlt, FaLock, FaGoogle, FaFacebook, FaTwitter } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     userType: 1,
@@ -17,23 +20,61 @@ const RegisterForm = () => {
     password: ''
   });
 
+  const formatDate = (date) => {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [month, day, year].join('/');
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'mobileNumber' && !/^\d*$/.test(value)) return;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleDateChange = (date) => {
+    const formattedDate = date ? formatDate(date) : '';
+    setFormData({ ...formData, dateOfBirth: formattedDate });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Mobile number validation: exactly 10 digits
     if (!/^\d{10}$/.test(formData.mobileNumber)) {
       toast.error('Mobile number must be exactly 10 digits.');
+      return;
+    }
+
+    // Email validation: basic format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error('Please enter a valid email address.');
       return;
     }
 
     try {
       await axios.post('/api/register', formData);
       toast.success('Successful! You can login now');
+
+      setFormData({
+        name: '',
+        userType: 1,
+        mobileNumber: '',
+        email: '',
+        gender: '',
+        dateOfBirth: '',
+        state: '',
+        password: ''
+      });
+
+      navigate('/login');
     } catch (error) {
       toast.error('Registration failed. Please try again.');
     }
@@ -105,15 +146,41 @@ const RegisterForm = () => {
                   </Col>
 
                   <Col md={6}>
-                    <Form.Group className="mb-3">
+                    <Form.Group className="mb-3 row">
                       <Form.Label><FaBirthdayCake className="me-2" />Date of Birth*</Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="dateOfBirth"
-                        value={formData.dateOfBirth}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="relative">
+                        <style>
+                          {`
+                              .react-datepicker-wrapper {
+                                display: block;
+                              }
+                              .react-datepicker-popper {
+                                z-index: 9999 !important;
+                              }
+                              .react-datepicker-popper[data-placement^="bottom"] {
+                                padding-top: 0;
+                              }
+                              .react-datepicker__month-container {
+                                z-index: 9999 !important;
+                              }
+                          `}
+                        </style>
+                        <DatePicker
+                          id="dateOfBirth"
+                          name="dateOfBirth"
+                          selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : null}  // Convert back to Date object for the DatePicker
+                          onChange={handleDateChange}
+                          dateFormat="MM/dd/yyyy"
+                          placeholderText="MM/DD/YYYY"
+                          showMonthDropdown
+                          showYearDropdown
+                          scrollableYearDropdown
+                          yearDropdownItemNumber={200}
+                          maxDate={new Date()}
+                          required
+                          className="form-control"
+                        />
+                      </div>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
@@ -167,7 +234,7 @@ const RegisterForm = () => {
           </Card>
         </Col>
       </Row>
-    </Container>
+    </Container >
   );
 };
 

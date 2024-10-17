@@ -127,7 +127,7 @@ const ListFlights = ({ isSearching }) => {
                                                         onClick={() => handleViewDetails(flight)}
                                                         className="btn btn-primary d-flex align-items-center"
                                                     >
-                                                        <strong>₹{flight.Fares[0].FareDetails[0].Total_Amount}</strong>
+                                                        <strong>₹{Math.ceil(flight.Fares[0].FareDetails[0].Total_Amount)}</strong>
                                                     </button>
                                                 </div>
                                             </div>

@@ -2,7 +2,8 @@ import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Loading from './components/Loading';
 import loadable from '@loadable/component';
-import './App.css'
+import ScrollToTop from './utils/ScrollToTop';
+import './App.css';
 
 const ClientRoutes = loadable(() => import('./routes/ClientRoutes'));
 const AdminRoutes = loadable(() => import('./routes/AdminRoutes'));
@@ -14,8 +15,9 @@ const PrivateRoute = ({ children, allowedRoles }) => {
 
 const App = () => {
   return (
-    <div>
+    <div style={{ zoom: '85%' }}>
       <Router>
+        <ScrollToTop />
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path="/*" element={<ClientRoutes />} />

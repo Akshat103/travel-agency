@@ -7,7 +7,6 @@ import { updatePassenger } from '../../../redux/flightSlice';
 const SeatSelection = ({ passengers, seatData, onBack }) => {
   const dispatch = useDispatch();
   const [selectedSeats, setSelectedSeats] = useState({});
-  const [showSeatMap, setShowSeatMap] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [selectedPassengerCount, setSelectedPassengerCount] = useState(passengers[0]?.passengerCount || 0);
   console.log(passengers)
@@ -188,7 +187,6 @@ const SeatSelection = ({ passengers, seatData, onBack }) => {
                 {selectedSeats[currentPassenger.passengerCount] && (
                   <div className="mt-2">
                     <p>Price: {selectedSeats[currentPassenger.passengerCount].Currency_Code} {selectedSeats[currentPassenger.passengerCount].Total_Amount}</p>
-                    <p>Total Price: {currentPassenger.Currency_Code} {currentPassenger.price || 0}</p>
                   </div>
                 )}
               </Card.Body>
@@ -196,11 +194,7 @@ const SeatSelection = ({ passengers, seatData, onBack }) => {
           )}
         </Col>
         <Col md={6}>
-          <h5>Seat Map</h5>
-          <Button variant="primary" className="mb-4" onClick={() => setShowSeatMap(!showSeatMap)}>
-            {showSeatMap ? 'Hide Seat Map' : 'Show Seat Map'}
-          </Button>
-          {showSeatMap && currentPassenger && renderSeatMap(currentPassenger)}
+          {currentPassenger && renderSeatMap(currentPassenger)}
         </Col>
       </Row>
 

@@ -15,11 +15,11 @@ const usePayment = () => {
                 serviceType,
                 serviceDetails
             });
-
+    
             toast.success("Order created successfully.");
-
+    
             return new Promise((resolve, reject) => {
-                var options = {
+                const options = {
                     "key": VITE_RAZORPAY_KEY_ID,
                     "order_id": order_id,
                     "amount": amount,
@@ -27,7 +27,11 @@ const usePayment = () => {
                     "name": "Yara Holidays",
                     "description": `Payment for ${serviceType}`,
                     "handler": async function (response) {
-                        toast.info("Processing order...");
+                        // Show processing toast immediately after payment
+                        const processingToastId = toast.info("Processing order...", {
+                            autoClose: false, // Prevent auto-close
+                        });
+    
                         try {
                             const { data } = await axios.post('/api/verify-payment', {
                                 razorpay_payment_id: response.razorpay_payment_id,
@@ -35,21 +39,24 @@ const usePayment = () => {
                                 razorpay_signature: response.razorpay_signature,
                                 serviceType
                             });
+    
+                            // Close the processing toast
+                            toast.dismiss(processingToastId);
+    
                             if (data.success && serviceType === "bookbus") {
-                                navigate('/success', { state: { message: `Booking ID: ${data.data.booking_id}` } });
-                            }
-                            console.log(data)
-                            if (data.success && serviceType === "bookflight") {
+                                navigate('/success', { state: { message: `Booking ID: ${data.booking_id}` } });
+                            } else if (data.success && serviceType === "bookflight") {
                                 navigate('/success', { state: { message: `Booking ID: ${data.data.Booking_RefNo}` } });
-                            }
-                            else if (data.success) {
+                            } else if (data.success) {
                                 navigate('/success', { state: { message: data.message } });
-                            }
-                            else {
+                            } else {
                                 toast.error("Order completion failed.");
                                 reject("Order completion failed.");
                             }
                         } catch (error) {
+                            // Close the processing toast on error
+                            toast.dismiss(processingToastId);
+    
                             if (error.response && error.response.status === 401) {
                                 const { redirect } = error.response.data;
                                 if (redirect) {
@@ -57,14 +64,13 @@ const usePayment = () => {
                                 }
                             } else if (error.response.data.order === false) {
                                 toast.error(error.response.data.message);
-                                navigate('/failure')
+                                navigate('/failure');
                                 reject(error);
                             } else if (error.response.data.recharge === false) {
                                 toast.error(error.response.data.message);
-                                navigate('/failure')
+                                navigate('/failure');
                                 reject(error);
-                            }
-                            else {
+                            } else {
                                 toast.error("Error occurred during order processing.");
                                 reject(error);
                             }
@@ -74,10 +80,10 @@ const usePayment = () => {
                         "color": "#8c3eea"
                     }
                 };
-
+    
                 var rzp1 = new Razorpay(options);
                 rzp1.open();
-
+    
                 rzp1.on('payment.failed', function (response) {
                     toast.error(`Payment failed: ${response.error.description}`);
                     reject(response.error);
@@ -89,8 +95,7 @@ const usePayment = () => {
                 if (redirect) {
                     navigate(redirect);
                 }
-            }
-            else {
+            } else {
                 toast.error("Error occurred while creating order.");
                 console.error(error);
             }
