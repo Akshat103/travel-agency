@@ -149,7 +149,7 @@ module.exports.verifyOrder = async (req, res) => {
                         return res.status(201).json({
                             success: true,
                             message: "Flight booking done successfully.",
-                            data: flightSuccess
+                            data: flightSuccess.data
                         });
                     } else {
                         throw new Error("Recharge failed");
