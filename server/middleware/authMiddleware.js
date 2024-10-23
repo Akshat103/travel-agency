@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const logger = require('../utils/logger');
 
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.sessionId;
@@ -11,7 +12,7 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Unauthorized access. Please login.', redirect: '/login' });
+    res.status(401).json({ success: false, message: 'Unauthorized access. Please login.', redirect: '/login' });
   }
 };
 
@@ -21,7 +22,7 @@ const checkUserType = (requiredType) => {
       return res.status(400).send('User not found in request.');
     }
     if (req.user.userType === requiredType) {
-      console.log(`User is of type ${requiredType}`);
+      logger.warn(`User is of type ${requiredType}`);
       next();
     } else {
       res.status(403).send(`Access denied. User is not of type ${requiredType}.`);
@@ -29,4 +30,4 @@ const checkUserType = (requiredType) => {
   };
 };
 
-module.exports = {authMiddleware, checkUserType};
+module.exports = { authMiddleware, checkUserType };

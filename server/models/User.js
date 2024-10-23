@@ -1,18 +1,13 @@
 const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const generateClientId = () => {
-    const uuid = uuidv4().replace(/-/g, '').toUpperCase();
-    return uuid.substring(0, 10);
-};
-
+// Define user schema
 const userSchema = new mongoose.Schema({
     clientId: {
         type: String,
         unique: true,
-        default: generateClientId
+        required: true
     },
     name: {
         type: String,
@@ -77,25 +72,7 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('clientId')) {
-        this.clientId = generateClientId();
-        while (await mongoose.models.User.exists({ clientId: this.clientId })) {
-            this.clientId = generateClientId();
-        }
-    }
-    next();
-});
-
-userSchema.pre('save', async function (next) {
-    if (this.isNew) {
-        while (await mongoose.models.User.exists({ clientId: this.clientId })) {
-            this.clientId = generateClientId();
-        }
-    }
-    next();
-});
-
+// Hash password before saving
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
     try {
@@ -107,14 +84,14 @@ userSchema.pre('save', async function (next) {
     }
 });
 
+// Compare password method
 userSchema.methods.comparePassword = function (candidatePassword) {
     return bcrypt.compare(candidatePassword, this.password);
 };
 
+// Generate JWT token method
 userSchema.methods.generateAuthToken = function () {
-    return jwt.sign({ clientId: this.clientId, userType: this.userType }, process.env.JWT_SECRET, {
-        expiresIn: '12h'
-    });
+    return jwt.sign({ clientId: this.clientId, userType: this.userType }, process.env.JWT_SECRET);
 };
 
 module.exports = mongoose.model('User', userSchema);

@@ -159,7 +159,7 @@ const AddPassengers = () => {
     };
 
     return (
-        <div className="container mt-3">
+        <div className="container mt-3" style={{ minHeight: '100vh' }}>
             <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-3">
                 Back
             </button>

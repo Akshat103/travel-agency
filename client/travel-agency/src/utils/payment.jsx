@@ -4,10 +4,40 @@ import axios from "axios";
 
 const VITE_RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
+const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+        if (typeof Razorpay !== "undefined") {
+            resolve(true);
+            return;
+        }
+
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.async = true;
+        script.onload = () => {
+            resolve(true);
+        };
+        script.onerror = () => {
+            resolve(false);
+        };
+        document.head.appendChild(script);
+    });
+};
+
 const usePayment = () => {
+
+    if (Razorpay) {
+        loadRazorpayScript();
+    }
+
     const navigate = useNavigate();
 
     const payment = async (amount, receipt, serviceType, serviceDetails) => {
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+            console.error("Razorpay SDK failed to load. Are you online?");
+            return;
+        }
         try {
             const { data: { order_id } } = await axios.post('/api/create-order', {
                 amount,
@@ -15,9 +45,9 @@ const usePayment = () => {
                 serviceType,
                 serviceDetails
             });
-    
+
             toast.success("Order created successfully.");
-    
+
             return new Promise((resolve, reject) => {
                 const options = {
                     "key": VITE_RAZORPAY_KEY_ID,
@@ -29,9 +59,9 @@ const usePayment = () => {
                     "handler": async function (response) {
                         // Show processing toast immediately after payment
                         const processingToastId = toast.info("Processing order...", {
-                            autoClose: false, // Prevent auto-close
+                            autoClose: false,
                         });
-    
+
                         try {
                             const { data } = await axios.post('/api/verify-payment', {
                                 razorpay_payment_id: response.razorpay_payment_id,
@@ -39,15 +69,15 @@ const usePayment = () => {
                                 razorpay_signature: response.razorpay_signature,
                                 serviceType
                             });
-    
+
                             // Close the processing toast
                             toast.dismiss(processingToastId);
-    
+
                             if (data.success && serviceType === "bookbus") {
                                 navigate('/success', { state: { message: `Booking ID: ${data.data.booking_id}` } });
                             } else if (data.success && serviceType === "bookflight") {
                                 navigate('/success', { state: { message: `Booking ID: ${data.data.Booking_RefNo}` } });
-                            } else if (data.success) {
+                            } else if (data.success && serviceType === "irctcOnboard") {
                                 navigate('/success', { state: { message: data.message } });
                             } else {
                                 toast.error("Order completion failed.");
@@ -56,7 +86,7 @@ const usePayment = () => {
                         } catch (error) {
                             // Close the processing toast on error
                             toast.dismiss(processingToastId);
-    
+
                             if (error.response && error.response.status === 401) {
                                 const { redirect } = error.response.data;
                                 if (redirect) {
@@ -71,7 +101,8 @@ const usePayment = () => {
                                 navigate('/failure');
                                 reject(error);
                             } else {
-                                toast.error("Error occurred during order processing.");
+                                toast.error(error.response.data.message);
+                                navigate('/failure');
                                 reject(error);
                             }
                         }
@@ -80,10 +111,10 @@ const usePayment = () => {
                         "color": "#8c3eea"
                     }
                 };
-    
+
                 var rzp1 = new Razorpay(options);
                 rzp1.open();
-    
+
                 rzp1.on('payment.failed', function (response) {
                     toast.error(`Payment failed: ${response.error.description}`);
                     reject(response.error);

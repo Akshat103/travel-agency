@@ -14,6 +14,7 @@ dbConnect();
 
 // Serve static files (index.html)
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API routes
 const userRoutes = require('./routes/userRoutes');
@@ -27,6 +28,7 @@ const analyticsRoutes = require('./routes/analyticsRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const mailRoutes = require('./routes/mailRoutes');
 const userDashboardRoutes = require('./routes/userDashboardRoutes');
+const irctcRoutes = require('./routes/irctcRoutes');
 
 // Use the routes
 app.use('/api', userRoutes);
@@ -39,6 +41,7 @@ app.use('/api', paymentRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/mail', mailRoutes);
+app.use('/api/irctc', irctcRoutes);
 app.use('/api/dashboard', userDashboardRoutes);
 
 // Serve index.html at the root

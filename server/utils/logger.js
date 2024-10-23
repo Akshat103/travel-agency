@@ -18,6 +18,7 @@ const dailyRotateFileTransport = new transports.DailyRotateFile({
 
 // Create the logger
 const logger = createLogger({
+    level: 'info', // Set default log level
     format: combine(
         timestamp(),
         logFormat
@@ -29,17 +30,25 @@ const logger = createLogger({
                 colorize(),
                 logFormat
             )
-        })
+        }),
     ],
 });
 
-if (process.env.NODE_ENV !== 'production') {
-    logger.add(new transports.Console({
-        format: combine(
-            colorize(),
-            logFormat
-        )
-    }));
-}
+// Add transports for specific log levels
+logger.add(new transports.Console({
+    level: 'warn',
+    format: combine(
+        colorize(),
+        logFormat
+    ),
+}));
+
+logger.add(new transports.Console({
+    level: 'error',
+    format: combine(
+        colorize(),
+        logFormat
+    ),
+}));
 
 module.exports = logger;

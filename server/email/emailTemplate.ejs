@@ -1,0 +1,200 @@
+<% if (type==='bookflight' ) { %>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flight Booking Confirmation</title>
+    </head>
+
+    <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4;">
+            <tr>
+                <td align="center">
+                    <table width="600" border="0" cellspacing="0" cellpadding="20"
+                        style="background-color: #ffffff; border-radius: 10px; margin: 20px auto; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                        <tr>
+                            <td
+                                style="text-align: center; background-color: #007bff; color: #ffffff; padding: 20px; border-radius: 10px 10px 0 0;">
+                                <h1 style="margin: 0; font-size: 24px;">Flight Booking Confirmation</h1>
+                                <p style="margin: 5px 0 0;">Thank you for booking with Yara Holidays!</p>
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <td style="padding: 30px 20px;">
+                                <h2 style="color: #333333; font-size: 22px;">Dear <%= customerName %>,</h2>
+                                <p style="color: #666666; font-size: 16px; line-height: 1.6;">
+                                    We are pleased to confirm your flight booking. Below are your flight details:
+                                </p>
+    
+                                <h3 style="color: #333333; font-size: 20px;">Flight Details</h3>
+                                <table width="100%" border="0" cellspacing="0" cellpadding="10"
+                                    style="font-size: 16px; color: #666666;">
+                                    <tr>
+                                        <td style="border-bottom: 1px solid #dddddd;">Booking Reference:</td>
+                                        <td style="border-bottom: 1px solid #dddddd; text-align: right;">
+                                            <%= clientId %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid #dddddd;">Departure (Airport Code):</td>
+                                        <td style="border-bottom: 1px solid #dddddd; text-align: right;">
+                                            <%= serviceDetails.flightDetails.Origin.AIRPORTCODE %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid #dddddd;">Arrival (Airport Code):</td>
+                                        <td style="border-bottom: 1px solid #dddddd; text-align: right;">
+                                            <%= serviceDetails.flightDetails.Destination.AIRPORTCODE %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid #dddddd;">Departure Date & Time:</td>
+                                        <td style="border-bottom: 1px solid #dddddd; text-align: right;">
+                                            <%= new Date(serviceDetails.flightDetails.TravelDate).toLocaleString() %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid #dddddd;">Passenger:</td>
+                                        <td style="border-bottom: 1px solid #dddddd; text-align: right;">
+                                            <%= serviceDetails.passengers[0].First_Name %> <%= serviceDetails.passengers[0].Last_Name %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid #dddddd;">Seat Price:</td>
+                                        <td style="border-bottom: 1px solid #dddddd; text-align: right;">
+                                            ₹<%= serviceDetails.passengers[0].seatPrice %>
+                                        </td>
+                                    </tr>
+                                </table>
+    
+                                <p style="color: #666666; font-size: 16px; margin-top: 20px;">
+                                    We have also attached the details of your flight booking in the attachment for your
+                                    convenience.
+                                </p>
+    
+                                <h3 style="color: #333333; font-size: 20px;">Contact Us</h3>
+                                <p style="color: #666666; font-size: 16px;">
+                                    If you have any questions, feel free to contact us at:
+                                    <br>Yara Holidays
+                                    <br>Phone: +91 8079 881 580
+                                    <br>Email: <a href="mailto:yaraholiday46@gmail.com"
+                                        style="color: #007bff;">yaraholiday46@gmail.com</a>
+                                </p>
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <td
+                                style="text-align: center; background-color: #f4f4f4; color: #888888; padding: 20px; border-radius: 0 0 10px 10px;">
+                                <p style="margin: 0;">&copy; 2024 Yara Holidays. All rights reserved.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    
+    </body>  
+
+    </html>
+
+    <% } else if (type==='bookhotel' ) { %>
+        <!DOCTYPE html>
+        <html>
+
+        <body>
+            <h2>Hotel Booking Confirmation</h2>
+            <p>Dear <%= customerName %>,</p>
+            <p>Thank you for booking with us. Here are your hotel booking details:</p>
+
+            <h3>Hotel Booking Details</h3>
+            <ul>
+                <li>Hotel Name: <%= hotelName %>
+                </li>
+                <li>Check-In Date: <%= checkInDate %>
+                </li>
+                <li>Check-Out Date: <%= checkOutDate %>
+                </li>
+                <li>Room Number: <%= roomNumber %>
+                </li>
+            </ul>
+
+            <p>We have attached a PDF with your booking details.</p>
+        </body>
+
+        </html>
+
+        <% } else if (type==='bookbus' ) { %>
+            <!DOCTYPE html>
+            <html>
+
+            <body>
+                <h2>Bus Booking Confirmation</h2>
+                <p>Dear <%= customerName %>,</p>
+                <p>Thank you for booking with us. Here are your bus booking details:</p>
+
+                <h3>Bus Booking Details</h3>
+                <ul>
+                    <li>Bus Number: <%= busNumber %>
+                    </li>
+                    <li>Travel Date: <%= travelDate %>
+                    </li>
+                </ul>
+
+                <p>We have attached a PDF with your booking details.</p>
+            </body>
+
+            </html>
+
+            <% } else if (type==='recharge' ) { %>
+                <!DOCTYPE html>
+                <html>
+
+                <body>
+                    <h2>Mobile Recharge Confirmation</h2>
+                    <p>Dear <%= customerName %>,</p>
+                    <p>Thank you for using our service. Here are your recharge details:</p>
+
+                    <h3>Mobile Recharge Details</h3>
+                    <ul>
+                        <li>Mobile Number: <%= mobileNumber %>
+                        </li>
+                        <li>Recharge Amount: <%= rechargeAmount %>
+                        </li>
+                    </ul>
+
+                    <p>We have attached a PDF with your recharge details.</p>
+                </body>
+
+                </html>
+
+                <% } else if (type==='booktrain' ) { %>
+                    <!DOCTYPE html>
+                    <html>
+
+                    <body>
+                        <h2>Train Booking Confirmation</h2>
+                        <p>Dear <%= customerName %>,</p>
+                        <p>Thank you for booking with us. Here are your train booking details:</p>
+
+                        <h3>Train Booking Details</h3>
+                        <ul>
+                            <li>Train Number: <%= trainNumber %>
+                            </li>
+                            <li>Boarding Station: <%= boardingStation %>
+                            </li>
+                            <li>Destination Station: <%= destinationStation %>
+                            </li>
+                            <li>Seat Class: <%= seatClass %>
+                            </li>
+                        </ul>
+
+                        <p>We have attached a PDF with your booking details.</p>
+                    </body>
+
+                    </html>
+                    <% } %>

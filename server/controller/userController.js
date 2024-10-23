@@ -1,18 +1,76 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
+const IRCTC = require('../models/IRCTC');
 require('dotenv').config();
 
-// Create a new user
+const generateClientId = () => {
+    const uuid = uuidv4().replace(/-/g, '').toUpperCase();
+    return uuid.substring(0, 10);
+};
+
 const createUser = async (req, res) => {
   try {
-    const { name, userType, mobileNumber, email, gender, dateOfBirth, state, password } = req.body;
-    const user = new User({ name, userType, mobileNumber, email, gender, dateOfBirth, state, password });
-    await user.save();
-    res.status(201).json({ message: 'User created successfully' });
+      const { name, userType, mobileNumber, email, gender, dateOfBirth, state, password } = req.body;
+
+      // Check for missing required fields
+      if (!name || !userType || !mobileNumber || !email || !gender || !dateOfBirth || !state || !password) {
+          return res.status(400).json({ error: 'All fields are required' });
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+          return res.status(400).json({ error: 'Invalid email format' });
+      }
+
+      // Validate mobile number (assuming a specific format)
+      const mobileRegex = /^[0-9]{10}$/; // Adjust regex as needed for mobile number format
+      if (!mobileRegex.test(mobileNumber)) {
+          return res.status(400).json({ error: 'Invalid mobile number format' });
+      }
+
+      // Check if the email already exists
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+          return res.status(409).json({ error: 'Email already exists' });
+      }
+
+      // Check if the mobile number already exists
+      const existingMobile = await User.findOne({ mobileNumber });
+      if (existingMobile) {
+          return res.status(409).json({ error: 'Mobile number already exists' });
+      }
+
+      // Generate a unique clientId
+      const clientId = generateClientId();
+
+      // Create a new user instance
+      const user = new User({
+          clientId,
+          name,
+          userType,
+          mobileNumber,
+          email,
+          gender,
+          dateOfBirth,
+          state,
+          password
+      });
+
+      // Save the user to the database
+      await user.save();
+
+      res.status(201).json({ message: 'User created successfully', clientId });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+      // Handle validation errors, database errors, and other possible issues
+      if (error.name === 'ValidationError') {
+          return res.status(400).json({ error: `Validation error: ${error.message}` });
+      }
+      res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 // Login a user
 const loginUser = async (req, res) => {
@@ -20,10 +78,8 @@ const loginUser = async (req, res) => {
     const { emailOrMobile, password } = req.body;
 
     if (emailOrMobile === process.env.ADMIN && password === process.env.ADMIN_PASS) {
-      const adminToken = jwt.sign({ userType: 0 }, process.env.JWT_SECRET, {
-        expiresIn: '12h',
-      });
-      
+      const adminToken = jwt.sign({ userType: 0 }, process.env.JWT_SECRET);
+
       res.cookie('sessionId', adminToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -51,9 +107,20 @@ const loginUser = async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
     });
 
+    const clientId = user.clientId;
+
+    const irctcDetails = await IRCTC.findOne({clientId});
+
+    let irctc = 0;
+
+    if(irctcDetails && irctcDetails.active){
+      irctc = 1;
+    }
+
     res.status(200).json({
       message: 'Login successful',
       userType: user.userType,
+      irctc
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -61,12 +128,14 @@ const loginUser = async (req, res) => {
 };
 
 // Get all users
-const getAllUsers = async (req, res) => {
+const getUsersByName = async (req, res) => {
   try {
-    const users = await User.find();
+    const { name } = req.query;
+    const regex = new RegExp(name, 'i');
+    const users = await User.find({ name: { $regex: regex } });
     res.status(200).json(users);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ success: false, error: error.message });
   }
 };
 
@@ -113,6 +182,30 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const switchUserType = async (req, res) => {
+  try {
+    const { clientId } = req.params;
+
+    const user = await User.findOne({ clientId });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.userType = user.userType === 0 ? 1 : 0;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: `User type switched successfully`,
+      userType: user.userType
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 const logoutUser = (req, res) => {
   try {
     res.clearCookie('sessionId', {
@@ -131,9 +224,10 @@ const logoutUser = (req, res) => {
 module.exports = {
   createUser,
   loginUser,
-  getAllUsers,
+  getUsersByName,
   getUserById,
   updateUser,
+  switchUserType,
   deleteUser,
   logoutUser
 };

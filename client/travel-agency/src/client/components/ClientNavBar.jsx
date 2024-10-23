@@ -67,7 +67,7 @@ const ClientNavBar = () => {
                             </Link>
                             <div className="mean-push"></div>
                             <div className="collapse navbar-collapse mean-menu" id="navbarSupportedContent" style={{ display: "none" }}>
-                                <ul className="navbar-nav">
+                                <ul className="navbar-nav" style={{scrollbarWidth:"none"}}>
                                     <li className="nav-item">
                                         <Link to="/" className="nav-link">
                                             Home
@@ -86,22 +86,22 @@ const ClientNavBar = () => {
                                     </li>
 
                                     <li className="nav-item">
-                                        <Link to="/hotel" classNameName="nav-link">
+                                        <Link to="/hotel" className="nav-link">
                                             Hotel
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/bus" classNameName="nav-link">
+                                        <Link to="/bus" className="nav-link">
                                             Bus
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/contact-us" classNameName="nav-link">
+                                        <Link to="/contact-us" className="nav-link">
                                             Contact
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/about-us" classNameName="nav-link">
+                                        <Link to="/about-us" className="nav-link">
                                             About Us
                                         </Link>
                                     </li>

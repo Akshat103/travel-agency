@@ -1,47 +1,49 @@
-import React from 'react'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 const Train = () => {
+    const navigate = useNavigate();
+    const irctcStatus = localStorage.getItem('irctc');
+
+    const handleOnboardNavigation = () => {
+        navigate('/irctc/onboard');
+    };
+
+    const handleIrctcNavigation = () => {
+        navigate('/irctc');
+    };
     return (
         <div class="tab-pane fade" id="train" role="tabpanel" aria-labelledby="train-tab">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="tour_search_form">
-                                            <form action="#!">
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-                                                        <div class="flight_Search_boxed">
-                                                            <p>Destination</p>
-                                                            <input type="text" placeholder="Where are you going?"/>
-                                                            <span>Where are you going?</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-                                                        <div class="flight_Search_boxed">
-                                                            <p>train line</p>
-                                                            <input type="text" placeholder="American line"/>
-                                                            <span>Choose your train</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2  col-md-6 col-sm-12 col-12">
-                                                        <div class="form_search_date">
-                                                            <div class="flight_Search_boxed date_flex_area">
-                                                                <div class="Journey_date">
-                                                                    <p>Journey date</p>
-                                                                    <input type="date" value="2022-05-03"/>
-                                                                    <span>Thursday</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="top_form_search_button">
-                                                        <button class="btn btn_theme btn_md">Search</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tour_search_form">
+                        <div className="text-center">
+                            <h3 className="mb-4">IRCTC Services</h3>
+                            <div className="tour_search_form p-4">
+                                {irctcStatus === '0' ? (
+                                    <Button
+                                        variant="primary"
+                                        onClick={handleOnboardNavigation}
+                                        className="px-4 py-2"
+                                    >
+                                        Complete Onboarding
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="success"
+                                        onClick={handleIrctcNavigation}
+                                        className="px-4 py-2"
+                                    >
+                                        Proceed to IRCTC Services
+                                    </Button>
+                                )}
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
 

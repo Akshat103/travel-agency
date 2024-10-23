@@ -15,7 +15,7 @@ const PrivateRoute = ({ children, allowedRoles }) => {
 
 const App = () => {
   return (
-    <div style={{ zoom: '85%' }}>
+    <div>
       <Router>
         <ScrollToTop />
         <Suspense fallback={<Loading />}>

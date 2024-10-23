@@ -11,7 +11,12 @@ const OrderSchema = new mongoose.Schema({
     },
     serviceDetails: {
         type: mongoose.Schema.Types.Mixed,
-        required: true
+        validate: {
+            validator: function (value) {
+                return this.serviceType !== 'irctcOnboard' || value != null;
+            },
+            message: 'serviceDetails is required unless serviceType is "irctcOnboard".',
+        },
     },
     serviceResponse: {
         type: mongoose.Schema.Types.Mixed

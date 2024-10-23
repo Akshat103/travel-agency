@@ -12,9 +12,14 @@ const DashboardRoutes = [
     path: "/orders",
     name: "Orders",
     icon: "nc-icon nc-chart-pie-35",
-    // component: AdminHome,
     layout: "/admin"
-  }
+  },
+  {
+    path: "/users",
+    name: "Users",
+    icon: "nc-icon nc-chart-pie-35",
+    layout: "/admin"
+  },
 ];
 
 export default DashboardRoutes;

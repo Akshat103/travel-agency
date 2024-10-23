@@ -24,7 +24,7 @@ try {
     transporter.verify((error, success) => {
         if (error) {
             logger.error('Error verifying email transporter:', error);
-            process.exit(1); // Exit process if transporter fails verification
+            process.exit(1);
         } else {
             logger.info('Email transporter is ready to send emails.');
         }
@@ -33,12 +33,11 @@ try {
 } catch (error) {
     logger.error('Error creating email transporter:', error.message);
 
-    // Optional: Log the full error stack in case of development mode
     if (process.env.NODE_ENV !== 'production') {
         logger.error(error.stack);
     }
 
-    process.exit(1); // Exit process on transporter creation failure
+    process.exit(1);
 }
 
 module.exports = transporter;

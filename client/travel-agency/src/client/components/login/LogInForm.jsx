@@ -23,8 +23,9 @@ const LogInForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post('/api/login', formData);
-      const { userType } = response.data;
+      const { userType, irctc } = response.data;
       localStorage.setItem('userType', userType);
+      localStorage.setItem('irctc', irctc);
       navigate('/');
       toast.success('Login successful!');
     } catch (error) {
