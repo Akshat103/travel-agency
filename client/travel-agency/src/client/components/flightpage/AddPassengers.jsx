@@ -61,22 +61,26 @@ const AddPassengers = () => {
         dispatch(updatePassenger({ index, data: { [name]: value } }));
     };
 
+    const isTravelTypeInternational = flightDetails.Travel_Type === "1";
     const savePassenger = (index) => {
         const passenger = passengers[index];
+
         if (
             passenger.Title &&
             passenger.First_Name &&
             passenger.Last_Name &&
             passenger.Gender &&
             passenger.DOB &&
-            passenger.Passport_Number &&
-            passenger.Passport_Issuing_Country &&
-            passenger.Passport_Expiry &&
+            (isTravelTypeInternational
+                ? passenger.Passport_Number &&
+                passenger.Passport_Issuing_Country &&
+                passenger.Passport_Expiry
+                : true) &&
             passenger.Nationality
         ) {
             dispatch(updatePassenger({ index, data: { saved: true } }));
         } else {
-            toast.warn('Please fill in all fields before saving.');
+            toast.warn('Please fill in all required fields before saving.');
         }
     };
 
@@ -194,11 +198,11 @@ const AddPassengers = () => {
                                         required
                                     >
                                         <option value="">Select Title</option>
-                                        <option value="MR">MR</option>
-                                        <option value="MRS">MRS</option>
-                                        <option value="MS">MS</option>
-                                        <option value="MSTR">MSTR (Child/Infant)</option>
-                                        <option value="MISS">MISS (Child/Infant)</option>
+                                        <option value="MR">Mr</option>
+                                        <option value="MRS">Mrs</option>
+                                        <option value="MS">Ms</option>
+                                        <option value="MSTR">Mstr (Child/Infant)</option>
+                                        <option value="MISS">Miss (Child/Infant)</option>
                                     </select>
                                 </div>
                                 <div className="col-md-6 mb-3">
@@ -251,57 +255,62 @@ const AddPassengers = () => {
                                         yearDropdownItemNumber={200}
                                     />
                                 </div>
-                                <div className="col-md-6 mb-3">
-                                    <p><label className="form-label">Passport Number</label></p>
-                                    <input
-                                        type="text"
-                                        name="Passport_Number"
-                                        value={passenger.Passport_Number}
-                                        onChange={(e) => handlePassengerChange(index, e)}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <div className="col-md-6 mb-3">
-                                    <p><label className="form-label">Passport Issuing Country</label></p>
-                                    <select
-                                        name="Passport_Issuing_Country"
-                                        value={passenger.Passport_Issuing_Country}
-                                        onChange={(e) => handlePassengerChange(index, e)}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Country</option>
-                                        {countryList.map((country, i) => (
-                                            <option key={i} value={country.name}>
-                                                {country.flag} {country.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="col-md-6 mb-3">
-                                    <p><label className="form-label">Passport Expiry Date</label></p>
-                                    <DatePicker
-                                        selected={passenger.Passport_Expiry}
-                                        onChange={(date) => {
-                                            const updatedPassenger = {
-                                                ...passengers[index],
-                                                Passport_Expiry: date,
-                                            };
-                                            const newPassengers = [
-                                                ...passengers.slice(0, index),
-                                                updatedPassenger,
-                                                ...passengers.slice(index + 1)
-                                            ];
 
-                                            dispatch(updatePassengers(newPassengers));
-                                        }}
-                                        className="form-control"
-                                        dateFormat="MM/dd/yyyy"
-                                        minDate={new Date()}
-                                        scrollableYearDropdown
-                                        yearDropdownItemNumber={200}
-                                    />
-                                </div>
+                                {isTravelTypeInternational && (
+                                    <>
+                                        <div className="col-md-6 mb-3">
+                                            <p><label className="form-label">Passport Number</label></p>
+                                            <input
+                                                type="text"
+                                                name="Passport_Number"
+                                                value={passenger.Passport_Number}
+                                                onChange={(e) => handlePassengerChange(index, e)}
+                                                className="form-control"
+                                            />
+                                        </div>
+                                        <div className="col-md-6 mb-3">
+                                            <p><label className="form-label">Passport Issuing Country</label></p>
+                                            <select
+                                                name="Passport_Issuing_Country"
+                                                value={passenger.Passport_Issuing_Country}
+                                                onChange={(e) => handlePassengerChange(index, e)}
+                                                className="form-select"
+                                                required
+                                            >
+                                                <option value="">Select Country</option>
+                                                {countryList.map((country, i) => (
+                                                    <option key={i} value={country.name}>
+                                                        {country.flag} {country.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="col-md-6 mb-3">
+                                            <p><label className="form-label">Passport Expiry Date</label></p>
+                                            <DatePicker
+                                                selected={passenger.Passport_Expiry}
+                                                onChange={(date) => {
+                                                    const updatedPassenger = {
+                                                        ...passengers[index],
+                                                        Passport_Expiry: date,
+                                                    };
+                                                    const newPassengers = [
+                                                        ...passengers.slice(0, index),
+                                                        updatedPassenger,
+                                                        ...passengers.slice(index + 1)
+                                                    ];
+
+                                                    dispatch(updatePassengers(newPassengers));
+                                                }}
+                                                className="form-control"
+                                                dateFormat="MM/dd/yyyy"
+                                                minDate={new Date()}
+                                                scrollableYearDropdown
+                                                yearDropdownItemNumber={200}
+                                            />
+                                        </div>
+                                    </>
+                                )}
 
                                 <div className="col-md-6 mb-3">
                                     <p><label className="form-label">Nationality</label></p>

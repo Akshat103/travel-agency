@@ -9,7 +9,7 @@ const SeatSelection = ({ passengers, seatData, onBack }) => {
   const [selectedSeats, setSelectedSeats] = useState({});
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [selectedPassengerCount, setSelectedPassengerCount] = useState(passengers[0]?.passengerCount || 0);
-  console.log(passengers)
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);

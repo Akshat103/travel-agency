@@ -23,8 +23,6 @@ const userSchema = new mongoose.Schema({
     },
     mobileNumber: {
         type: String,
-        required: [true, 'Mobile number is required'],
-        unique: true
     },
     email: {
         type: String,
@@ -44,11 +42,9 @@ const userSchema = new mongoose.Schema({
             values: ['Male', 'Female', 'Other'],
             message: 'Gender must be Male, Female, or Other'
         },
-        required: [true, 'Gender is required']
     },
     dateOfBirth: {
         type: Date,
-        required: [true, 'Date of birth is required'],
         validate: {
             validator: function (v) {
                 return v instanceof Date && !isNaN(v);
@@ -57,12 +53,10 @@ const userSchema = new mongoose.Schema({
         }
     },
     state: {
-        type: String,
-        required: [true, 'State is required']
+        type: String
     },
     password: {
         type: String,
-        required: [true, 'Password is required']
     },
     otp: {
         type: String

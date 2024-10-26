@@ -56,7 +56,7 @@ const SeatSelectionPage = () => {
     // Confirm seat selection
     const handleConfirm = async () => {
         const total = calculateTotalPrice();
-
+    
         const bookingData = {
             flightDetails,
             passengers,
@@ -67,27 +67,36 @@ const SeatSelectionPage = () => {
             email: customerInfo.email,
             totalPrice: total
         };
-
-        // Validation for flightDetails and passengers
+    
+        // Validation for flightDetails
         const isFlightDetailsValid = bookingData.flightDetails &&
             bookingData.flightDetails.Origin?.AIRPORTCODE &&
             bookingData.flightDetails.Origin?.COUNTRYCODE &&
             bookingData.flightDetails.Destination?.AIRPORTCODE &&
             bookingData.flightDetails.Destination?.COUNTRYCODE &&
             bookingData.flightDetails.TravelDate;
-
+    
+        // Determine if international travel type
+        const isTravelTypeInternational = bookingData.flightDetails?.Travel_Type === "1";
+    
+        // Validation for passengers
         const isPassengerValid = bookingData.passengers && bookingData.passengers.every(passenger =>
             passenger.Pax_type !== undefined &&
             passenger.First_Name &&
             passenger.Last_Name &&
             passenger.Gender !== undefined &&
             passenger.DOB &&
-            passenger.Passport_Number &&
-            passenger.Passport_Issuing_Country &&
-            passenger.Passport_Expiry &&
-            passenger.Nationality && passenger.SSR_Key && passenger.Title
+            passenger.Nationality &&
+            passenger.SSR_Key &&
+            passenger.Title &&
+            // Conditional passport validation for international flights
+            (!isTravelTypeInternational || (
+                passenger.Passport_Number &&
+                passenger.Passport_Issuing_Country &&
+                passenger.Passport_Expiry
+            ))
         );
-
+    
         // Validate all required fields
         if (!isFlightDetailsValid || !isPassengerValid ||
             !bookingData.flightKey || !bookingData.searchKey || !bookingData.fareId ||
@@ -95,7 +104,7 @@ const SeatSelectionPage = () => {
             toast.error('Error: Missing or invalid booking details. Try again.');
             return;
         }
-
+    
         try {
             const receipt = `flight_booking_rcptid_${Math.floor(Math.random() * 10000)}`;
             const serviceType = "bookflight";
@@ -104,7 +113,7 @@ const SeatSelectionPage = () => {
         } catch (error) {
             console.error('Error booking:', error.response ? error.response.data : error.message);
         }
-    };
+    };   
 
     return (
         <div className="m-4">

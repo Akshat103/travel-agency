@@ -1,5 +1,6 @@
-import React from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Routes, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import ClientLayout from '../client/ClientLayout';
 import ClientHome from '../client/pages/ClientHome';
 import Register from '../client/pages/Register';
@@ -12,17 +13,17 @@ import BusDetails from '../client/components/buspage/BusDetails';
 import SuccessPage from '../pages/SuccessPage';
 import HotelSearch from '../client/pages/HotelSearch';
 import HotelDetails from '../client/components/hotelpage/HotelDetails';
-import BookHotel from '../client/components/hotelpage/BookHotel.jsx';
+import BookHotel from '../client/components/hotelpage/BookHotel';
 import NotFound from '../pages/NotFound';
-import UserDashboard from '../client/pages/UserDashboard.jsx';
-import AddPassengers from '../client/components/flightpage/AddPassengers.jsx';
-import SeatSelectionPage from '../client/components/flightpage/SeatSelectionPage.jsx';
-import Test from '../client/pages/test.jsx';
-import FailurePage from '../pages/FailurePage.jsx';
-import ContactUs from '../client/pages/ContactUs.jsx';
-import AboutUs from '../client/pages/AboutUs.jsx';
+import UserDashboard from '../client/pages/UserDashboard';
+import AddPassengers from '../client/components/flightpage/AddPassengers';
+import SeatSelectionPage from '../client/components/flightpage/SeatSelectionPage';
+import Test from '../client/pages/test';
+import FailurePage from '../pages/FailurePage';
+import ContactUs from '../client/pages/ContactUs';
+import AboutUs from '../client/pages/AboutUs';
 import OnboardUser from '../client/pages/OnboardUser';
-import IRCTCPage from '../client/pages/IrctcPage.jsx';
+import IRCTCPage from '../client/pages/IrctcPage';
 
 const IRCTCRouteGuard = ({ irctcValue, requiredValue, redirectTo, children }) => {
   if (irctcValue !== requiredValue) {
@@ -32,7 +33,36 @@ const IRCTCRouteGuard = ({ irctcValue, requiredValue, redirectTo, children }) =>
 };
 
 const ClientRoutes = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const irctcStatus = localStorage.getItem('irctc');
+
+  const handleAuthCallback = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    const userType = urlParams.get('userType');
+    const irctc = urlParams.get('irctc');
+
+    if (status === 'success' && userType) {
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('irctc', irctc);
+      toast.success('Login successful!');
+      navigate('/');
+    }
+
+    // Handle possible error from OAuth
+    const error = urlParams.get('error');
+    if (error === 'authentication_failed') {
+      toast.error('Google login failed. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    if (location.pathname === '/auth/callback') {
+      handleAuthCallback();
+    }
+  }, [location.pathname, navigate]);
+
   return (
     <div style={{ zoom: '85%' }}>
       <Routes>
@@ -54,6 +84,7 @@ const ClientRoutes = () => {
         <Route path="failure" element={<ClientLayout><FailurePage /></ClientLayout>} />
         <Route path="contact-us" element={<ClientLayout><ContactUs /></ClientLayout>} />
         <Route path="about-us" element={<ClientLayout><AboutUs /></ClientLayout>} />
+        
         <Route
           path="irctc/onboard"
           element={

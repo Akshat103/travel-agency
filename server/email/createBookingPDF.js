@@ -10,7 +10,7 @@ function createConformationPDF(serviceType, user, order) {
             const pdfDir = path.join(__dirname, '../conformationpdf');
 
             if (!fs.existsSync(pdfDir)) {
-                fs.mkdirSync(pdfDir, { recursive: true });
+                fs.mkdirSync(pdfDir);
             }
 
             const doc = new PDFDocument();
@@ -40,11 +40,11 @@ function createConformationPDF(serviceType, user, order) {
             if (fs.existsSync(logoPath)) {
                 doc.image(logoPath, 50, 45, { width: 50 })
                     .fontSize(20)
-                    .text('Company Name', 110, 57)
+                    .text('Yara Holidays', 110, 57)
                     .moveDown();
             } else {
                 logger.warn("Logo file not found at " + logoPath);
-                doc.fontSize(20).text('Company Name', 110, 57).moveDown();
+                doc.fontSize(20).text('Yara Holidays', 110, 57).moveDown();
             }
 
             doc.fontSize(16).text('Booking Confirmation', { align: 'center' });

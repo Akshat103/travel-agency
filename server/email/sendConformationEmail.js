@@ -11,7 +11,7 @@ function sendConformationEmail(serviceType, user, order, pdfPath) {
 
         const templatePath = path.join(__dirname, 'emailTemplate.ejs');
         logger.info(`Email template path: ${templatePath}`);
-        const user = User.findOne({ clientId: bookingDetails.clientId });
+
         // Prepare the data object for the template
         const templateData = {
             type: serviceType,

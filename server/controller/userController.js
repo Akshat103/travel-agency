@@ -71,7 +71,6 @@ const createUser = async (req, res) => {
   }
 };
 
-
 // Login a user
 const loginUser = async (req, res) => {
   try {

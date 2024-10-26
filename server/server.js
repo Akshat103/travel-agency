@@ -2,13 +2,34 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const dbConnect = require('./config/dbConnect');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
 require('dotenv').config();
+require('./config/passport');
+
+const cors = require('cors');
 
 const app = express();
+
+// CORS configuration at app level
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+
+app.use(cors({
+    origin: FRONTEND_URL,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT']
+}));
 
 // Middleware to parse JSON requests
 app.use(express.json());
 app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: [process.env.SESSION_SECRET],
+  maxAge: 30 * 24 * 60 * 60 * 1000
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 dbConnect();
 
@@ -17,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API routes
+const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const flightRoutes = require('./routes/flightRoutes');
 const rechargeRoutes = require('./routes/rechargeRoutes');
@@ -31,6 +53,7 @@ const userDashboardRoutes = require('./routes/userDashboardRoutes');
 const irctcRoutes = require('./routes/irctcRoutes');
 
 // Use the routes
+app.use('/api/auth', authRoutes);
 app.use('/api', userRoutes);
 app.use('/api', flightRoutes);
 app.use('/api', rechargeRoutes);

@@ -1,4 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+// flightSlice.js
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
   flightDetails: {
@@ -13,12 +15,37 @@ const initialState = {
     Class_Of_Travel: '0',
     Travel_Type: ''
   },
+  flightCity: null,
+  flightCityLoading: false,
+  flightCityError: null,
   searchResult: null,
   loading: false,
   error: null,
   searchKey: null,
   passengers: [],
 };
+
+export const fetchFlightCity = createAsyncThunk(
+  'flights/fetchFlightCity',
+  async (_, { getState }) => {
+    const { flights } = getState();
+    if (flights.flightCity) {
+      return flights.flightCity;
+    }
+
+    const response = await axios.get('/api/flightcity');
+    if (response.data.statuscode !== '100') {
+      throw new Error('Failed to fetch flight city data');
+    }
+    return response.data.data;
+  },
+  {
+    condition: (_, { getState }) => {
+      const { flights } = getState();
+      return !flights.flightCityLoading;
+    },
+  }
+);
 
 const flightSlice = createSlice({
   name: 'flights',
@@ -46,6 +73,21 @@ const flightSlice = createSlice({
     removePassenger: (state, action) => {
       state.passengers = state.passengers.filter((_, index) => index !== action.payload);
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchFlightCity.pending, (state) => {
+        state.flightCityLoading = true;
+        state.flightCityError = null;
+      })
+      .addCase(fetchFlightCity.fulfilled, (state, action) => {
+        state.flightCityLoading = false;
+        state.flightCity = action.payload;
+      })
+      .addCase(fetchFlightCity.rejected, (state, action) => {
+        state.flightCityLoading = false;
+        state.flightCityError = action.error.message;
+      });
   },
 });
 

@@ -152,7 +152,6 @@ const getAirSeatMap = async (req, res) => {
             const airRepriceResponse = await axios(airReprice);
             if (airRepriceResponse.data.statuscode === "100") {
                 updatedflightKey = airRepriceResponse.data.data[0].Flight.Flight_Key;
-
                 const paxDetails = passengers.map((passenger, index) => ({
                     Pax_Id: index.toString(),
                     Pax_type: passenger.Pax_type,
@@ -168,7 +167,6 @@ const getAirSeatMap = async (req, res) => {
                     Nationality: passenger.Nationality || "",
                     FrequentFlyerDetails: passenger.FrequentFlyerDetails || ""
                 }));
-
                 const airMapReq = {
                     method: 'POST',
                     url: FLIGHT_API_SERVICE_URL,

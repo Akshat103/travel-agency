@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
 
@@ -11,31 +10,38 @@ const LogInForm = () => {
     emailOrMobile: '',
     password: ''
   });
-
+  
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/login', formData);
+      const response = await axios.post('/api/login', formData, {
+        withCredentials: true
+      });
+      
       const { userType, irctc } = response.data;
       localStorage.setItem('userType', userType);
       localStorage.setItem('irctc', irctc);
-      navigate('/');
+      
       toast.success('Login successful!');
+      navigate('/');
     } catch (error) {
-      toast.error('Login failed. Please check your credentials.');
+      toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.');
     }
   };
 
   const handleGoogleLogin = () => {
-    // Implement Google login logic here
-    toast.info('Google login not implemented yet.');
+    window.location.href = '/api/auth/google';
   };
 
   return (
@@ -44,7 +50,8 @@ const LogInForm = () => {
         <Col md={6}>
           <Card className="shadow-sm">
             <Card.Body className="p-5">
-              <h4 className="text-center mb-4">Welcome Back!</h4>
+              <h2 className="text-center mb-4">Welcome Back!</h2>
+              
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>
@@ -56,10 +63,11 @@ const LogInForm = () => {
                     name="emailOrMobile"
                     value={formData.emailOrMobile}
                     onChange={handleChange}
-                    placeholder="Enter email or mobile number"
                     required
+                    placeholder="Enter email or mobile"
                   />
                 </Form.Group>
+
                 <Form.Group className="mb-3">
                   <Form.Label>
                     <FaLock className="me-2" />
@@ -70,24 +78,38 @@ const LogInForm = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder="Enter password"
                     required
+                    placeholder="Enter password"
                   />
                 </Form.Group>
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <Link to="/forgot-password" className="text-primary">Forgot password?</Link>
+
+                <div className="text-end mb-3">
+                  <Link to="/forgot-password" className="text-decoration-none">
+                    Forgot password?
+                  </Link>
                 </div>
-                <Button type="submit" className="w-100 mb-3" style={{background:"#8c3eea", borderColor:"#8c3eea"}}>
+
+                <Button variant="primary" type="submit" className="w-100 mb-3">
                   Log in
                 </Button>
-                <Button variant="outline-secondary" className="w-100" onClick={handleGoogleLogin}>
+
+                <Button
+                  variant="outline-primary"
+                  type="button"
+                  className="w-100 mb-3"
+                  onClick={handleGoogleLogin}
+                >
                   <FaGoogle className="me-2" />
-                  Login with Google
+                  Continue with Google
                 </Button>
+
+                <p className="text-center mb-0">
+                  Don't have an account?{' '}
+                  <Link to="/register" className="text-decoration-none">
+                    Register now
+                  </Link>
+                </p>
               </Form>
-              <div className="text-center mt-3">
-                <p>Don't have an account? <Link to="/register">Register now</Link></p>
-              </div>
             </Card.Body>
           </Card>
         </Col>
