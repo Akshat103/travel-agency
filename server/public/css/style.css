@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,400;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,900&display=swap');
 
 :root {
-    --main-color: #8B3EEA;
+    --main-color: #282a29;
     --white-color: #ffffff;
     --black-color: #2B2540;
     --black-color-opacity: #2b2540c4;
@@ -458,7 +458,7 @@ section {
 
 /* --Banner Area-- */
 #home_one_banner {
-    background-image: url("../img/banner/bg.jpg");
+    background-image: url("/img/bg.jpg");
     padding: 370px 0 280px 0;
     position: relative;
     background-position: center;
@@ -503,6 +503,7 @@ section {
 
 .theme_search_form_tabbtn .nav-tabs {
     border-bottom: none;
+    justify-content: center;
 }
 
 .theme_search_form_tabbtn .nav-tabs .nav-item.show .nav-link,
@@ -11364,5 +11365,5 @@ textarea {
 }
 
 .header{
-    background: linear-gradient(90deg, #8c3eea, #d063f0)
+    background: #f97f8f;
 }

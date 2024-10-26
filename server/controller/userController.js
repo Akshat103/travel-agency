@@ -11,10 +11,10 @@ const generateClientId = () => {
 
 const createUser = async (req, res) => {
   try {
-      const { name, userType, mobileNumber, email, gender, dateOfBirth, state, password } = req.body;
+      const { name, mobileNumber, email, password } = req.body;
 
       // Check for missing required fields
-      if (!name || !userType || !mobileNumber || !email || !gender || !dateOfBirth || !state || !password) {
+      if (!name || !mobileNumber || !email || !password) {
           return res.status(400).json({ error: 'All fields are required' });
       }
 
@@ -24,8 +24,7 @@ const createUser = async (req, res) => {
           return res.status(400).json({ error: 'Invalid email format' });
       }
 
-      // Validate mobile number (assuming a specific format)
-      const mobileRegex = /^[0-9]{10}$/; // Adjust regex as needed for mobile number format
+      const mobileRegex = /^[0-9]{10}$/;
       if (!mobileRegex.test(mobileNumber)) {
           return res.status(400).json({ error: 'Invalid mobile number format' });
       }
@@ -49,12 +48,8 @@ const createUser = async (req, res) => {
       const user = new User({
           clientId,
           name,
-          userType,
           mobileNumber,
           email,
-          gender,
-          dateOfBirth,
-          state,
           password
       });
 
@@ -67,6 +62,7 @@ const createUser = async (req, res) => {
       if (error.name === 'ValidationError') {
           return res.status(400).json({ error: `Validation error: ${error.message}` });
       }
+      console.log(error)
       res.status(500).json({ error: 'Internal server error' });
   }
 };

@@ -1,13 +1,13 @@
 import React from "react";
-import dest1 from "/img/destination/destination1.png";
-import dest2 from "/img/destination/destination2.png";
-import dest3 from "/img/destination/destination3.png";
-import dest4 from "/img/destination/destination4.png";
-import dest5 from "/img/destination/destination5.png";
-import dest6 from "/img/destination/destination6.png";
-import dest7 from "/img/destination/destination7.png";
-import dest8 from "/img/destination/destination8.png";
-import bigimg from "/img/destination/big-img.png";
+import dest1 from "../../../assets/img/TopDestinations/destination1.jpg";
+import dest2 from "../../../assets/img/TopDestinations/destination2.jpg";
+import dest3 from "../../../assets/img/TopDestinations/destination3.jpg";
+import dest4 from "../../../assets/img/TopDestinations/destination4.jpg";
+import dest5 from "../../../assets/img/TopDestinations/destination5.jpg";
+import dest6 from "../../../assets/img/TopDestinations/destination6.jpg";
+import dest7 from "../../../assets/img/TopDestinations/destination7.jpg";
+import dest8 from "../../../assets/img/TopDestinations/destination8.jpg";
+import bigimg from "../../../assets/img/TopDestinations/big-img.jpg";
 
 const TopDestinations = () => {
     return (
@@ -40,19 +40,19 @@ const TopDestinations = () => {
                                 <div class="destinations_content_box img_animation">
                                     <img src={dest1} alt="img" />
                                     <div class="destinations_content_inner">
-                                        <h3 className="text-white">China</h3>
+                                        <h3 className="text-white">Rajasthan</h3>
                                     </div>
                                 </div>
                                 <div class="destinations_content_box img_animation">
                                     <img src={dest2} alt="img" />
                                     <div class="destinations_content_inner">
-                                        <h3 className="text-white">Darjeeling</h3>
+                                        <h3 className="text-white">Gujarat</h3>
                                     </div>
                                 </div>
                                 <div class="destinations_content_box img_animation">
-                                    <img src={dest3} alt="img" />
+                                        <img src={dest6} alt="img" />
                                     <div class="destinations_content_inner">
-                                        <h3 className="text-white">Malaysia</h3>
+                                        <h3 className="text-white">Nagaland</h3>
                                     </div>
                                 </div>
                             </div>
@@ -60,19 +60,19 @@ const TopDestinations = () => {
                                 <div class="destinations_content_box img_animation">
                                     <img src={dest4} alt="img" />
                                     <div class="destinations_content_inner">
-                                        <h3 className="text-white">Gangtok</h3>
+                                        <h3 className="text-white">Kerala</h3>
                                     </div>
                                 </div>
                                 <div class="destinations_content_box img_animation">
                                         <img src={dest5} alt="img" />
                                     <div class="destinations_content_inner">
-                                        <h3 className="text-white">Thailand</h3>
+                                        <h3 className="text-white">Uttar Pradesh</h3>
                                     </div>
                                 </div>
                                 <div class="destinations_content_box img_animation">
-                                        <img src={dest6} alt="img" />
+                                    <img src={dest3} alt="img" />
                                     <div class="destinations_content_inner">
-                                        <h3 className="text-white">Australia</h3>
+                                        <h3 className="text-white">Tamil Nadu</h3>
                                     </div>
                                 </div>
                             </div>
@@ -80,13 +80,13 @@ const TopDestinations = () => {
                                 <div class="destinations_content_box img_animation">
                                         <img src={dest7} alt="img" />
                                     <div class="destinations_content_inner">
-                                        <h3 className="text-white">London</h3>
+                                        <h3 className="text-white">Madhya Pradesh</h3>
                                     </div>
                                 </div>
                                 <div class="destinations_content_box img_animation">
                                         <img src={dest8} alt="img" />
                                     <div class="destinations_content_inner">
-                                        <h3 className="text-white">USA</h3>
+                                        <h3 className="text-white">Karnataka</h3>
                                     </div>
                                 </div>
                             </div>

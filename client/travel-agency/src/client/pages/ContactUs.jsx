@@ -43,7 +43,7 @@ const ContactUs = () => {
             <Row className="g-0">
                 <Col md={6} className="p-0">
                     <div className="h-100 d-flex flex-column justify-content-center align-items-center text-white p-5" style={{
-                        background: 'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("/api/placeholder/800/600") center/cover no-repeat',
+                        background: '#282a29',
                         minHeight: '100vh'
                     }}>
                         <h2 className="mb-4 text-center" style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>Contact Yara Holidays</h2>
@@ -60,7 +60,7 @@ const ContactUs = () => {
                 </Col>
                 <Col md={6} className="p-0">
                     <div className="h-100 d-flex flex-column justify-content-center p-5 pt-0" style={{ minHeight: '100vh' }}>
-                        <h3 className="mb-4 text-center" style={{ color: '#8c3eea', fontSize: '2rem', fontWeight: 'bold' }}>Get in Touch</h3>
+                        <h3 className="mb-4 mt-4 text-center" style={{ color: '#282a29', fontSize: '2rem', fontWeight: 'bold' }}>Get in Touch</h3>
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="formName" className="mb-3">
                                 <Form.Label>Your Name</Form.Label>
@@ -100,7 +100,7 @@ const ContactUs = () => {
                                 />
                             </Form.Group>
                             <Button variant="primary" type="submit" className="mt-3 w-100" style={{
-                                background: 'linear-gradient(90deg, #8c3eea, #d063f0)',
+                                background: '#282a29',
                                 border: 'none',
                                 padding: '10px 0',
                                 fontSize: '1.1rem'

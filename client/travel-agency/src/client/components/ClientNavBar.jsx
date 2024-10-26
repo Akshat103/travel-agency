@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from '/img/logo.png';
+import logo from '../../assets/img/logo.png';
 import { Link } from 'react-router-dom';
 
 const ClientNavBar = () => {
@@ -59,15 +59,15 @@ const ClientNavBar = () => {
                         </div>
                     </div>
                 </div>
-                <div className="main-navbar">
+                <div className="main-navbar" style={{ background: '#272a29' }}>
                     <div className="container">
-                        <nav className="navbar navbar-expand-md navbar-light">
+                        <nav className="navbar navbar-expand-md">
                             <Link className="navbar-brand" to="/">
                                 <img src={logo} alt="logo" />
                             </Link>
                             <div className="mean-push"></div>
                             <div className="collapse navbar-collapse mean-menu" id="navbarSupportedContent" style={{ display: "none" }}>
-                                <ul className="navbar-nav" style={{scrollbarWidth:"none"}}>
+                                <ul className="navbar-nav" style={{ scrollbarWidth: "none" }}>
                                     <li className="nav-item">
                                         <Link to="/" className="nav-link">
                                             Home

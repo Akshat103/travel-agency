@@ -11,7 +11,7 @@ const AboutUs = () => {
             <Container fluid className="p-0">
                 <div className="position-relative overflow-hidden p-3 p-md-5 text-center"
                      style={{
-                         background: 'linear-gradient(90deg, #8c3eea, #d063f0)',
+                         background: '#282a29',
                          minHeight: '300px'
                      }}>
                     <div className="col-md-8 p-lg-5 mx-auto my-5">
@@ -58,7 +58,7 @@ const AboutUs = () => {
                     </Row>
                 </Container>
 
-                <Container fluid className="p-5 text-center text-white" style={{background: 'linear-gradient(90deg, #8c3eea, #d063f0)'}}>
+                <Container fluid className="p-5 text-center text-white" style={{background: '#282a29'}}>
                     <h2 className="display-5 fw-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Start Your Journey Today</h2>
                     <p className="lead text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>Experience the world with Yara Holidays - Your trusted travel companion.</p>
                 </Container>

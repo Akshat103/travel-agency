@@ -1,8 +1,7 @@
 import React from "react";
-import img1 from "/img/imagination/imagination1.png"
-import img2 from "/img/imagination/imagination2.png"
-import img3 from "/img/imagination/imagination3.png"
-import { Link } from "react-router-dom";
+import img1 from "../../../assets/img/imagination/imagination1.jpg"
+import img2 from "../../../assets/img/imagination/imagination2.jpg"
+import img3 from "../../../assets/img/imagination/imagination3.jpg"
 
 const Imagination = () => {
     return (

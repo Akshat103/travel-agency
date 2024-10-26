@@ -36,8 +36,16 @@ const ClientHeader = () => {
     } else if (userType === '0') {
       return (
         <>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><Link to="/admin">Admin Panel</Link></li>
+          <li>
+            <button className='btn btn-warning'>
+              <Link to="/dashboard">Dashboard</Link>
+            </button>
+          </li>
+          <li>
+            <button className='btn btn-warning'>
+              <Link to="/admin">Admin Panel</Link>
+            </button>
+          </li>
           <li><button onClick={logout} className='btn btn-dark'>
             Log Out
           </button></li>
@@ -46,8 +54,16 @@ const ClientHeader = () => {
     } else {
       return (
         <>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/register">Register</Link></li>
+          <li>
+            <button type="button" class="btn btn-dark" >
+              <Link to="/login">Login</Link>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="btn btn-dark">
+              <Link to="/register">Register</Link>
+            </button>
+          </li>
         </>
       );
     }
@@ -59,7 +75,7 @@ const ClientHeader = () => {
       <header className="main_header_arae"
         style={{
           position: isHomePage ? 'absolute' : 'relative',
-          background: !isHomePage ? 'linear-gradient(90deg, #8c3eea, #d063f0)' : ''
+          background: !isHomePage ? '#f97f8f' : ''
         }}
       >
         <div className="topbar-area">

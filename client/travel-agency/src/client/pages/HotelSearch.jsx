@@ -63,7 +63,7 @@ const HotelSearch = () => {
             <h3
               className="fw-bold text-white p-4 rounded"
               style={{
-                background: 'linear-gradient(90deg, #8c3eea, #d063f0)',
+                background: '#282a29',
                 boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
                 borderRadius: '10px',
                 fontSize: '1.2rem'

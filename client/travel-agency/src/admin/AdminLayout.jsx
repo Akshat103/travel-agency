@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, Outlet } from 'react-router-dom';
 import "../assets/css/animate.min.css";
 import "../assets/scss/light-bootstrap-dashboard-react.scss?v=2.0.0";
-import sidebarImage from "../assets/img/sidebar-3.jpg";
+import sidebarImage from "../assets/img/sidebar.jpg";
 import Sidebar from './components/Sidebar';
 import AdminNavbar from './components/AdminNavbar';
 import DashboardRoutes from './DashboardRoutes'

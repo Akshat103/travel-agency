@@ -1,5 +1,4 @@
 import React from 'react';
-import cardImage from '/img/common/cards.png';
 import { Link } from 'react-router-dom';
 
 const ClientFooter = () => {
@@ -92,7 +91,7 @@ const ClientFooter = () => {
             </div>
             <div className="co-lg-6 col-md-6 col-sm-12 col-12">
               <div className="copyright_right">
-                <img src={cardImage} alt="img" />
+                <img src='../kjklsd' alt="img" />
               </div>
             </div>
           </div>

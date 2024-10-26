@@ -1,10 +1,9 @@
 import { Suspense, useEffect } from 'react';
-import { 
-  Route, 
-  Routes, 
-  BrowserRouter, 
-  Navigate, 
-  useLocation 
+import {
+  Route,
+  Routes,
+  Navigate,
+  useLocation
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import loadable from '@loadable/component';
@@ -62,9 +61,7 @@ const RouteWrapper = () => {
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <RouteWrapper />
-    </BrowserRouter>
+    <RouteWrapper />
   );
 };
 
