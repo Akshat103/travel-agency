@@ -1,0 +1,60 @@
+.about-container {
+    padding: 0;
+}
+
+.about-header-section {
+    background: #282a29;
+    min-height: 300px;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.about-header-content {
+    max-width: 80%;
+    margin: 0 auto;
+    color: white;
+}
+
+.about-header-title {
+    font-family: 'Playfair Display', serif;
+}
+
+.about-header-desc {
+    font-family: 'Poppins', sans-serif;
+}
+
+.about-main-img {
+    height: auto;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.about-services-section h2 {
+    font-family: 'Playfair Display', serif;
+}
+
+.about-service-card {
+    height: 100%;
+    border: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-service-img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.about-service-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+}
+
+.about-service-desc {
+    font-family: 'Poppins', sans-serif;
+}
+
+.about-footer-section {
+    background: #282a29;
+    padding: 3rem 1rem;
+    color: white;
+}

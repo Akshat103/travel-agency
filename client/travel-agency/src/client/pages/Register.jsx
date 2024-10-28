@@ -24,8 +24,8 @@ const Register = () => {
                   <div className="register-image">
                     <div className="overlay"></div>
                   </div>
-                  <div className="image-content text-white p-4">
-                    <h2 className="fw-bold mb-3">Join Us!</h2>
+                  <div className="image-content p-4">
+                    <h3 className="fw-bold mb-3">Join Us!</h3>
                     <p className="mb-0">Create an account to start using our services.</p>
                   </div>
                 </Col>

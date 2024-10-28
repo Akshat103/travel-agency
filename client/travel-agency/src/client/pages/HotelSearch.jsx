@@ -8,52 +8,80 @@ import { setHotelData } from '../../redux/hotelSlice';
 
 const HotelSearch = () => {
   const dispatch = useDispatch();
-
   const formData = useSelector((state) => state.hotel.formData);
   const hotelData = useSelector((state) => state.hotel.hotelData);
-
+  
   const [isSearching, setIsSearching] = useState(false);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
-  const handleSearch = useCallback(async () => {
-    setIsSearching(true);
+  const validateFormData = (data) => {
+    const { CheckInDate, CheckOutDate, RoomCount, HotelRoomDetail, city } = data;
+    
+    if (!CheckInDate || !CheckOutDate) {
+      toast.error("Please select check-in and check-out dates");
+      return false;
+    }
+    
+    if (!city || !city.fullName) {
+      toast.error("Please select a city");
+      return false;
+    }
+    
+    if (RoomCount <= 0 || !HotelRoomDetail || HotelRoomDetail.length === 0) {
+      toast.error("Please select valid room details");
+      return false;
+    }
+    
+    return true;
+  };
 
-    // Validate the formData fields
-    const { CheckInDate, CheckOutDate, RoomCount, HotelRoomDetail } = formData;
-
-    if (!CheckInDate || !CheckOutDate || RoomCount <= 0 || !HotelRoomDetail || HotelRoomDetail.length === 0) {
-      setIsSearching(false);
+  const searchHotels = async (searchFormData) => {
+    if (!validateFormData(searchFormData)) {
       return;
     }
 
+    setIsSearching(true);
+
     try {
-      const response = await axios.post('/api/hotelbycity', { formData });
+      const response = await axios.post('/api/hotelbycity', { formData: searchFormData });
 
       if (response.data.statuscode === "TXN" && response.data.msg === "SUCCESS") {
-        const hotelsWithFare = response.data.data.HotelContents.map((hotel, index) => {
-          const fareDetails = response.data.data.HotelFareDetails[index];
-          return {
-            ...hotel,
-            fareDetails
-          };
-        });
+        const hotelsWithFare = response.data.data.HotelContents.map((hotel, index) => ({
+          ...hotel,
+          fareDetails: response.data.data.HotelFareDetails[index]
+        }));
+        
         hotelsWithFare.searchKey = response.data.data.SearchKey;
         dispatch(setHotelData(hotelsWithFare));
       } else {
         toast.error("No hotels found for your search.");
+        dispatch(setHotelData([]));
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Error fetching hotels.");
+      console.error('Hotel search error:', error);
+      toast.error("Error searching hotels. Please try again.");
+      dispatch(setHotelData([]));
     } finally {
       setIsSearching(false);
     }
-  }, [formData, dispatch]);
+  };
 
+  // Handle initial page load
   useEffect(() => {
-    if (hotelData.length === 0) {
-      handleSearch();
-    }
-  }, [hotelData, formData]);
+    const performInitialSearch = async () => {
+      if (!initialLoadComplete && formData.city) {
+        await searchHotels(formData);
+        setInitialLoadComplete(true);
+      }
+    };
+
+    performInitialSearch();
+  }, [initialLoadComplete, formData]);
+
+  // Handle search button click
+  const handleSearch = useCallback(() => {
+    searchHotels(formData);
+  }, [formData]);
 
   return (
     <div className="container-fluid">
@@ -64,7 +92,6 @@ const HotelSearch = () => {
               className="fw-bold text-white p-4 rounded"
               style={{
                 background: '#282a29',
-                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
                 borderRadius: '10px',
                 fontSize: '1.2rem'
               }}
@@ -74,9 +101,13 @@ const HotelSearch = () => {
           </div>
         </div>
         <div className="container-fluid">
-          <div className="row p-2">
+          <div className="row p-2 pt-4">
             <div className="col-md-3" style={{ borderRadius: '20px' }}>
-              <Hotel layout="col" isVertical={true} onSearch={handleSearch} />
+              <Hotel 
+                layout="col" 
+                isVertical={true} 
+                onSearch={handleSearch} 
+              />
             </div>
             <div className="col-md-9">
               <ListHotel

@@ -82,7 +82,20 @@ const OnboardUser = () => {
 
     return (
         <Container>
-            <h2 className="my-4 text-center">IRCTC User Onboarding</h2>
+            <div className="row m-2">
+            <div className="col-12 text-center">
+              <h3
+                className="fw-bold text-white p-4 rounded"
+                style={{
+                  background: '#282a29',
+                  borderRadius: '10px',
+                  fontSize: '1.2rem'
+                }}
+              >
+                IRCTC User Onboarding
+              </h3>
+            </div>
+          </div>
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col md={6}>

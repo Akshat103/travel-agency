@@ -27,41 +27,44 @@ const ClientHeader = () => {
     if (userType === '1') {
       return (
         <>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><button onClick={logout} className='btn btn-dark'>
-            Log Out
-          </button></li>
+          <li>
+            <button className='btn btn-dark' onClick={() => navigate('/dashboard')}>
+              Dashboard
+            </button>
+          </li>
+          <li>
+            <button onClick={logout} className='btn btn-dark'>
+              Log Out
+            </button>
+          </li>
         </>
       );
     } else if (userType === '0') {
       return (
         <>
           <li>
-            <button className='btn btn-warning'>
-              <Link to="/dashboard">Dashboard</Link>
+            <button className='btn btn-dark' onClick={() => navigate('/dashboard')}>
+              Dashboard
             </button>
           </li>
           <li>
-            <button className='btn btn-warning'>
-              <Link to="/admin">Admin Panel</Link>
+            <button className='btn btn-dark' onClick={() => navigate('/admin')}>
+              Admin Panel
             </button>
           </li>
-          <li><button onClick={logout} className='btn btn-dark'>
-            Log Out
-          </button></li>
+          <li>
+            <button onClick={logout} className='btn btn-dark'>
+              Log Out
+            </button>
+          </li>
         </>
       );
     } else {
       return (
         <>
           <li>
-            <button type="button" class="btn btn-dark" >
-              <Link to="/login">Login</Link>
-            </button>
-          </li>
-          <li>
-            <button type="button" class="btn btn-dark">
-              <Link to="/register">Register</Link>
+            <button type="button" className="btn btn-dark" onClick={() => navigate('/login')}>
+              Login
             </button>
           </li>
         </>
@@ -75,7 +78,7 @@ const ClientHeader = () => {
       <header className="main_header_arae"
         style={{
           position: isHomePage ? 'absolute' : 'relative',
-          background: !isHomePage ? '#f97f8f' : ''
+          background: !isHomePage ? '#0b184e' : ''
         }}
       >
         <div className="topbar-area">
@@ -101,7 +104,7 @@ const ClientHeader = () => {
             </div>
           </div>
         </div>
-        <ClientNavBar />
+        <ClientNavBar userType={userType} onLogout={logout} />
       </header>
     </>
   )

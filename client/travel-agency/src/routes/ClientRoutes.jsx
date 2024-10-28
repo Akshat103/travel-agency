@@ -64,7 +64,7 @@ const ClientRoutes = () => {
   }, [location.pathname, navigate]);
 
   return (
-    <div style={{ zoom: '85%' }}>
+    <div style={{ zoom: '80%' }}>
       <Routes>
         <Route path="" element={<ClientLayout><ClientHome /></ClientLayout>} />
         <Route path="register" element={<ClientLayout><Register /></ClientLayout>} />

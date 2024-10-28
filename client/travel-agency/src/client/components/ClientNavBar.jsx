@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import logo from '../../assets/img/logo.png';
 import { Link } from 'react-router-dom';
 
-const ClientNavBar = () => {
-
+const ClientNavBar = ({ userType, onLogout }) => {
+    console.log(userType, onLogout)
     const [isNavVisible, setIsNavVisible] = useState(false);
 
     const toggleNav = () => {
@@ -46,8 +46,36 @@ const ClientNavBar = () => {
                                             <Link to="/contact-us" className="nav-link">Contact <i className="fas fa-angle-down"></i></Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/about-us" className="nav-link">About Us<i className="fas fa-angle-down"></i></Link>
+                                            <Link to="/about-us" className="nav-link">About Us <i className="fas fa-angle-down"></i></Link>
                                         </li>
+                                        {userType === '1' && (
+                                            <>
+                                                <li className="nav-item">
+                                                    <Link to="/dashboard" className="nav-link">Dashboard</Link>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <Link to="/" className="nav-link" onClick={onLogout}>Log Out</Link>
+                                                </li>
+                                            </>
+                                        )}
+                                        {userType === '0' && (
+                                            <>
+                                                <li className="nav-item">
+                                                    <Link to="/dashboard" className="nav-link">Dashboard</Link>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <Link to="/admin" className="nav-link">Admin Panel</Link>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <Link to="/" className="nav-link" onClick={onLogout}>Log Out</Link>
+                                                </li>
+                                            </>
+                                        )}
+                                        {!userType && (
+                                            <li className="nav-item">
+                                                <Link to="/login" className="nav-link">Login</Link>
+                                            </li>
+                                        )}
                                     </ul>
                                 </nav>
                             </div>

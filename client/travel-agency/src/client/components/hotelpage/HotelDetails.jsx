@@ -102,18 +102,11 @@ const HotelDetails = () => {
         });
     };
     return (
-        <div className="container m-5">
+        <div className="container p-4">
             <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-4">
-                <ArrowLeft size={18} className="me-2" /> Back to Hotels
+                <ArrowLeft size={18} className="me-2" /> Back
             </button>
             <div className="card shadow-sm">
-                {hotel.HotelImage ? (
-                    <img src={hotel.HotelImage} alt={hotel.HotelName} className="card-img-top" />
-                ) : (
-                    <div className="placeholder-image" style={{ height: '200px', backgroundColor: '#e0e0e0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <span>No Image Available</span>
-                    </div>
-                )}
                 <div className="card-body">
                     <h3 className="card-title mb-4">
                         {hotel.HotelName} <span className="text-warning"><FaStar /> {hotel.StarCategoryId || 'N/A'}</span>
@@ -177,7 +170,7 @@ const HotelDetails = () => {
                                                             </div>
 
                                                             <div className='book-btn'>
-                                                                <button type="button" class="btn btn-primary" onClick={()=>handleBook(hotel.HotelId, hotel.HotelKey, recHotel.RecommendationId, ratePlan.RateplanId)}>Book Now</button>
+                                                                <button type="button" class="btn btn-primary" onClick={() => handleBook(hotel.HotelId, hotel.HotelKey, recHotel.RecommendationId, ratePlan.RateplanId)}>Book Now</button>
                                                             </div>
                                                         </div>
 
@@ -197,22 +190,49 @@ const HotelDetails = () => {
                             <p>{extraData.Amenities.split(',').map((amenity, index) => (
                                 <span key={index} className="badge bg-secondary me-1">{amenity.trim()}</span>
                             ))}</p>
-                            <div id="hotelGalleryCarousel" className="carousel slide" data-bs-ride="carousel" height="10rem">
-                                <div className="carousel-inner">
-                                    {extraData.HotelGallery && extraData.HotelGallery.map((image, idx) => (
-                                        <div key={idx} className={`carousel-item ${idx === 0 ? 'active' : ''}`}>
-                                            <img src={image.ImageURL} alt={image.ImageDesc} className="d-block w-100 img-fluid" />
+                            <div className="w-full h-screen flex items-center justify-center mx-auto">
+                                <div className="max-w-[90vw] flex items-center justify-center">
+                                    <div
+                                        id="hotelGalleryCarousel"
+                                        className="carousel slide relative w-[60rem] mx-auto"
+                                        data-bs-ride="carousel"
+                                    >
+                                        <div className="carousel-inner rounded-lg overflow-hidden h-[60rem]" style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+                                            {extraData.HotelGallery && extraData.HotelGallery.map((image, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className={`carousel-item absolute ${idx === 0 ? 'active' : ''}`}
+                                                >
+                                                    <img
+                                                        src={image.ImageURL}
+                                                        alt={image.ImageDesc}
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
+
+                                        <button
+                                            className="carousel-control-prev absolute top-1/2 left-8 transform -translate-y-1/2 bg-black/50 hover:bg-black/75 rounded-full p-4 transition-all duration-200"
+                                            type="button"
+                                            data-bs-target="#hotelGalleryCarousel"
+                                            data-bs-slide="prev"
+                                        >
+                                            <span className="carousel-control-prev-icon inline-block w-8 h-8" aria-hidden="true"></span>
+                                            <span className="visually-hidden">Previous</span>
+                                        </button>
+
+                                        <button
+                                            className="carousel-control-next absolute top-1/2 right-8 transform -translate-y-1/2 bg-black/50 hover:bg-black/75 rounded-full p-4 transition-all duration-200"
+                                            type="button"
+                                            data-bs-target="#hotelGalleryCarousel"
+                                            data-bs-slide="next"
+                                        >
+                                            <span className="carousel-control-next-icon inline-block w-8 h-8" aria-hidden="true"></span>
+                                            <span className="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <button className="carousel-control-prev" type="button" data-bs-target="#hotelGalleryCarousel" data-bs-slide="prev">
-                                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span className="visually-hidden">Previous</span>
-                                </button>
-                                <button className="carousel-control-next" type="button" data-bs-target="#hotelGalleryCarousel" data-bs-slide="next">
-                                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span className="visually-hidden">Next</span>
-                                </button>
                             </div>
                         </>
                     )}

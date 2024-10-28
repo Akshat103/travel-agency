@@ -7,11 +7,19 @@ const Train = () => {
     const irctcStatus = localStorage.getItem('irctc');
 
     const handleOnboardNavigation = () => {
-        navigate('/irctc/onboard');
+        if (irctcStatus === null) {
+            navigate('/login')
+        } else {
+            navigate('/irctc/onboard');
+        }
     };
 
     const handleIrctcNavigation = () => {
-        navigate('/irctc');
+        if (irctcStatus === null) {
+            navigate('/login')
+        } else {
+            navigate('/irctc');
+        }
     };
     return (
         <div class="tab-pane fade" id="train" role="tabpanel" aria-labelledby="train-tab">
@@ -19,7 +27,6 @@ const Train = () => {
                 <div class="col-lg-12">
                     <div class="tour_search_form">
                         <div className="text-center">
-                            <h3 className="mb-4">IRCTC Services</h3>
                             <div className="tour_search_form p-4">
                                 {irctcStatus === '0' ? (
                                     <Button
@@ -31,7 +38,7 @@ const Train = () => {
                                     </Button>
                                 ) : (
                                     <Button
-                                        variant="success"
+                                        variant="primary"
                                         onClick={handleIrctcNavigation}
                                         className="px-4 py-2"
                                     >

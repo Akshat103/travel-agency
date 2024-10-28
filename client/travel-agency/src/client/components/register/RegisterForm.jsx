@@ -56,7 +56,6 @@ const RegisterForm = () => {
 
   return (
     <>
-      <h4 className="text-center mb-4">Register Account</h4>
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col md={6}>

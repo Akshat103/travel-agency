@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const ContactUs = () => {
     const [formData, setFormData] = useState({
@@ -39,7 +38,6 @@ const ContactUs = () => {
 
     return (
         <Container fluid className="p-0">
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
             <Row className="g-0">
                 <Col md={6} className="p-0">
                     <div className="h-100 d-flex flex-column justify-content-center align-items-center text-white p-5" style={{
@@ -90,7 +88,7 @@ const ContactUs = () => {
                                 <Form.Label>Message</Form.Label>
                                 <Form.Control 
                                     as="textarea" 
-                                    rows={1} 
+                                    rows={4} 
                                     name="message"
                                     value={formData.message}
                                     onChange={handleChange}

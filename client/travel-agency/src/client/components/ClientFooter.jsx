@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../../assets/img/logo.png';
 
 const ClientFooter = () => {
   return (
@@ -86,12 +87,12 @@ const ClientFooter = () => {
           <div className="row align-items-center">
             <div className="co-lg-6 col-md-6 col-sm-12 col-12">
               <div className="copyright_left">
-                <p>Copyright © 2022 All Rights Reserved</p>
+                <p>Copyright Yara Holidays © 2024 All Rights Reserved</p>
               </div>
             </div>
             <div className="co-lg-6 col-md-6 col-sm-12 col-12">
               <div className="copyright_right">
-                <img src='../kjklsd' alt="img" />
+                <img src={logo} alt="img" />
               </div>
             </div>
           </div>

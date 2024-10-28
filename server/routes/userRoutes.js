@@ -9,7 +9,10 @@ router.post('/logout', userController.logoutUser);
 
 
 // Get all users
-router.get('/users', authMiddleware, checkUserType(0), userController.getUsersByName);
+router.get('/users/search', authMiddleware, checkUserType(0), userController.getUsersByName);
+router.get('/users/latest', authMiddleware, checkUserType(0), userController.getLatestUsers);
+
+
 // Get a user by client ID
 router.get('/user-by-id', authMiddleware, userController.getUserById);
 // Update a user by client ID

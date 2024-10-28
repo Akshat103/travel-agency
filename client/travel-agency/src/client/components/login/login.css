@@ -27,7 +27,7 @@
     height: 50px;
     left: 10%;
     top: 20%;
-    background: #ff0055;
+    background: #282a29;
     animation-duration: 4s;
 }
 
@@ -36,7 +36,7 @@
     height: 60px;
     right: 15%;
     top: 30%;
-    background: #00ff88;
+    background: #0b184e;
     animation-duration: 6s;
 }
 
@@ -54,7 +54,7 @@
     height: 80px;
     right: 20%;
     top: 15%;
-    background: #ff9900;
+    background: #282a29;
     animation-duration: 7s;
 }
 
@@ -63,7 +63,7 @@
     height: 90px;
     left: 5%;
     bottom: 15%;
-    background: #ff00ff;
+    background: #0b184e;
     animation-duration: 6s;
 }
 
