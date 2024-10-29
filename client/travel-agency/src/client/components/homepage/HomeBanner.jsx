@@ -7,8 +7,8 @@ const HomeBanner = () => {
                 <div className="row align-items-center">
                     <div className="col-lg-12">
                         <div className="banner_one_text">
-                            <h1 style={{ fontFamily: "Playfair Display, serif" }}>Explore the world together</h1>
-                            <h3 style={{ fontFamily: "Playfair Display, serif" }}>Find awesome flights, hotel, tour, car and packages</h3>
+                            <h1>Explore the world together</h1>
+                            <h3>Find awesome flights, hotel, tour and packages</h3>
                         </div>
                     </div>
                 </div>

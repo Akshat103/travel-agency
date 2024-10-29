@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFormData, updateRoomDetail, addRoom, removeRoom, updateFormField } from '../../../../redux/hotelSlice';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const Hotel = ({ isVertical, onSearch }) => {
     const dispatch = useDispatch();
@@ -213,11 +212,11 @@ const Hotel = ({ isVertical, onSearch }) => {
                             <div className={`${isVertical ? '' : 'col-md-2'} flight_Search_boxed`}>
                                 <p className="mb-0 me-2">Rooms</p>
                                 <div className="d-flex align-items-center">
-                                    <button onClick={() => dispatch(removeRoom())} disabled={formData.RoomCount <= 1} style={{ border: "none" }}>
+                                    <button onClick={() => dispatch(removeRoom())} disabled={formData.RoomCount <= 1} style={{ border: "none", background:'transparent' }}>
                                         <MinusCircleIcon />
                                     </button>
                                     <span className="mx-2">{formData.RoomCount}</span>
-                                    <button onClick={() => dispatch(addRoom())} style={{ border: "none" }}>
+                                    <button onClick={() => dispatch(addRoom())} style={{ border: "none", background:'transparent' }}>
                                         <PlusCircleIcon />
                                     </button>
                                 </div>
@@ -241,12 +240,12 @@ const Hotel = ({ isVertical, onSearch }) => {
                                         </div>
 
                                         <div className="d-flex align-items-center">
-                                            <button onClick={() => removeChild(roomIndex)} disabled={room.ChildCount <= 0} style={{ border: "none" }}>
+                                            <button onClick={() => removeChild(roomIndex)} disabled={room.ChildCount <= 0} style={{ border: "none", background:'transparent' }}>
                                                 <MinusCircleIcon />
                                             </button>
                                             <p>Children</p>
                                             <strong className="mx-2">{room.ChildCount}</strong>
-                                            <button onClick={() => addChild(roomIndex)} style={{ border: "none" }}>
+                                            <button onClick={() => addChild(roomIndex)} style={{ border: "none", background:'transparent' }}>
                                                 <PlusCircleIcon />
                                             </button>
                                         </div>

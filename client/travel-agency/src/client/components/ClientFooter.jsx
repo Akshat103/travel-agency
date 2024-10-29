@@ -39,12 +39,7 @@ const ClientFooter = () => {
               </div>
               <div className="footer_link_area">
                 <ul>
-                  <li><Link to="about.html">About Us</Link></li>
-                  <li><Link to="testimonials.html">Testimonials</Link></li>
-                  <li><Link to="faqs.html">Rewards</Link></li>
-                  <li><Link to="terms-service.html">Work with Us</Link></li>
-                  <li><Link to="tour-guides.html">Meet the Team </Link></li>
-                  <li><Link to="news.html">Blog</Link></li>
+                  <li><Link to="/about-us">About Us</Link></li>
                 </ul>
               </div>
             </div>
@@ -54,12 +49,7 @@ const ClientFooter = () => {
               </div>
               <div className="footer_link_area">
                 <ul>
-                  <li><Link to="dashboard.html">Account</Link></li>
-                  <li><Link to="faq.html">Faq</Link></li>
-                  <li><Link to="testimonials.html">Legal</Link></li>
-                  <li><Link to="contact.html">Contact</Link></li>
-                  <li><Link to="top-destinations.html"> Affiliate Program</Link></li>
-                  <li><Link to="privacy-policy.html">Privacy Policy</Link></li>
+                  <li><Link to="/contact-us">Contact</Link></li>
                 </ul>
               </div>
             </div>
@@ -69,12 +59,10 @@ const ClientFooter = () => {
               </div>
               <div className="footer_link_area">
                 <ul>
-                  <li><Link to="/mobile-recharge">Mobile Recharge</Link></li>
-                  <li><Link to="top-destinations-details.html">Investor Relations</Link></li>
-                  <li><Link to="flight-search-result.html">Rewards Program</Link></li>
-                  <li><Link to="room-booking.html">PointsPLUS</Link></li>
-                  <li><Link to="testimonials.html">Partners</Link></li>
-                  <li><Link to="hotel-search.html">List My Hotel</Link></li>
+                  <li><Link to="/flights">Flight</Link></li>
+                  <li><Link to="/mobile-recharge">Recharge</Link></li>
+                  <li><Link to="/hotel">Hotel</Link></li>
+                  <li><Link to="/bus">Bus</Link></li>
                 </ul>
               </div>
             </div>

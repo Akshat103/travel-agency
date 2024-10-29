@@ -13,13 +13,14 @@ createRoot(document.getElementById('root')).render(
       <ErrorBoundary>
         <App />
         <ToastContainer
-          position="bottom-right"
+          position='bottom-right'
           autoClose={3000}
           hideProgressBar={false}
-          newestOnTop
+          newestOnTop={true}
           closeOnClick
-          draggable={false}
+          draggable
           theme="dark"
+          pauseOnHover
         />
       </ErrorBoundary>
     </Provider>

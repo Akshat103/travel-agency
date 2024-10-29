@@ -94,6 +94,7 @@ const Recharge = ({ context, onDetailsChange }) => {
                     placeholder="Enter mobile number"
                     value={number}
                     onChange={handleNumberChange}
+                    style={{marginBottom:'1.5rem'}}
                   />
                 </div>
                 <div className={`${context==='recharge' ? 'm-1': 'col-lg-4 col-md-6 col-sm-12 col-12'}`}>
@@ -102,6 +103,7 @@ const Recharge = ({ context, onDetailsChange }) => {
                     value={operator}
                     onChange={(e) => dispatch(setOperator(e.target.value))}
                     disabled={operators.length === 0}
+                    style={{marginBottom:'1.5rem'}}
                   >
                     <option value="">Select Operator</option>
                     {operators.map((op) => (
@@ -117,6 +119,7 @@ const Recharge = ({ context, onDetailsChange }) => {
                     value={circle}
                     onChange={(e) => dispatch(setCircle(e.target.value))}
                     disabled={circles.length === 0}
+                    style={{marginBottom:'1.5rem'}}
                   >
                     <option value="">Select Circle</option>
                     {circles.map((cr) => (

@@ -3,6 +3,7 @@ import LocationInput from './LocationInput';
 import DateRangeInput from './DateRangeInput';
 import PassengerDetails from './PassengerDetails';
 import { useNavigate } from 'react-router-dom';
+import { MdCompareArrows, MdArrowForward } from 'react-icons/md';
 
 const FlightSearchForm = ({
   flightDetails,
@@ -26,8 +27,42 @@ const FlightSearchForm = ({
 
   return (
     <div className='col justify-content-center align-items-center'>
-      <div >
+      <div className="d-flex justify-content-center align-items-center gap-2 mb-3">
+        <div className="form-check form-switch d-flex align-items-center gap-3">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="roundTripToggle"
+            checked={isRoundTrip}
+            onChange={toggleRoundTrip}
+            style={{
+              width: '60px',
+              height: '30px',
+              cursor: 'pointer',
+              marginTop: '0'
+            }}
+          />
+          <label
+            className="form-check-label d-flex align-items-center gap-2 mb-0"
+            htmlFor="roundTripToggle"
+            style={{ cursor: 'pointer' }}
+          >
+            {isRoundTrip ? (
+              <>
+                <MdCompareArrows size={24} />
+                <span>Round Trip</span>
+              </>
+            ) : (
+              <>
+                <MdArrowForward size={24} />
+                <span>One Way</span>
+              </>
+            )}
+          </label>
+        </div>
+      </div>
 
+      <div>
         <div className='row justify-content-center align-items-center'>
           <div className="col-lg-3 col-md-6 col-sm-12 col-12">
             <div className="flight_Search_boxed">
@@ -70,20 +105,11 @@ const FlightSearchForm = ({
             />
           </div>
 
-          <div className="col-lg-2 col-md-6 col-sm-12 col-12">
-            <input
-              type="checkbox"
-              id="roundTripToggle"
-              checked={isRoundTrip}
-              onChange={toggleRoundTrip}
-            />
-            <label htmlFor="roundTripToggle" className="ml-2">
-              Round Trip
-            </label>
-          </div>
+
         </div>
 
       </div>
+
       <div className="d-flex justify-content-center align-items-center">
         <button className="btn btn_theme btn_md" onClick={clickSearch}>
           Search

@@ -1,5 +1,44 @@
 import React, { useState, useEffect, useRef } from 'react';
 import RechargeAnimation from './RechargeAnimation';
+import { Card, Button, Badge } from 'react-bootstrap';
+
+const RechargePlanCard = ({ plan, onRechargeClick }) => {
+    return (
+        <Card className="mb-3 shadow-sm">
+            <Card.Body>
+                {/* Price and Recharge Button Row */}
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h3 className="mb-0 text-dark"><strong>₹{plan.recharge_amount}</strong></h3>
+                        <Badge bg="light" text="dark" className="mt-1">
+                            Validity: {plan.recharge_validity}
+                        </Badge>
+                    </div>
+                    <Button
+                        variant="primary"
+                        onClick={() => onRechargeClick(plan.recharge_amount)}
+                        className="px-4"
+                    >
+                        Recharge
+                    </Button>
+                </div>
+
+                {/* Talktime Info */}
+                <div className="mb-3 d-flex">
+                    <h6 className="text-muted">Talktime {plan.recharge_talktime}</h6>
+                </div>
+
+                {/* Description */}
+                <div>
+                    <h6 className="text-muted mb-2">Benefits</h6>
+                    <p className="mb-0 small text-secondary">
+                        {plan.recharge_long_desc}
+                    </p>
+                </div>
+            </Card.Body>
+        </Card>
+    );
+};
 
 const ListPlans = ({ plans, onRecharge }) => {
     const [displayedPlans, setDisplayedPlans] = useState([]);
@@ -43,33 +82,14 @@ const ListPlans = ({ plans, onRecharge }) => {
         >
             {displayedPlans.length > 0 ? (
                 displayedPlans.map((plan, index) => (
-                    <div key={plan.id || index} className="mb-1 p-2 border rounded shadow-sm">
-                        <div className="container">
-                            <p className='text-dark'><strong>{plan.recharge_short_desc}</strong></p>
-                            <div className="row">
-                                <div className="col">
-                                    <p className="text-sm text-gray-600">Amount: ₹{plan.recharge_amount}</p>
-                                    <p className="text-sm text-gray-600">Talktime: {plan.recharge_talktime}</p>
-                                </div>
-                                <div className="col d-flex justify-content-end align-items-start">
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary"
-                                        onClick={() => handleButtonClick(plan.recharge_amount)}
-                                    >
-                                        Recharge
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <p className="text-sm text-gray-600">Validity: {plan.recharge_validity}</p>
-                                <p className="mt-2 text-sm">{plan.recharge_long_desc}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <RechargePlanCard
+                        key={plan.id || index}
+                        plan={plan}
+                        onRechargeClick={handleButtonClick}
+                    />
                 ))
             ) : (
-                <RechargeAnimation/>
+                <RechargeAnimation />
             )}
         </div>
     );
