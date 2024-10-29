@@ -1,10 +1,5 @@
 import { Suspense, useEffect } from 'react';
-import {
-  Route,
-  Routes,
-  Navigate,
-  useLocation
-} from 'react-router-dom';
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import loadable from '@loadable/component';
 import Loading from './components/Loading';
@@ -36,7 +31,6 @@ const RouteWrapper = () => {
       const frameId = requestAnimationFrame(() => {
         dispatch(resetStore());
       });
-
       return () => cancelAnimationFrame(frameId);
     }
   }, [location.pathname, dispatch]);

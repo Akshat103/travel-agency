@@ -15,7 +15,6 @@ import BookHotel from '../client/components/hotelpage/BookHotel';
 import NotFound from '../pages/NotFound';
 import AddPassengers from '../client/components/flightpage/AddPassengers';
 import SeatSelectionPage from '../client/components/flightpage/SeatSelectionPage';
-import Test from '../client/pages/test';
 import FailurePage from '../pages/FailurePage';
 import OnboardUser from '../client/pages/OnboardUser';
 import IRCTCPage from '../client/pages/IrctcPage';
@@ -116,7 +115,6 @@ const ClientRoutes = () => {
             }
           />
 
-          <Route path="test" element={<Test />} />
           <Route path="*" element={<ClientLayout><NotFound /></ClientLayout>} />
         </Routes>
       </Suspense>

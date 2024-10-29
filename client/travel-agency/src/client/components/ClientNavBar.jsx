@@ -3,7 +3,7 @@ import logo from '../../assets/img/logo.png';
 import { Link } from 'react-router-dom';
 
 const ClientNavBar = ({ userType, onLogout }) => {
-    console.log(userType, onLogout)
+
     const [isNavVisible, setIsNavVisible] = useState(false);
 
     const toggleNav = () => {
