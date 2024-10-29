@@ -23,7 +23,7 @@ const TopDestinations = () => {
                 <div class="row">
                     <div class="col-lg-6 col-md-12 col-sm-12 col-12">
                         <div class="destinations_content_box img_animation">
-                            <img src={bigimg} alt="img" />
+                            <img src={bigimg} alt="img" loading='lazy' />
                             <div class="destinations_content_inner">
                                 <h2>Up to</h2>
                                 <div class="destinations_big_offer">
@@ -34,64 +34,65 @@ const TopDestinations = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                <div class="destinations_content_box img_animation">
-                                    <img src={dest1} alt="img" />
-                                    <div class="destinations_content_inner">
+                    <div className="col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div className="row">
+                            <div className="col-lg-4 col-md-4 col-sm-4 col-4">
+                                <div className="destinations_content_box img_animation">
+                                    <img src={dest1} alt="img" loading="lazy" className="responsive-img" />
+                                    <div className="destinations_content_inner">
                                         <h3 className="text-white">Rajasthan</h3>
                                     </div>
                                 </div>
-                                <div class="destinations_content_box img_animation">
-                                    <img src={dest2} alt="img" />
-                                    <div class="destinations_content_inner">
+                                <div className="destinations_content_box img_animation">
+                                    <img src={dest2} alt="img" loading="lazy" className="responsive-img" />
+                                    <div className="destinations_content_inner">
                                         <h3 className="text-white">Gujarat</h3>
                                     </div>
                                 </div>
-                                <div class="destinations_content_box img_animation">
-                                        <img src={dest6} alt="img" />
-                                    <div class="destinations_content_inner">
+                                <div className="destinations_content_box img_animation">
+                                    <img src={dest6} alt="img" loading="lazy" className="responsive-img" />
+                                    <div className="destinations_content_inner">
                                         <h3 className="text-white">Nagaland</h3>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                <div class="destinations_content_box img_animation">
-                                    <img src={dest4} alt="img" />
-                                    <div class="destinations_content_inner">
+                            <div className="col-lg-4 col-md-4 col-sm-4 col-4">
+                                <div className="destinations_content_box img_animation">
+                                    <img src={dest4} alt="img" loading="lazy" className="responsive-img" />
+                                    <div className="destinations_content_inner">
                                         <h3 className="text-white">Kerala</h3>
                                     </div>
                                 </div>
-                                <div class="destinations_content_box img_animation">
-                                        <img src={dest5} alt="img" />
-                                    <div class="destinations_content_inner">
+                                <div className="destinations_content_box img_animation">
+                                    <img src={dest5} alt="img" loading="lazy" className="responsive-img" />
+                                    <div className="destinations_content_inner">
                                         <h3 className="text-white">Uttar Pradesh</h3>
                                     </div>
                                 </div>
-                                <div class="destinations_content_box img_animation">
-                                    <img src={dest3} alt="img" />
-                                    <div class="destinations_content_inner">
+                                <div className="destinations_content_box img_animation">
+                                    <img src={dest3} alt="img" loading="lazy" className="responsive-img" />
+                                    <div className="destinations_content_inner">
                                         <h3 className="text-white">Tamil Nadu</h3>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                <div class="destinations_content_box img_animation">
-                                        <img src={dest7} alt="img" />
-                                    <div class="destinations_content_inner">
+                            <div className="col-lg-4 col-md-4 col-sm-4 col-4">
+                                <div className="destinations_content_box img_animation">
+                                    <img src={dest7} alt="img" loading="lazy" className="responsive-img" />
+                                    <div className="destinations_content_inner">
                                         <h3 className="text-white">Madhya Pradesh</h3>
                                     </div>
                                 </div>
-                                <div class="destinations_content_box img_animation">
-                                        <img src={dest8} alt="img" />
-                                    <div class="destinations_content_inner">
+                                <div className="destinations_content_box img_animation">
+                                    <img src={dest8} alt="img" loading="lazy" className="responsive-img" />
+                                    <div className="destinations_content_inner">
                                         <h3 className="text-white">Karnataka</h3>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>

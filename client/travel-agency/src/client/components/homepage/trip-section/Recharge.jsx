@@ -11,7 +11,7 @@ const Recharge = ({ context, onDetailsChange }) => {
   const { number, operator, circle, operators, circles, dataFetched } = useSelector((state) => state.recharge);
   
   useEffect(() => {
-    if (number.length === 3 && !dataFetched) {
+    if (!dataFetched) {
       fetchOperatorsAndCircles();
     }
     if (number.length === 10) {
@@ -82,15 +82,15 @@ const Recharge = ({ context, onDetailsChange }) => {
 
   return (
     <div className="tab-pane" id="reacharge" role="tabpanel" aria-labelledby="reacharge-tab">
-      <div className="row">
-        <div className="col-lg-12">
+      <div className="row d-flex justify-content-center">
+        <div className="col-lg-8">
           <div className="tour_search_form">
             <div>
               <div className={`${context === 'recharge' ? 'col' : 'row'}`}>
                 <div className={`${context==='recharge' ? 'm-1': 'col-lg-4 col-md-6 col-sm-12 col-12 mb-2'}`}>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control flight_Search_boxed"
                     placeholder="Enter mobile number"
                     value={number}
                     onChange={handleNumberChange}
@@ -98,7 +98,7 @@ const Recharge = ({ context, onDetailsChange }) => {
                 </div>
                 <div className={`${context==='recharge' ? 'm-1': 'col-lg-4 col-md-6 col-sm-12 col-12'}`}>
                   <select
-                    className="form-control"
+                    className="form-control flight_Search_boxed"
                     value={operator}
                     onChange={(e) => dispatch(setOperator(e.target.value))}
                     disabled={operators.length === 0}
@@ -113,7 +113,7 @@ const Recharge = ({ context, onDetailsChange }) => {
                 </div>
                 <div className={`${context==='recharge' ? 'm-1': 'col-lg-4 col-md-6 col-sm-12 col-12'}`}>
                   <select
-                    className="form-control"
+                    className="form-control flight_Search_boxed"
                     value={circle}
                     onChange={(e) => dispatch(setCircle(e.target.value))}
                     disabled={circles.length === 0}
@@ -127,7 +127,7 @@ const Recharge = ({ context, onDetailsChange }) => {
                   </select>
                 </div>
                 <div onClick={handleSubmit} className="top_form_search_button">
-                  <button className="btn btn_theme btn_md" type="submit">
+                  <button className="btn btn-primary" type="submit">
                     View Plans
                   </button>
                 </div>

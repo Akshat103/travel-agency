@@ -117,7 +117,7 @@ const RechargePage = () => {
               context="recharge"
               onDetailsChange={handleDetailsChange}
             />
-            <div className="m-2">
+            <div className="m-2 d-flex justify-content-center">
               <RechargeFilter types={uniqueTypes} onFilterChange={handleFilterChange} />
             </div>
           </div>

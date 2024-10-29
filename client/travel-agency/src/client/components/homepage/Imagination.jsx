@@ -16,19 +16,19 @@ const Imagination = () => {
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="imagination_boxed">
-                            <img src={img1} alt="img"/>
+                            <img src={img1} alt="img" loading='lazy'/>
                         <h3 className="text-white">Discount for all Airlines</h3>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="imagination_boxed">
-                            <img src={img2} alt="img"/>
+                            <img src={img2} alt="img" loading='lazy'/>
                         <h3 className="text-white">Travel around<span>the world</span></h3>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="imagination_boxed">
-                            <img src={img3} alt="img"/>
+                            <img src={img3} alt="img" loading='lazy'/>
                         <h3 className="text-white">Luxury resorts<span>top deals</span></h3>
                     </div>
                 </div>
