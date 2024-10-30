@@ -100,7 +100,7 @@ const ListFlights = ({ isSearching }) => {
             {/* Airline Filters */}
             <div className="mb-4">
                 <div className="text-lg font-semibold mb-2">Filter by Airlines:</div>
-                <div style={{ display: 'flex', gap: '2rem' }}>
+                <div style={{ display: 'flex', gap: '2rem', overflow:'auto'}}>
                     {uniqueAirlines.map((airline, index) => (
                         <div key={index} className="flex items-center">
                             <input

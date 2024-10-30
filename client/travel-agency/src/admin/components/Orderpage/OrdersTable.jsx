@@ -60,8 +60,8 @@ const OrdersTable = () => {
                 return 'Hotel';
             case 'recharge':
                 return 'Recharge';
-            case 'booktrain':
-                return 'Train';
+            case 'irctcOnboard':
+                return 'IRCTC Onboard';
             default:
                 return 'Unknown';
         }
