@@ -2,7 +2,8 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
 const logger = require('../utils/logger');
-const {createFlightConfirmationPDF} = require('./createFlightConfirmationPDF');
+const { createFlightConfirmationPDF } = require('./createFlightConfirmationPDF');
+const { createBusConfirmationPDF } = require('./createBusConfirmationPDF');
 
 function createConformationPDF(user, order) {
     return new Promise((resolve, reject) => {
@@ -50,13 +51,10 @@ function createConformationPDF(user, order) {
 
             // Dynamically add details based on booking type
             if (order.serviceType === 'bookflight') {
-                createFlightConfirmationPDF(doc,order);
-            } else if (serviceType === 'hotel') {
-                doc.text(`Hotel Name: ${serviceDetails.hotelName}`);
-                doc.text(`Check-In Date: ${serviceDetails.checkInDate}`);
-                doc.text(`Check-Out Date: ${serviceDetails.checkOutDate}`);
-                doc.text(`Room Number: ${serviceDetails.roomNumber}`);
-            } else if (serviceType === 'bus') {
+                createFlightConfirmationPDF(doc, order);
+            } else if (order.serviceType === 'hotel') {
+                createBusConfirmationPDF(doc, order);
+            } else if (order.serviceType === 'bookbus') {
                 doc.text(`Bus Number: ${serviceDetails.busNumber}`);
                 doc.text(`Travel Date: ${serviceDetails.travelDate}`);
             } else if (serviceType === 'mobile_recharge') {
