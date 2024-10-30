@@ -111,7 +111,7 @@ const FlightSearchForm = ({
       </div>
 
       <div className="d-flex justify-content-center align-items-center">
-        <button className="btn btn_theme btn_md" onClick={clickSearch}>
+        <button className="btn btn-primary" onClick={clickSearch}>
           Search
         </button>
       </div>

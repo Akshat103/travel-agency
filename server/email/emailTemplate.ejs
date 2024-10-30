@@ -1,4 +1,4 @@
-<% if (type==='bookflight' ) { %>
+<% if (order.serviceType==='bookflight' ) { %>
     <!DOCTYPE html>
     <html lang="en">
 
@@ -22,60 +22,50 @@
                                 <p style="margin: 5px 0 0;">Thank you for booking with Yara Holidays!</p>
                             </td>
                         </tr>
-    
+
                         <tr>
                             <td style="padding: 30px 20px;">
-                                <h2 style="color: #333333; font-size: 22px;">Dear <%= customerName %>,</h2>
+                                <h2 style="color: #333333; font-size: 22px;">Dear <%= user.name %>,</h2>
                                 <p style="color: #666666; font-size: 16px; line-height: 1.6;">
                                     We are pleased to confirm your flight booking. Below are your flight details:
                                 </p>
-    
+
                                 <h3 style="color: #333333; font-size: 20px;">Flight Details</h3>
                                 <table width="100%" border="0" cellspacing="0" cellpadding="10"
                                     style="font-size: 16px; color: #666666;">
                                     <tr>
                                         <td style="border-bottom: 1px solid #dddddd;">Booking Reference:</td>
                                         <td style="border-bottom: 1px solid #dddddd; text-align: right;">
-                                            <%= clientId %>
+                                            <%= order.serviceResponse.Booking_RefNo %>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border-bottom: 1px solid #dddddd;">Departure (Airport Code):</td>
                                         <td style="border-bottom: 1px solid #dddddd; text-align: right;">
-                                            <%= serviceDetails.flightDetails.Origin.AIRPORTCODE %>
+                                            <%= order.serviceDetails.flightDetails.Origin.AIRPORTCODE %>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border-bottom: 1px solid #dddddd;">Arrival (Airport Code):</td>
                                         <td style="border-bottom: 1px solid #dddddd; text-align: right;">
-                                            <%= serviceDetails.flightDetails.Destination.AIRPORTCODE %>
+                                            <%= order.serviceDetails.flightDetails.Destination.AIRPORTCODE %>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border-bottom: 1px solid #dddddd;">Departure Date & Time:</td>
                                         <td style="border-bottom: 1px solid #dddddd; text-align: right;">
-                                            <%= new Date(serviceDetails.flightDetails.TravelDate).toLocaleString() %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid #dddddd;">Passenger:</td>
-                                        <td style="border-bottom: 1px solid #dddddd; text-align: right;">
-                                            <%= serviceDetails.passengers[0].First_Name %> <%= serviceDetails.passengers[0].Last_Name %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid #dddddd;">Seat Price:</td>
-                                        <td style="border-bottom: 1px solid #dddddd; text-align: right;">
-                                            ₹<%= serviceDetails.passengers[0].seatPrice %>
+                                            <%= new
+                                                Date(order.serviceDetails.flightDetails.TravelDate).toLocaleString()
+                                                %>
                                         </td>
                                     </tr>
                                 </table>
-    
+
                                 <p style="color: #666666; font-size: 16px; margin-top: 20px;">
                                     We have also attached the details of your flight booking in the attachment for your
                                     convenience.
                                 </p>
-    
+
                                 <h3 style="color: #333333; font-size: 20px;">Contact Us</h3>
                                 <p style="color: #666666; font-size: 16px;">
                                     If you have any questions, feel free to contact us at:
@@ -86,7 +76,7 @@
                                 </p>
                             </td>
                         </tr>
-    
+
                         <tr>
                             <td
                                 style="text-align: center; background-color: #f4f4f4; color: #888888; padding: 20px; border-radius: 0 0 10px 10px;">
@@ -97,12 +87,12 @@
                 </td>
             </tr>
         </table>
-    
-    </body>  
+
+    </body>
 
     </html>
 
-    <% } else if (type==='bookhotel' ) { %>
+    <% } else if (order.serviceType==='bookhotel' ) { %>
         <!DOCTYPE html>
         <html>
 
@@ -128,7 +118,7 @@
 
         </html>
 
-        <% } else if (type==='bookbus' ) { %>
+        <% } else if (order.serviceType==='bookbus' ) { %>
             <!DOCTYPE html>
             <html>
 
@@ -150,7 +140,7 @@
 
             </html>
 
-            <% } else if (type==='recharge' ) { %>
+            <% } else if (order.serviceType==='recharge' ) { %>
                 <!DOCTYPE html>
                 <html>
 
@@ -172,7 +162,7 @@
 
                 </html>
 
-                <% } else if (type==='booktrain' ) { %>
+                <% } else if (order.serviceType==='booktrain' ) { %>
                     <!DOCTYPE html>
                     <html>
 

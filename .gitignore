@@ -6,3 +6,4 @@ super-admin
 .env
 test.*
 logs
+conformationpdf

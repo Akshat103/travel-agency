@@ -53,6 +53,7 @@ const AddPassengers = () => {
         Nationality: '',
         saved: false,
         SSR_Key: '',
+        seat: '',
         price: price || 0
     });
 

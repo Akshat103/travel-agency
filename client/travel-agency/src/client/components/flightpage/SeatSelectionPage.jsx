@@ -17,7 +17,8 @@ const SeatSelectionPage = () => {
     const { payment } = usePayment();
     const flightDetails = useSelector((state) => state.flights.flightDetails);
     const passengers = useSelector((state) => state.flights.passengers);
-
+    const segments = useSelector((state) => state.flights.segments);
+    const fare = useSelector((state) => state.flights.fare);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -29,7 +30,10 @@ const SeatSelectionPage = () => {
         if (passengerIndex !== -1) {
             dispatch(updatePassenger({
                 index: passengerIndex,
-                data: { SSR_Key: seat.SSR_Key }
+                data: {
+                    SSR_Key: seat.SSR_Key,
+                    seat: seat.SSR_TypeName
+                }
             }));
         }
     };
@@ -56,9 +60,11 @@ const SeatSelectionPage = () => {
     // Confirm seat selection
     const handleConfirm = async () => {
         const total = calculateTotalPrice();
-    
+
         const bookingData = {
             flightDetails,
+            segments,
+            fare,
             passengers,
             flightKey,
             searchKey,
@@ -67,7 +73,7 @@ const SeatSelectionPage = () => {
             email: customerInfo.email,
             totalPrice: total
         };
-    
+
         // Validation for flightDetails
         const isFlightDetailsValid = bookingData.flightDetails &&
             bookingData.flightDetails.Origin?.AIRPORTCODE &&
@@ -75,10 +81,10 @@ const SeatSelectionPage = () => {
             bookingData.flightDetails.Destination?.AIRPORTCODE &&
             bookingData.flightDetails.Destination?.COUNTRYCODE &&
             bookingData.flightDetails.TravelDate;
-    
+
         // Determine if international travel type
         const isTravelTypeInternational = bookingData.flightDetails?.Travel_Type === "1";
-    
+
         // Validation for passengers
         const isPassengerValid = bookingData.passengers && bookingData.passengers.every(passenger =>
             passenger.Pax_type !== undefined &&
@@ -88,6 +94,7 @@ const SeatSelectionPage = () => {
             passenger.DOB &&
             passenger.Nationality &&
             passenger.SSR_Key &&
+            passenger.seat &&
             passenger.Title &&
             // Conditional passport validation for international flights
             (!isTravelTypeInternational || (
@@ -96,7 +103,7 @@ const SeatSelectionPage = () => {
                 passenger.Passport_Expiry
             ))
         );
-    
+
         // Validate all required fields
         if (!isFlightDetailsValid || !isPassengerValid ||
             !bookingData.flightKey || !bookingData.searchKey || !bookingData.fareId ||
@@ -104,7 +111,7 @@ const SeatSelectionPage = () => {
             toast.error('Error: Missing or invalid booking details. Try again.');
             return;
         }
-    
+
         try {
             const receipt = `flight_booking_rcptid_${Math.floor(Math.random() * 10000)}`;
             const serviceType = "bookflight";
@@ -113,7 +120,7 @@ const SeatSelectionPage = () => {
         } catch (error) {
             console.error('Error booking:', error.response ? error.response.data : error.message);
         }
-    };   
+    };
 
     return (
         <div className="m-4">

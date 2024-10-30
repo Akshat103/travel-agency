@@ -15,6 +15,8 @@ const initialState = {
     Class_Of_Travel: '0',
     Travel_Type: ''
   },
+  fare: null,
+  segments: [],
   flightCity: null,
   flightCityLoading: false,
   flightCityError: null,
@@ -54,6 +56,12 @@ const flightSlice = createSlice({
     updateFlightDetails: (state, action) => {
       state.flightDetails = { ...state.flightDetails, ...action.payload };
     },
+    updateFare: (state, action) => {
+      state.fare = action.payload;
+    },
+    updateSegments: (state, action) => {
+      state.segments = action.payload;
+    },
     updateSearchResult: (state, action) => {
       state.searchResult = action.payload;
     },
@@ -68,7 +76,12 @@ const flightSlice = createSlice({
     },
     updatePassenger: (state, action) => {
       const { index, data } = action.payload;
-      state.passengers[index] = { ...state.passengers[index], ...data };
+      if (state.passengers[index]) {
+        state.passengers[index] = {
+          ...state.passengers[index],
+          ...data,
+        };
+      }
     },
     removePassenger: (state, action) => {
       state.passengers = state.passengers.filter((_, index) => index !== action.payload);
@@ -94,6 +107,8 @@ const flightSlice = createSlice({
 export const {
   updateFlightDetails,
   updateSearchResult,
+  updateFare,
+  updateSegments,
   updateSearchKey,
   updatePassengers,
   addPassenger,

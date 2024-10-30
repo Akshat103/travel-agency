@@ -10,6 +10,7 @@ const IRCTC = require('../models/IRCTC');
 const createConformationPDF = require('../email/createBookingPDF');
 const sendConformationEmail = require('../email/sendConformationEmail');
 const logger = require('../utils/logger');
+const User = require('../models/User');
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -171,18 +172,22 @@ module.exports.verifyOrder = async (req, res) => {
         });
 
         try {
+
+            const user = await User.findOne({ clientId: req.user.clientId });
+            const order = await OrderSchema.findOne({ orderId: updatedOrder.orderId });
+
             // Generate the confirmation PDF
-            const pdfFilePath = await createConformationPDF(serviceType, req.user, updatedOrder);
+            const pdfFilePath = await createConformationPDF(user, order);
 
             // Log successful PDF creation
             logger.info(`PDF created successfully: ${pdfFilePath}`);
 
             // Send confirmation email with the generated PDF
-            await sendConformationEmail(serviceType, req.user, updatedOrder, pdfFilePath);
+            await sendConformationEmail(user, order, pdfFilePath);
 
             logger.info("Confirmation email sent successfully!");
         } catch (error) {
-            logger.error("Error in PDF creation or sending confirmation email:", error.message);
+            logger.error("Error in PDF creation or sending confirmation email:", error);
         }
 
     } catch (error) {

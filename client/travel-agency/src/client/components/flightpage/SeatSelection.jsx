@@ -28,6 +28,7 @@ const SeatSelection = ({ passengers, seatData, onBack }) => {
       const updatedPassenger = {
         ...passengers[updatedPassengerIndex],
         SSR_Key: seat.SSR_Key,
+        seat: seat.SSR_TypeName,
         seatPrice: seat.Total_Amount,
       };
 

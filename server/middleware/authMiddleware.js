@@ -4,7 +4,7 @@ const logger = require('../utils/logger');
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.sessionId;
   if (!token) {
-    return res.status(401).json({ message: 'Unauthorized access. Please login.', redirect: '/login' });
+    return res.status(401).json({ message: 'Please login.', redirect: '/login' });
   }
 
   try {
@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(401).json({ success: false, message: 'Unauthorized access. Please login.', redirect: '/login' });
+    res.status(401).json({ success: false, message: 'Please login.', redirect: '/login' });
   }
 };
 

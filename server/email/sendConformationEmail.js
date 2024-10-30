@@ -2,9 +2,8 @@ const path = require('path');
 const ejs = require('ejs');
 const transporter = require("../config/nodemailer");
 const logger = require('../utils/logger');
-const User = require('../models/User');
 
-function sendConformationEmail(serviceType, user, order, pdfPath) {
+function sendConformationEmail(user, order, pdfPath) {
     return new Promise((resolve, reject) => {
         logger.info(`Starting email sending process for client: ${user.name}`);
         logger.info(`Using PDF path: ${pdfPath}`);
@@ -13,14 +12,11 @@ function sendConformationEmail(serviceType, user, order, pdfPath) {
         logger.info(`Email template path: ${templatePath}`);
 
         // Prepare the data object for the template
-        const templateData = {
-            type: serviceType,
-            customerName: user.name || 'Valued Customer',
-            ...bookingDetails
+        const data = {
+            user,
+            order
         };
-
-
-        ejs.renderFile(templatePath, templateData, (err, emailHtml) => {
+        ejs.renderFile(templatePath, data, (err, emailHtml) => {
             if (err) {
                 logger.error('Error rendering email template: ' + err);
                 return reject(err);
@@ -30,18 +26,18 @@ function sendConformationEmail(serviceType, user, order, pdfPath) {
 
             const mailOptions = {
                 from: process.env.EMAIL_USER,
-                to: bookingDetails.email,
-                subject: `Your ${serviceType.charAt(0).toUpperCase() + serviceType.slice(1)} Booking Confirmation`,
+                to: order.serviceDetails.email,
+                subject: `Your ${order.serviceType.charAt(0).toUpperCase() + order.serviceType.slice(1)} Confirmation`,
                 html: emailHtml,
                 attachments: [
                     {
-                        filename: `${serviceType}_booking_confirmation.pdf`,
+                        filename: `${order.serviceType}_confirmation.pdf`,
                         path: pdfPath,
                     },
                 ],
             };
 
-            logger.info(`Sending email to: ${bookingDetails.email}`);
+            logger.info(`Sending email to: ${order.serviceDetails.email}`);
 
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {

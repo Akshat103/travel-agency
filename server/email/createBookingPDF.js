@@ -2,11 +2,12 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
 const logger = require('../utils/logger');
+const {createFlightConfirmationPDF} = require('./createFlightConfirmationPDF');
 
-function createConformationPDF(serviceType, user, order) {
+function createConformationPDF(user, order) {
     return new Promise((resolve, reject) => {
         try {
-            logger.info(`Starting PDF creation for user: ${order.name} for ${serviceType}`);
+            logger.info(`Starting PDF creation for user: ${user.name} for ${order.serviceType}`);
             const pdfDir = path.join(__dirname, '../conformationpdf');
 
             if (!fs.existsSync(pdfDir)) {
@@ -47,64 +48,25 @@ function createConformationPDF(serviceType, user, order) {
                 doc.fontSize(20).text('Yara Holidays', 110, 57).moveDown();
             }
 
-            doc.fontSize(16).text('Booking Confirmation', { align: 'center' });
-            doc.moveDown();
-            doc.fontSize(12).text(`Name: ${order.bookingDetails.customerName}`);
-            doc.text(`Booking ID: ${order.bookingDetails.id}`);
-
             // Dynamically add details based on booking type
-            if (serviceType === 'bookflight') {
-                const flight = order.bookingDetails?.flightDetails || {};
-                const passengers = order.bookingDetails?.passengers || [];
-
-                // Dynamic data with validation and fallback values for flight details
-                const originAirport = flight?.Origin?.AIRPORTCODE || 'N/A';
-                const originCountry = flight?.Origin?.COUNTRYCODE || 'N/A';
-                const destinationAirport = flight?.Destination?.AIRPORTCODE || 'N/A';
-                const destinationCountry = flight?.Destination?.COUNTRYCODE || 'N/A';
-                const travelDate = flight?.TravelDate ? new Date(flight.TravelDate).toLocaleString() : 'N/A';
-                const classOfTravel = flight?.Class_Of_Travel || 'N/A';
-
-                // PDF generation for flight details
-                doc.text(`Flight Origin: ${originAirport}, ${originCountry}`);
-                doc.text(`Flight Destination: ${destinationAirport}, ${destinationCountry}`);
-                doc.text(`Travel Date: ${travelDate}`);
-                doc.text(`Class of Travel: ${classOfTravel}`);
-
-                // Loop through passengers array and generate details for each passenger
-                passengers.forEach((passenger, index) => {
-                    const title = passenger?.Title || 'N/A';
-                    const firstName = passenger?.First_Name || 'N/A';
-                    const lastName = passenger?.Last_Name || 'N/A';
-                    const passportNumber = passenger?.Passport_Number || 'N/A';
-                    const nationality = passenger?.Nationality || 'N/A';
-                    const seatPrice = passenger?.seatPrice || 0;
-                    const totalPrice = passenger?.price || 0;
-
-                    // Separate each passenger's details in the PDF for clarity
-                    doc.text(`\nPassenger ${index + 1}:`);
-                    doc.text(`Passenger Name: ${title} ${firstName} ${lastName}`);
-                    doc.text(`Passport Number: ${passportNumber}`);
-                    doc.text(`Nationality: ${nationality}`);
-                    doc.text(`Seat Price: ${seatPrice}`);
-                    doc.text(`Total Price: ${totalPrice}`);
-                });
+            if (order.serviceType === 'bookflight') {
+                createFlightConfirmationPDF(doc,order);
             } else if (serviceType === 'hotel') {
-                doc.text(`Hotel Name: ${bookingDetails.hotelName}`);
-                doc.text(`Check-In Date: ${bookingDetails.checkInDate}`);
-                doc.text(`Check-Out Date: ${bookingDetails.checkOutDate}`);
-                doc.text(`Room Number: ${bookingDetails.roomNumber}`);
+                doc.text(`Hotel Name: ${serviceDetails.hotelName}`);
+                doc.text(`Check-In Date: ${serviceDetails.checkInDate}`);
+                doc.text(`Check-Out Date: ${serviceDetails.checkOutDate}`);
+                doc.text(`Room Number: ${serviceDetails.roomNumber}`);
             } else if (serviceType === 'bus') {
-                doc.text(`Bus Number: ${bookingDetails.busNumber}`);
-                doc.text(`Travel Date: ${bookingDetails.travelDate}`);
+                doc.text(`Bus Number: ${serviceDetails.busNumber}`);
+                doc.text(`Travel Date: ${serviceDetails.travelDate}`);
             } else if (serviceType === 'mobile_recharge') {
-                doc.text(`Mobile Number: ${bookingDetails.mobileNumber}`);
-                doc.text(`Recharge Amount: ${bookingDetails.rechargeAmount}`);
+                doc.text(`Mobile Number: ${serviceDetails.mobileNumber}`);
+                doc.text(`Recharge Amount: ${serviceDetails.rechargeAmount}`);
             } else if (serviceType === 'train') {
-                doc.text(`Train Number: ${bookingDetails.trainNumber}`);
-                doc.text(`Boarding Station: ${bookingDetails.boardingStation}`);
-                doc.text(`Destination Station: ${bookingDetails.destinationStation}`);
-                doc.text(`Seat Class: ${bookingDetails.seatClass}`);
+                doc.text(`Train Number: ${serviceDetails.trainNumber}`);
+                doc.text(`Boarding Station: ${serviceDetails.boardingStation}`);
+                doc.text(`Destination Station: ${serviceDetails.destinationStation}`);
+                doc.text(`Seat Class: ${serviceDetails.seatClass}`);
             }
 
             doc.end();

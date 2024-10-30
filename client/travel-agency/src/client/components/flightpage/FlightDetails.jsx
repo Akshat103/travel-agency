@@ -2,28 +2,36 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { ArrowLeft, Plane, Clock, DollarSign } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import {
+  updateFare,
+  updateSegments,
+} from '../../../redux/flightSlice';
 
 const FlightDetails = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
-  const bookFare = (fareId, flightKey, price) => {
-    navigate('/flight/add-passengers', { 
-      state: { fareId, flightKey, reprice: flight.Repriced, price } 
+  const bookFare = (fare, flightKey, segments, price) => {
+    dispatch(updateFare(fare));
+    dispatch(updateSegments(segments));
+    navigate('/flight/add-passengers', {
+      state: { fareId: fare.Fare_Id, flightKey, reprice: flight.Repriced, price }
     });
   };
-  
+
   const location = useLocation();
   const { flight } = location.state || {};
-  
+
   if (!flight) {
     return <div>Flight not found</div>;
   }
 
   return (
     <Container className="mt-4">
-      <Button 
-        variant="outline-primary" 
-        onClick={() => navigate(-1)} 
+      <Button
+        variant="outline-primary"
+        onClick={() => navigate(-1)}
         className="mb-4"
       >
         <ArrowLeft className="me-2" size={18} /> Back to Flights
@@ -48,11 +56,6 @@ const FlightDetails = () => {
           </Row>
 
           {flight.Segments.map((segment, index) => {
-            // Find the fare class for the current segment
-            const fareClass = flight.Fares[0].FareDetails[0].FareClasses.find(
-              (fareClass) => fareClass.Segment_Id === index
-            );
-
             return (
               <Row key={index} className="mt-3">
                 <Col>
@@ -61,7 +64,6 @@ const FlightDetails = () => {
                   <p>Departure: {segment.Departure_DateTime}</p>
                   <p>Arrival: {segment.Arrival_DateTime}</p>
                   <p>Duration: {segment.Duration}</p>
-                  <p>Fare Class: {fareClass ? fareClass.Class_Code : 'N/A'} ({fareClass ? fareClass.Class_Desc : 'N/A'})</p>
                 </Col>
               </Row>
             );
@@ -87,11 +89,12 @@ const FlightDetails = () => {
                     {Math.ceil(fare.FareDetails[0].Total_Amount)} {fare.FareDetails[0].Currency_Code}
                   </span>
                 </p>
-                <Button 
+                <Button
                   variant="primary"
                   onClick={() => bookFare(
-                    fare.Fare_Id, 
-                    flight.Flight_Key, 
+                    fare,
+                    flight.Flight_Key,
+                    flight.Segments,
                     Math.ceil(fare.FareDetails[0].Total_Amount)
                   )}
                 >
