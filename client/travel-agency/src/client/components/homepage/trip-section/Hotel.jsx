@@ -244,7 +244,7 @@ const Hotel = ({ isVertical, onSearch }) => {
                                                 <MinusCircleIcon />
                                             </button>
                                             <p>Children</p>
-                                            <strong className="mx-2">{room.ChildCount}</strong>
+                                            <strong className="mx-1">{room.ChildCount}</strong>
                                             <button onClick={() => addChild(roomIndex)} style={{ border: "none", background:'transparent' }}>
                                                 <PlusCircleIcon />
                                             </button>

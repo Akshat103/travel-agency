@@ -143,8 +143,9 @@ const onboardIRCTC = async (details, clientId, orderid) => {
 const getIrctcCost = async (req, res) => {
     if (!IRCTC_COST) {
         res.status(500).json({ success: false, error: 'Cost not avilable. Try later.' });
+    }else{
+        res.status(200).json({ success: true, cost: IRCTC_COST });
     }
-    res.status(200).json({ success: true, cost: IRCTC_COST });
 }
 
 const getIrctc = async (req, res) => {

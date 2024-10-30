@@ -229,25 +229,25 @@ const OnboardUser = () => {
                     <Col md={6}>
                         <Form.Group controlId="formPanImage">
                             <Form.Label>PAN Image</Form.Label>
+                            <FaUpload className="text-primary" />
                             <Form.Control
                                 type="file"
                                 name="panImage"
                                 onChange={handleFileChange}
                                 required
                             />
-                            <FaUpload className="text-primary" />
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                         <Form.Group controlId="formAadharFront">
                             <Form.Label>Aadhar Front</Form.Label>
+                            <FaUpload className="text-primary" />
                             <Form.Control
                                 type="file"
                                 name="aadharFront"
                                 onChange={handleFileChange}
                                 required
                             />
-                            <FaUpload className="text-primary" />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -255,25 +255,25 @@ const OnboardUser = () => {
                     <Col md={6}>
                         <Form.Group controlId="formShopProof">
                             <Form.Label>Shop Proof</Form.Label>
+                            <FaUpload className="text-primary" />
                             <Form.Control
                                 type="file"
                                 name="shopProof"
                                 onChange={handleFileChange}
                                 required
                             />
-                            <FaUpload className="text-primary" />
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                         <Form.Group controlId="formSelfPhoto">
                             <Form.Label>Self Photo</Form.Label>
+                            <FaUpload className="text-primary" />
                             <Form.Control
                                 type="file"
                                 name="selfPhoto"
                                 onChange={handleFileChange}
                                 required
                             />
-                            <FaUpload className="text-primary" />
                         </Form.Group>
                     </Col>
                 </Row>
