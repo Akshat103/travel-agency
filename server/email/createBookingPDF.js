@@ -57,10 +57,10 @@ function createConformationPDF(user, order) {
             } else if (order.serviceType === 'bookbus') {
                 doc.text(`Bus Number: ${serviceDetails.busNumber}`);
                 doc.text(`Travel Date: ${serviceDetails.travelDate}`);
-            } else if (serviceType === 'mobile_recharge') {
+            } else if (order.serviceType === 'mobile_recharge') {
                 doc.text(`Mobile Number: ${serviceDetails.mobileNumber}`);
                 doc.text(`Recharge Amount: ${serviceDetails.rechargeAmount}`);
-            } else if (serviceType === 'train') {
+            } else if (order.serviceType === 'train') {
                 doc.text(`Train Number: ${serviceDetails.trainNumber}`);
                 doc.text(`Boarding Station: ${serviceDetails.boardingStation}`);
                 doc.text(`Destination Station: ${serviceDetails.destinationStation}`);
