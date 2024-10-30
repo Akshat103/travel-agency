@@ -7,7 +7,7 @@ const BusDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { bus } = location.state || {};
-  
+
   const [selectedBoarding, setSelectedBoarding] = useState('');
   const [selectedDropping, setSelectedDropping] = useState('');
 
@@ -89,7 +89,7 @@ const BusDetails = () => {
                 <div key={index} className="col-md-2">
                   <div className="card">
                     <div className="card-body">
-                      <h6 >₹{fare.totalFare}</h6>
+                      <h6 >₹{Math.ceil(fare.totalFare)}</h6>
                     </div>
                   </div>
                 </div>
@@ -98,10 +98,10 @@ const BusDetails = () => {
           </div>
           <div>
             <h5 className="font-semibold mb-2">Seats</h5>
-            <SeatLayout 
-              bus={bus} 
-              selectedBoarding={selectedBoarding} 
-              selectedDropping={selectedDropping} 
+            <SeatLayout
+              bus={bus}
+              selectedBoarding={selectedBoarding}
+              selectedDropping={selectedDropping}
             />
           </div>
         </div>

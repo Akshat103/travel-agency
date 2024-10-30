@@ -16,6 +16,7 @@ function sendConformationEmail(user, order, pdfPath) {
             user,
             order
         };
+        
         ejs.renderFile(templatePath, data, (err, emailHtml) => {
             if (err) {
                 logger.error('Error rendering email template: ' + err);

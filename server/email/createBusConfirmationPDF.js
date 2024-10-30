@@ -14,10 +14,10 @@ const createBusConfirmationPDF = (doc, order) => {
     // Bus Trip Details
     doc.fontSize(16).text('Trip Details', { underline: true })
        .fontSize(12)
-       .text(`Source: ${order.serviceDetails.sourceName} (${order.serviceDetails.source})`)
-       .text(`Destination: ${order.serviceDetails.destinationName} (${order.serviceDetails.destination})`)
-       .text(`Date of Journey: ${order.serviceDetails.doj}`)
-       .text(`Trip ID: ${order.serviceDetails.tripid}`)
+       .text(`Source: ${order.serviceDetails.sourceName}`)
+       .text(`Destination: ${order.serviceDetails.destinationName}`)
+       .text(`Date of Journey: ${new Date(order.serviceDetails.doj).toLocaleString()}`)
+       .text(`Booking ID: ${order.serviceResponse.booking_id}`)
        .moveDown();
 
     // Seat Details
@@ -33,8 +33,7 @@ const createBusConfirmationPDF = (doc, order) => {
        .fontSize(12)
        .text(`Mobile: ${order.serviceDetails.mobile}`)
        .text(`Email: ${order.serviceDetails.email}`)
-       .text(`ID Type: ${order.serviceDetails.idtype}`)
-       .text(`ID Number: ${order.serviceDetails.idnumber}`)
+       .text(`${order.serviceDetails.idtype} - ${order.serviceDetails.idnumber}`)
        .text(`Address: ${order.serviceDetails.address}`)
        .moveDown();
 

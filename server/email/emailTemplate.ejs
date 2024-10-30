@@ -175,24 +175,6 @@
                                                     <%= new Date(order.serviceDetails.doj).toLocaleDateString() %>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td style="border-bottom: 1px solid #dddddd;">Seat(s):</td>
-                                                <td style="border-bottom: 1px solid #dddddd; text-align: right;">
-                                                    <%= order.serviceDetails.seats.map(seat=> seat.seatname).join(', ') %>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="border-bottom: 1px solid #dddddd;">Passenger Name:</td>
-                                                <td style="border-bottom: 1px solid #dddddd; text-align: right;">
-                                                    <%= order.serviceDetails.seats.map(seat=> seat.passengername).join(', ') %>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="border-bottom: 1px solid #dddddd;">Passenger Age:</td>
-                                                <td style="border-bottom: 1px solid #dddddd; text-align: right;">
-                                                    <%= order.serviceDetails.seats.map(seat=> seat.passengerage).join(', ') %>
-                                                </td>
-                                            </tr>
                                         </table>
 
                                         <p style="color: #666666; font-size: 16px; margin-top: 20px;">

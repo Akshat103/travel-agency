@@ -158,7 +158,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
             const receipt = `bus_booking_rcptid_${Math.floor(Math.random() * 10000)}`;
             const serviceType = "bookbus";
             const serviceDetails = bookingData;
-            payment(totalAmount, receipt, serviceType, serviceDetails)
+            payment(Math.ceil(totalAmount), receipt, serviceType, serviceDetails)
         } catch (error) {
             console.error('Error booking:', error.response ? error.response.data : error.message);
         }
@@ -192,7 +192,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                         }}
                                     >
                                         <strong>Seat {seat.name}</strong>
-                                        <p>₹{seat.fare}</p>
+                                        <p>₹{Math.ceil(seat.fare)}</p>
                                         <p>{availableSeats.some(s => s.Seat_Key === seat.Seat_Key) ? "Available" : "Booked"}</p>
                                     </div>
                                 ))}
@@ -328,7 +328,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                             </li>
                                         ))}
                                     </ul>
-                                    <p className="mt-3">Total Amount: ₹{totalAmount}</p>
+                                    <p className="mt-3">Total Amount: ₹{Math.ceil(totalAmount)}</p>
                                     <button className="btn btn-success mt-3" onClick={handleBook}>Book Seats</button>
                                 </div>
                             )}
