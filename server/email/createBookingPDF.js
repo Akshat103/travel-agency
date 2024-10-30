@@ -53,10 +53,10 @@ function createConformationPDF(user, order) {
             if (order.serviceType === 'bookflight') {
                 createFlightConfirmationPDF(doc, order);
             } else if (order.serviceType === 'hotel') {
-                createBusConfirmationPDF(doc, order);
-            } else if (order.serviceType === 'bookbus') {
                 doc.text(`Bus Number: ${serviceDetails.busNumber}`);
                 doc.text(`Travel Date: ${serviceDetails.travelDate}`);
+            } else if (order.serviceType === 'bookbus') {
+                createBusConfirmationPDF(doc, order);
             } else if (order.serviceType === 'mobile_recharge') {
                 doc.text(`Mobile Number: ${serviceDetails.mobileNumber}`);
                 doc.text(`Recharge Amount: ${serviceDetails.rechargeAmount}`);
