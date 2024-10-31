@@ -18,14 +18,7 @@ import SeatSelectionPage from '../client/components/flightpage/SeatSelectionPage
 import FailurePage from '../pages/FailurePage';
 import OnboardUser from '../client/pages/OnboardUser';
 import IRCTCPage from '../client/pages/IrctcPage';
-
-import spin from '../assets/spinner.gif';
-
-const spinner = (
-  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    <img src={spin} alt="Loading..." />
-  </div>
-);
+import Spinner from '../components/Spinner';
 
 const Register = lazy(() => import('../client/pages/Register'));
 const LogIn = lazy(() => import('../client/pages/LogIn'));
@@ -71,8 +64,8 @@ const ClientRoutes = () => {
   }, [location.pathname, navigate]);
 
   return (
-    <div style={{ zoom: '80%' }}>
-      <Suspense fallback={spinner}>
+    <div style={{ zoom: '75%' }}>
+      <Suspense fallback={<Spinner show={true} />}>
         <Routes>
           <Route path="" element={<ClientLayout><ClientHome /></ClientLayout>} />
           <Route path="register" element={<ClientLayout><Register /></ClientLayout>} />

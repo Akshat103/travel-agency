@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSource, setDestination, setJourneyDate, setSourceList, setDestinationList, setSourceName, setDestinationName } from '../../../../redux/busSlice';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
 
 const Bus = ({ layout, onSearch }) => {
     const dispatch = useDispatch();
@@ -37,15 +38,14 @@ const Bus = ({ layout, onSearch }) => {
             .slice(0, 5);
     };
 
+    useEffect(() => {
+        debouncedFetchSourceList();
+    })
+
     const handleSourceChange = (e) => {
         const value = e.target.value;
         setSourceInput(value);
-        if (value.length >= 2) {
-            debouncedFetchSourceList();
-            setSourceSuggestions(filterSources(value));
-        } else {
-            setSourceSuggestions([]);
-        }
+        setSourceSuggestions(filterSources(value));
     };
 
     const fetchDestinationList = async (sourceId) => {
@@ -84,8 +84,8 @@ const Bus = ({ layout, onSearch }) => {
         setDestinationSuggestions([]);
     };
 
-    const handleJourneyDateChange = (e) => {
-        dispatch(setJourneyDate(e.target.value));
+    const handleJourneyDateChange = (date) => {
+        dispatch(setJourneyDate(date));
     };
 
     const handleSearchClick = () => {
@@ -112,7 +112,7 @@ const Bus = ({ layout, onSearch }) => {
         <div className="tab-pane" id="bus" role="tabpanel" aria-labelledby="bus-tab">
             <div className="row">
                 <div className="col-lg-12">
-                    <div className={`${layout === 'col' ? 'col justify-content-center' : 'row justify-content-center'}`}>
+                    <div className={`${layout === 'col' ? 'col justify-content-center mt-4' : 'row justify-content-center'}`}>
                         <div className={`${layout === 'col' ? "" : "col-lg-3 col-md-6 col-sm-12"} mb-3`}>
                             <div className="flight_Search_boxed">
                                 <p>From</p>
@@ -125,6 +125,7 @@ const Bus = ({ layout, onSearch }) => {
                                 {sourceSuggestions.length > 0 && (
                                     <ul className="suggestions-list"
                                         style={{
+                                            width: '-webkit-fill-available',
                                             maxHeight: '150px',
                                             overflowY: 'auto',
                                             margin: 0,
@@ -205,17 +206,19 @@ const Bus = ({ layout, onSearch }) => {
                                 <div className="flight_Search_boxed date_flex_area">
                                     <div className="Journey_date">
                                         <p>Journey date</p>
-                                        <input
-                                            type="date"
-                                            value={journeyDate}
+                                        <DatePicker
+                                            selected={journeyDate}
                                             onChange={handleJourneyDateChange}
+                                            dateFormat="MM/dd/yyyy"
+                                            minDate={new Date()}
+                                            placeholderText='mm/dd/yyyy'
                                         />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="top_form_search_button">
-                            <button className="btn btn_theme btn_md" onClick={handleSearchClick}>
+                            <button className="btn btn-primary" onClick={handleSearchClick}>
                                 Search
                             </button>
                         </div>

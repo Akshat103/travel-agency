@@ -11,6 +11,7 @@ import {
     updatePassengers,
     updatePassenger,
 } from '../../../redux/flightSlice';
+import Spinner from '../../../components/Spinner';
 
 const AddPassengers = () => {
     const location = useLocation();
@@ -67,7 +68,6 @@ const AddPassengers = () => {
         const passenger = passengers[index];
 
         if (
-            passenger.Title &&
             passenger.First_Name &&
             passenger.Last_Name &&
             passenger.Gender &&
@@ -164,194 +164,180 @@ const AddPassengers = () => {
     };
 
     return (
-        <div className="container mt-3" style={{ minHeight: '100vh' }}>
-            <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-3">
-                Back
-            </button>
-            <h4 className="mb-4">Complete Passenger Details</h4>
+        <>
+            <Spinner show={submitting} />
+            <div className="container mt-3" style={{ minHeight: '100vh' }}>
+                <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-3">
+                    Back
+                </button>
+                <h4 className="mb-4">Complete Passenger Details</h4>
 
-            <form onSubmit={handleSubmit}>
-                {passengers.map((passenger, index) => (
-                    <div key={index} className="passenger-form mb-4">
-                        <h5>{`Passenger (${getPaxTypeLabel(passenger.Pax_type)})`}</h5>
-                        {passenger.saved ? (
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <h6 style={{ marginRight: '8px' }}>
-                                    {`${passenger.First_Name} ${passenger.Last_Name}`}
-                                </h6>
+                <form onSubmit={handleSubmit}>
+                    {passengers.map((passenger, index) => (
+                        <div key={index} className="passenger-form mb-4">
+                            <h5>{`Passenger (${getPaxTypeLabel(passenger.Pax_type)})`}</h5>
+                            {passenger.saved ? (
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <h4 style={{ marginRight: '8px' }}>
+                                        {`${passenger.First_Name} ${passenger.Last_Name}`}
+                                    </h4>
+                                    <button
+                                        type="button"
+                                        onClick={() => enableEditing(index)}
+                                        className="btn btn-warning me-2"
+                                    >
+                                        <MdEdit />
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="row">
+                                    <div className="col-md-6 mb-3">
+                                        <p><label className="form-label">First Name</label></p>
+                                        <input
+                                            type="text"
+                                            name="First_Name"
+                                            value={passenger.First_Name}
+                                            onChange={(e) => handlePassengerChange(index, e)}
+                                            className="form-control"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <p><label className="form-label">Last Name</label></p>
+                                        <input
+                                            type="text"
+                                            name="Last_Name"
+                                            value={passenger.Last_Name}
+                                            onChange={(e) => handlePassengerChange(index, e)}
+                                            className="form-control"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <p><label className="form-label">Gender</label></p>
+                                        <select
+                                            name="Gender"
+                                            value={passenger.Gender}
+                                            onChange={(e) => handlePassengerChange(index, e)}
+                                            className="form-select"
+                                            required
+                                        >
+                                            <option value="">Select Gender</option>
+                                            <option value="0">Male</option>
+                                            <option value="1">Female</option>
+                                        </select>
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <p><label className="form-label">Date of Birth</label></p>
+                                        <DatePicker
+                                            selected={passenger.DOB}
+                                            onChange={(date) => updateDOB(index, date)}
+                                            className="form-control"
+                                            dateFormat="MM/dd/yyyy"
+                                            showYearDropdown
+                                            showMonthDropdown
+                                            maxDate={new Date()}
+                                            scrollableYearDropdown
+                                            yearDropdownItemNumber={200}
+                                        />
+                                    </div>
+
+                                    {isTravelTypeInternational && (
+                                        <>
+                                            <div className="col-md-6 mb-3">
+                                                <p><label className="form-label">Passport Number</label></p>
+                                                <input
+                                                    type="text"
+                                                    name="Passport_Number"
+                                                    value={passenger.Passport_Number}
+                                                    onChange={(e) => handlePassengerChange(index, e)}
+                                                    className="form-control"
+                                                />
+                                            </div>
+                                            <div className="col-md-6 mb-3">
+                                                <p><label className="form-label">Passport Issuing Country</label></p>
+                                                <select
+                                                    name="Passport_Issuing_Country"
+                                                    value={passenger.Passport_Issuing_Country}
+                                                    onChange={(e) => handlePassengerChange(index, e)}
+                                                    className="form-select"
+                                                    required
+                                                >
+                                                    <option value="">Select Country</option>
+                                                    {countryList.map((country, i) => (
+                                                        <option key={i} value={country.name}>
+                                                            {country.flag} {country.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="col-md-6 mb-3">
+                                                <p><label className="form-label">Passport Expiry Date</label></p>
+                                                <DatePicker
+                                                    selected={passenger.Passport_Expiry}
+                                                    onChange={(date) => {
+                                                        const updatedPassenger = {
+                                                            ...passengers[index],
+                                                            Passport_Expiry: date,
+                                                        };
+                                                        const newPassengers = [
+                                                            ...passengers.slice(0, index),
+                                                            updatedPassenger,
+                                                            ...passengers.slice(index + 1)
+                                                        ];
+
+                                                        dispatch(updatePassengers(newPassengers));
+                                                    }}
+                                                    className="form-control"
+                                                    dateFormat="MM/dd/yyyy"
+                                                    minDate={new Date()}
+                                                    scrollableYearDropdown
+                                                    yearDropdownItemNumber={200}
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+
+                                    <div className="col-md-6 mb-3">
+                                        <p><label className="form-label">Nationality</label></p>
+                                        <select
+                                            name="Nationality"
+                                            value={passenger.Nationality}
+                                            onChange={(e) => handlePassengerChange(index, e)}
+                                            className="form-select"
+                                            required
+                                        >
+                                            <option value="">Select Nationality</option>
+                                            {countryList.map((country, i) => (
+                                                <option key={i} value={country.name}>
+                                                    {country.flag} {country.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            )}
+
+                            {!passenger.saved && (
                                 <button
                                     type="button"
-                                    onClick={() => enableEditing(index)}
-                                    className="btn btn-warning me-2"
+                                    onClick={() => savePassenger(index)}
+                                    className="btn btn-primary mt-2"
                                 >
-                                    <MdEdit />
+                                    Save
                                 </button>
-                            </div>
-                        ) : (
-                            <div className="row">
-                                <div className="col-md-6 mb-3">
-                                    <p><label className="form-label">Title</label></p>
-                                    <select
-                                        name="Title"
-                                        value={passenger.Title}
-                                        onChange={(e) => handlePassengerChange(index, e)}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Title</option>
-                                        <option value="MR">Mr</option>
-                                        <option value="MRS">Mrs</option>
-                                        <option value="MS">Ms</option>
-                                        <option value="MSTR">Mstr (Child/Infant)</option>
-                                        <option value="MISS">Miss (Child/Infant)</option>
-                                    </select>
-                                </div>
-                                <div className="col-md-6 mb-3">
-                                    <p><label className="form-label">First Name</label></p>
-                                    <input
-                                        type="text"
-                                        name="First_Name"
-                                        value={passenger.First_Name}
-                                        onChange={(e) => handlePassengerChange(index, e)}
-                                        className="form-control"
-                                        required
-                                    />
-                                </div>
-                                <div className="col-md-6 mb-3">
-                                    <p><label className="form-label">Last Name</label></p>
-                                    <input
-                                        type="text"
-                                        name="Last_Name"
-                                        value={passenger.Last_Name}
-                                        onChange={(e) => handlePassengerChange(index, e)}
-                                        className="form-control"
-                                        required
-                                    />
-                                </div>
-                                <div className="col-md-6 mb-3">
-                                    <p><label className="form-label">Gender</label></p>
-                                    <select
-                                        name="Gender"
-                                        value={passenger.Gender}
-                                        onChange={(e) => handlePassengerChange(index, e)}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Gender</option>
-                                        <option value="0">Male</option>
-                                        <option value="1">Female</option>
-                                    </select>
-                                </div>
-                                <div className="col-md-6 mb-3">
-                                    <p><label className="form-label">Date of Birth</label></p>
-                                    <DatePicker
-                                        selected={passenger.DOB}
-                                        onChange={(date) => updateDOB(index, date)}
-                                        className="form-control"
-                                        dateFormat="MM/dd/yyyy"
-                                        showYearDropdown
-                                        showMonthDropdown
-                                        maxDate={new Date()}
-                                        scrollableYearDropdown
-                                        yearDropdownItemNumber={200}
-                                    />
-                                </div>
+                            )}
+                        </div>
+                    ))}
 
-                                {isTravelTypeInternational && (
-                                    <>
-                                        <div className="col-md-6 mb-3">
-                                            <p><label className="form-label">Passport Number</label></p>
-                                            <input
-                                                type="text"
-                                                name="Passport_Number"
-                                                value={passenger.Passport_Number}
-                                                onChange={(e) => handlePassengerChange(index, e)}
-                                                className="form-control"
-                                            />
-                                        </div>
-                                        <div className="col-md-6 mb-3">
-                                            <p><label className="form-label">Passport Issuing Country</label></p>
-                                            <select
-                                                name="Passport_Issuing_Country"
-                                                value={passenger.Passport_Issuing_Country}
-                                                onChange={(e) => handlePassengerChange(index, e)}
-                                                className="form-select"
-                                                required
-                                            >
-                                                <option value="">Select Country</option>
-                                                {countryList.map((country, i) => (
-                                                    <option key={i} value={country.name}>
-                                                        {country.flag} {country.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="col-md-6 mb-3">
-                                            <p><label className="form-label">Passport Expiry Date</label></p>
-                                            <DatePicker
-                                                selected={passenger.Passport_Expiry}
-                                                onChange={(date) => {
-                                                    const updatedPassenger = {
-                                                        ...passengers[index],
-                                                        Passport_Expiry: date,
-                                                    };
-                                                    const newPassengers = [
-                                                        ...passengers.slice(0, index),
-                                                        updatedPassenger,
-                                                        ...passengers.slice(index + 1)
-                                                    ];
-
-                                                    dispatch(updatePassengers(newPassengers));
-                                                }}
-                                                className="form-control"
-                                                dateFormat="MM/dd/yyyy"
-                                                minDate={new Date()}
-                                                scrollableYearDropdown
-                                                yearDropdownItemNumber={200}
-                                            />
-                                        </div>
-                                    </>
-                                )}
-
-                                <div className="col-md-6 mb-3">
-                                    <p><label className="form-label">Nationality</label></p>
-                                    <select
-                                        name="Nationality"
-                                        value={passenger.Nationality}
-                                        onChange={(e) => handlePassengerChange(index, e)}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Nationality</option>
-                                        {countryList.map((country, i) => (
-                                            <option key={i} value={country.name}>
-                                                {country.flag} {country.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                        )}
-
-                        {!passenger.saved && (
-                            <button
-                                type="button"
-                                onClick={() => savePassenger(index)}
-                                className="btn btn-primary mt-2"
-                            >
-                                Save
-                            </button>
-                        )}
+                    <div className="row col-md-2 gap-2">
+                        <button type="submit" className="btn btn-success" disabled={submitting}>
+                            {submitting ? 'Getting...' : 'View Seats'}
+                        </button>
                     </div>
-                ))}
-
-                <div className="row col-md-2 gap-2">
-                    <button type="submit" className="btn btn-success" disabled={submitting}>
-                        {submitting ? 'Getting...' : 'View Seats'}
-                    </button>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        </>
     );
 };
 

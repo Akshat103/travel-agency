@@ -95,7 +95,6 @@ const SeatSelectionPage = () => {
             passenger.Nationality &&
             passenger.SSR_Key &&
             passenger.seat &&
-            passenger.Title &&
             // Conditional passport validation for international flights
             (!isTravelTypeInternational || (
                 passenger.Passport_Number &&

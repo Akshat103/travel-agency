@@ -95,7 +95,7 @@ const FlightSearchForm = ({
 
         </div>
 
-        <div className='row justify-content-center align-items-center m-2'>
+        <div className='row justify-content-center align-items-center'>
           <div className="col-lg-3 col-md-6 col-sm-12 col-12">
             <PassengerDetails
               flightDetails={flightDetails}

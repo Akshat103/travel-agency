@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import logo from '../../assets/img/logo.png';
 import { Link } from 'react-router-dom';
+import { BiHomeAlt2 } from "react-icons/bi";
+import { TbPlaneInflight } from "react-icons/tb";
+import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
+import { IoBusOutline } from "react-icons/io5";
+import { LuHotel } from "react-icons/lu";
 
 const ClientNavBar = ({ userType, onLogout }) => {
 
@@ -28,19 +33,19 @@ const ClientNavBar = ({ userType, onLogout }) => {
                                 <nav className="mean-nav">
                                     <ul className="navbar-nav" style={{ display: isNavVisible ? 'block' : 'none' }}>
                                         <li className="nav-item">
-                                            <Link to="/" className="nav-link">Home <i className="fas fa-angle-down"></i></Link>
+                                            <Link to="/" className="nav-link"><BiHomeAlt2 /> Home <i className="fas fa-angle-down"></i></Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/flights" className="nav-link">Flights <i className="fas fa-angle-down"></i></Link>
+                                            <Link to="/flights" className="nav-link"><TbPlaneInflight /> Flights <i className="fas fa-angle-down"></i></Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/mobile-recharge" className="nav-link">Recharge <i className="fas fa-angle-down"></i></Link>
+                                            <Link to="/mobile-recharge" className="nav-link"><HiMiniDevicePhoneMobile /> Recharge <i className="fas fa-angle-down"></i></Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/hotel" className="nav-link">Hotel <i className="fas fa-angle-down"></i></Link>
+                                            <Link to="/hotel" className="nav-link"><LuHotel /> Hotel <i className="fas fa-angle-down"></i></Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/bus" className="nav-link">Bus <i className="fas fa-angle-down"></i></Link>
+                                            <Link to="/bus" className="nav-link"><IoBusOutline /> Bus <i className="fas fa-angle-down"></i></Link>
                                         </li>
                                         <li className="nav-item">
                                             <Link to="/contact-us" className="nav-link">Contact <i className="fas fa-angle-down"></i></Link>
@@ -98,29 +103,29 @@ const ClientNavBar = ({ userType, onLogout }) => {
                                 <ul className="navbar-nav" style={{ scrollbarWidth: "none" }}>
                                     <li className="nav-item">
                                         <Link to="/" className="nav-link">
-                                            Home
+                                            <BiHomeAlt2 /> Home
                                         </Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link to="/flights" className="nav-link">
-                                            Flights
+                                            <TbPlaneInflight /> Flights
                                         </Link>
                                     </li>
 
                                     <li className="nav-item">
                                         <Link to="/mobile-recharge" className="nav-link">
-                                            Recharge
+                                            <HiMiniDevicePhoneMobile /> Recharge
                                         </Link>
                                     </li>
 
                                     <li className="nav-item">
                                         <Link to="/hotel" className="nav-link">
-                                            Hotel
+                                            <LuHotel /> Hotel
                                         </Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link to="/bus" className="nav-link">
-                                            Bus
+                                            <IoBusOutline /> Bus
                                         </Link>
                                     </li>
                                     <li className="nav-item">

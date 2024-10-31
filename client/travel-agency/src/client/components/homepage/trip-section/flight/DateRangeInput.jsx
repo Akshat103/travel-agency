@@ -11,7 +11,7 @@ const DateRangeInput = ({ onHome, isRoundTrip, startDate, endDate, onChange }) =
     <div className={`${!onHome ? '' : isRoundTrip ? 'col-lg-5 col-md-6 col-sm-12 col-12' : 'col-lg-3 col-md-6 col-sm-12 col-12'}`}>
       <div className={`${onHome ? 'row' : 'col'}`}>
         <div className={`${!onHome ? '' : isRoundTrip ? 'col-12 col-md-6' : ''}`}>
-          <div className="flight_Search_boxed m-2">
+          <div className="flight_Search_boxed">
             <div className="Journey_date">
               <p>Journey date</p>
               <DatePicker
@@ -31,7 +31,7 @@ const DateRangeInput = ({ onHome, isRoundTrip, startDate, endDate, onChange }) =
 
         {isRoundTrip && (
           <div className={`${!onHome ? '' : isRoundTrip ? 'col-12 col-md-6' : ''}`}>
-            <div className="flight_Search_boxed m-2">
+            <div className="flight_Search_boxed">
               <div className="Return_date">
                 <p>Return date</p>
                 <DatePicker

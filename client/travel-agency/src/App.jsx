@@ -2,7 +2,7 @@ import { Suspense, useEffect } from 'react';
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import loadable from '@loadable/component';
-import Loading from './components/Loading';
+import Spinner from './components/Spinner';
 import ScrollToTop from './utils/ScrollToTop';
 import { resetStore } from './redux/store';
 import './App.css';
@@ -36,7 +36,7 @@ const RouteWrapper = () => {
   }, [location.pathname, dispatch]);
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Spinner show={true} />}>
       <ScrollToTop />
       <Routes>
         <Route path="/*" element={<ClientRoutes />} />

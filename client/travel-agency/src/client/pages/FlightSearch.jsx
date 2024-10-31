@@ -6,6 +6,7 @@ import { updateSearchResult, updateSearchKey, updateFlightDetails } from '../../
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../components/Spinner';
 
 const FlightSearch = () => {
   const [isSearching, setIsSearching] = useState(false);
@@ -19,10 +20,10 @@ const FlightSearch = () => {
 
     // Calculate travel type based on origin and destination
     const travelType = details.Origin.COUNTRYCODE === details.Destination.COUNTRYCODE ? "0" : "1";
-    
+
     // Add travelType directly to details
     const updatedDetails = { ...details, Travel_Type: travelType };
-    
+
     // Update flight details in Redux
     dispatch(updateFlightDetails(updatedDetails));
 
@@ -70,10 +71,10 @@ const FlightSearch = () => {
       toast.success('Flights found successfully!');
     } catch (error) {
       toast.dismiss(toastId);
-      if(error.response.status===401){
+      if (error.response.status === 401) {
         toast.error(error.response.data.message);
         navigate(error.response.data.redirect)
-      }else{
+      } else {
         toast.error('Error searching flights. Please try again.');
         console.error('Error searching flights:', error);
       }
@@ -85,6 +86,7 @@ const FlightSearch = () => {
 
   return (
     <>
+      <Spinner show={isSearching} />
       <div className="container-fluid">
         <div className="row p-2">
           <div className="row">
