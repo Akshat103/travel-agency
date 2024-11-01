@@ -64,7 +64,7 @@ const ClientRoutes = () => {
   }, [location.pathname, navigate]);
 
   return (
-    <div style={{ zoom: '75%' }}>
+    <div style={{ zoom: '80%' }}>
       <Suspense fallback={<Spinner show={true} />}>
         <Routes>
           <Route path="" element={<ClientLayout><ClientHome /></ClientLayout>} />

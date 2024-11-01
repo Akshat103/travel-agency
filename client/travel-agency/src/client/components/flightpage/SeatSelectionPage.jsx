@@ -84,7 +84,6 @@ const SeatSelectionPage = () => {
 
         // Determine if international travel type
         const isTravelTypeInternational = bookingData.flightDetails?.Travel_Type === "1";
-
         // Validation for passengers
         const isPassengerValid = bookingData.passengers && bookingData.passengers.every(passenger =>
             passenger.Pax_type !== undefined &&
@@ -95,6 +94,7 @@ const SeatSelectionPage = () => {
             passenger.Nationality &&
             passenger.SSR_Key &&
             passenger.seat &&
+            passenger.Title &&
             // Conditional passport validation for international flights
             (!isTravelTypeInternational || (
                 passenger.Passport_Number &&

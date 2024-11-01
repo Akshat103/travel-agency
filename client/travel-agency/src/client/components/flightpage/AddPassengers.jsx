@@ -68,6 +68,7 @@ const AddPassengers = () => {
         const passenger = passengers[index];
 
         if (
+            passenger.Title &&
             passenger.First_Name &&
             passenger.Last_Name &&
             passenger.Gender &&
@@ -191,6 +192,23 @@ const AddPassengers = () => {
                                 </div>
                             ) : (
                                 <div className="row">
+                                    <div className="col-md-6 mb-3">
+                                        <p><label className="form-label">Title</label></p>
+                                        <select
+                                            name="Title"
+                                            value={passenger.Title}
+                                            onChange={(e) => handlePassengerChange(index, e)}
+                                            className="form-select"
+                                            required
+                                        >
+                                            <option value="">Select Title</option>
+                                            <option value="MR">Mr</option>
+                                            <option value="MRS">Mrs</option>
+                                            <option value="MS">Ms</option>
+                                            <option value="MSTR">Mstr (Child/Infant)</option>
+                                            <option value="MISS">Miss (Child/Infant)</option>
+                                        </select>
+                                    </div>
                                     <div className="col-md-6 mb-3">
                                         <p><label className="form-label">First Name</label></p>
                                         <input

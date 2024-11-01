@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchFlightCity } from '../../../../../redux/flightSlice';
 import _ from 'lodash';
+let tryCount = 0;
 
 const LocationInput = ({ label, onSelect }) => {
     const dispatch = useDispatch();
@@ -14,8 +15,9 @@ const LocationInput = ({ label, onSelect }) => {
     const [isTyping, setIsTyping] = useState(false);
 
     useEffect(() => {
-        if (!flightCity && !flightCityLoading) {
+        if (!flightCity && !flightCityLoading && tryCount<3) {
             dispatch(fetchFlightCity());
+            tryCount+=1;
         }
     }, [flightCity, flightCityLoading, dispatch]);
 

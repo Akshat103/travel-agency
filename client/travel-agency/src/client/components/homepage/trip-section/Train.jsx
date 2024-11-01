@@ -21,11 +21,12 @@ const Train = () => {
             navigate('/irctc');
         }
     };
+    
     return (
-        <div class="tab-pane fade" id="train" role="tabpanel" aria-labelledby="train-tab">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="tour_search_form">
+        <div className="tab-pane fade" id="train" role="tabpanel" aria-labelledby="train-tab">
+            <div className="row">
+                <div className="col-lg-12">
+                    <div className="tour_search_form">
                         <div className="text-center">
                             <div className="tour_search_form p-4">
                                 {irctcStatus === '0' ? (

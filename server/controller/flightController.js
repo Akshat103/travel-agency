@@ -148,10 +148,11 @@ const getAirSeatMap = async (req, res) => {
                     }
                 }
             };
-
             const airRepriceResponse = await axios(airReprice);
+            
             if (airRepriceResponse.data.statuscode === "100") {
                 updatedflightKey = airRepriceResponse.data.data[0].Flight.Flight_Key;
+                console.log(JSON.stringify(passengers, null, 2))
                 const paxDetails = passengers.map((passenger, index) => ({
                     Pax_Id: index.toString(),
                     Pax_type: passenger.Pax_type,
@@ -189,11 +190,11 @@ const getAirSeatMap = async (req, res) => {
                 };
 
                 const airMapResponse = await axios(airMapReq);
-
                 if (airMapResponse.data.statuscode === "100") {
                     const data = airMapResponse.data.data.AirSeatMaps[0].Seat_Segments[0].Seat_Row;
                     res.status(200).json({ data, updatedflightKey });
                 } else {
+                    console.log(airMapResponse.data)
                     throw new Error("Server Failure.");
                 }
             }
