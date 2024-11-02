@@ -167,6 +167,7 @@ const Bus = ({ layout, onSearch }) => {
                                 {destinationSuggestions.length > 0 && (
                                     <ul className="suggestions-list"
                                         style={{
+                                            width: '-webkit-fill-available',
                                             maxHeight: '150px',
                                             overflowY: 'auto',
                                             margin: 0,

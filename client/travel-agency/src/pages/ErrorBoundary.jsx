@@ -48,11 +48,6 @@ const ErrorFallback = ({ error, resetError }) => {
     navigate('/');
   };
 
-  const handleRefresh = () => {
-    resetError();
-    window.location.reload();
-  };
-
   return (
     <Container fluid className="bg-light min-vh-100 d-flex align-items-center justify-content-center py-5">
       <Row className="justify-content-center w-100">
@@ -85,15 +80,6 @@ const ErrorFallback = ({ error, resetError }) => {
                 >
                   <FaHouse size={20} />
                   Go to Home
-                </Button>
-                
-                <Button
-                  variant="outline-secondary"
-                  className="d-flex align-items-center gap-2"
-                  onClick={handleRefresh}
-                >
-                  <BsArrowCounterclockwise size={20} />
-                  Try Again
                 </Button>
               </div>
             </Card.Body>

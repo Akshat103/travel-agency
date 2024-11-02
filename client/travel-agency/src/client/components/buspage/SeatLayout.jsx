@@ -302,7 +302,7 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                                     <option value="">Select a seat</option>
                                                     {availableSeats.map((seat) => (
                                                         <option key={seat.name} value={seat.name}>
-                                                            {seat.name} - ₹{seat.fare}
+                                                            {seat.name} - ₹{Math.ceil(seat.fare)}
                                                         </option>
                                                     ))}
                                                 </select>

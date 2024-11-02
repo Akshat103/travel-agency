@@ -50,7 +50,10 @@ const SuccessPage = () => {
     }, [secondsLeft, navigate]);
 
     return (
-        <div className="p-3">
+        <div className="p-3"
+            style={{
+                height: '100vh'
+            }}>
             <div
                 style={{
                     height: '60vh',
