@@ -123,9 +123,11 @@ const getAirSeatMap = async (req, res) => {
     const { fareId, flightKey, searchKey, reprice, passengers } = req.body;
 
     try {
-        let updatedflightKey = flightKey;
+        let updatedFlightKey = flightKey;
+
+        // If reprice is false, call Air_Reprice first to get the updated flight key
         if (!reprice) {
-            const airReprice = {
+            const airRepriceRequest = {
                 method: 'POST',
                 url: FLIGHT_API_SERVICE_URL,
                 headers: {
@@ -148,63 +150,67 @@ const getAirSeatMap = async (req, res) => {
                     }
                 }
             };
-            const airRepriceResponse = await axios(airReprice);
-            
-            if (airRepriceResponse.data.statuscode === "100") {
-                updatedflightKey = airRepriceResponse.data.data[0].Flight.Flight_Key;
-                console.log(JSON.stringify(passengers, null, 2))
-                const paxDetails = passengers.map((passenger, index) => ({
-                    Pax_Id: index.toString(),
-                    Pax_type: passenger.Pax_type,
-                    Title: passenger.Title,
-                    First_Name: passenger.First_Name,
-                    Last_Name: passenger.Last_Name,
-                    Gender: passenger.Gender,
-                    Age: passenger.Age ? passenger.Age.toString() : "",
-                    DOB: passenger.DOB ? formatDateToMMDDYYYY(passenger.DOB) : "",
-                    Passport_Number: passenger.Passport_Number || "",
-                    Passport_Issuing_Country: passenger.Passport_Issuing_Country || "",
-                    Passport_Expiry: passenger.Passport_Expiry ? formatDateToMMDDYYYY(passenger.Passport_Expiry) : "",
-                    Nationality: passenger.Nationality || "",
-                    FrequentFlyerDetails: passenger.FrequentFlyerDetails || ""
-                }));
-                const airMapReq = {
-                    method: 'POST',
-                    url: FLIGHT_API_SERVICE_URL,
-                    headers: {
-                        'Access-Token': FLIGHT_ACCESS_TOKEN,
-                        'Content-Type': 'application/json',
-                    },
-                    data: {
-                        methodname: 'AirSeatMaps',
-                        opid: '567',
-                        txnid: FLIGHT_TXNID,
-                        requestdata: {
-                            Search_Key: searchKey,
-                            Flight_Keys: [
-                                updatedflightKey
-                            ],
-                            PAX_Details: paxDetails
-                        }
-                    }
-                };
+            const airRepriceResponse = await axios(airRepriceRequest);
 
-                const airMapResponse = await axios(airMapReq);
-                if (airMapResponse.data.statuscode === "100") {
-                    const data = airMapResponse.data.data.AirSeatMaps[0].Seat_Segments[0].Seat_Row;
-                    res.status(200).json({ data, updatedflightKey });
-                } else {
-                    console.log(airMapResponse.data)
-                    throw new Error("Server Failure.");
-                }
+            // If Air_Reprice is successful, update the flight key
+            if (airRepriceResponse.data.statuscode === "100") {
+                updatedFlightKey = airRepriceResponse.data.data[0].Flight.Flight_Key;
+            } else {
+                return res.status(500).json({ error: 'Air_Reprice failed', details: airRepriceResponse.data });
             }
         }
 
+        // Prepare passenger details for the seat map request
+        const paxDetails = passengers.map((passenger, index) => ({
+            Pax_Id: index.toString(),
+            Pax_type: passenger.Pax_type,
+            Title: passenger.Title,
+            First_Name: passenger.First_Name,
+            Last_Name: passenger.Last_Name,
+            Gender: passenger.Gender,
+            Age: passenger.Age ? passenger.Age.toString() : "",
+            DOB: passenger.DOB ? formatDateToMMDDYYYY(passenger.DOB) : "",
+            Passport_Number: passenger.Passport_Number || "",
+            Passport_Issuing_Country: passenger.Passport_Issuing_Country || "",
+            Passport_Expiry: passenger.Passport_Expiry ? formatDateToMMDDYYYY(passenger.Passport_Expiry) : "",
+            Nationality: passenger.Nationality || "",
+            FrequentFlyerDetails: passenger.FrequentFlyerDetails || ""
+        }));
+
+        // Call AirSeatMaps API with either the original or updated flight key
+        const airMapRequest = {
+            method: 'POST',
+            url: FLIGHT_API_SERVICE_URL,
+            headers: {
+                'Access-Token': FLIGHT_ACCESS_TOKEN,
+                'Content-Type': 'application/json',
+            },
+            data: {
+                methodname: 'AirSeatMaps',
+                opid: '567',
+                txnid: FLIGHT_TXNID,
+                requestdata: {
+                    Search_Key: searchKey,
+                    Flight_Keys: [updatedFlightKey],
+                    PAX_Details: paxDetails
+                }
+            }
+        };
+        const airMapResponse = await axios(airMapRequest);
+
+        // Handle response from AirSeatMaps API
+        if (airMapResponse.data.statuscode === "100") {
+            const data = airMapResponse.data.data.AirSeatMaps[0].Seat_Segments[0].Seat_Row;
+            res.status(200).json({ data, updatedFlightKey });
+        } else {
+            res.status(500).json({ error: 'AirSeatMaps request failed', details: airMapResponse.data });
+        }
     } catch (error) {
         console.error('Error calling the API:', error);
         res.status(500).json({ error: 'An error occurred while fetching data.' });
     }
 };
+
 
 const bookFlight = async (data, clientId, orderid) => {
     try {
