@@ -1,51 +1,139 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Yara Holidays</title>
-  <link rel="icon" type="image/png" href="/assets/img/logo.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Critical CSS (inline) -->
-  <style>
-    .preloader {}
-    .go-top {}
-  </style>
+    <!-- Primary Meta Tags -->
+    <title>Yara Holidays - Your Travel Journey Begins Here</title>
+    <meta name="title" content="Yara Holidays - Your Travel Journey Begins Here">
+    <meta name="description"
+        content="Book flights, hotels, buses, and IRCTC tickets with Yara Holidays. Best deals on travel packages, mobile recharge, and more. Start your journey today!">
+    <meta name="keywords"
+        content="travel booking, flight tickets, hotel booking, bus tickets, IRCTC, mobile recharge, holiday packages">
+    <meta name="author" content="Yara Holidays">
+    <meta name="robots" content="index, follow">
 
-  <!-- Preload essential assets -->
-  <link rel="preload" href="/img/bg.jpg" as="image" type="image/jpeg" />
-  <script type="module" crossorigin src="/assets/index-GmU473Cc.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BhFtgOD9.css">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yaraholidays.com/">
+    <meta property="og:title" content="Yara Holidays - Your Travel Journey Begins Here">
+    <meta property="og:description"
+        content="Book flights, hotels, buses, and IRCTC tickets with Yara Holidays. Best deals on travel packages, mobile recharge, and more.">
+    <meta property="og:image" content="https://yaraholidays.com/assets/img/logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yaraholidays.com/">
+    <meta property="twitter:title" content="Yara Holidays - Your Travel Journey Begins Here">
+    <meta property="twitter:description"
+        content="Book flights, hotels, buses, and IRCTC tickets with Yara Holidays. Best deals on travel packages, mobile recharge, and more.">
+    <meta property="twitter:image" content="https://yaraholidays.com/assets/img/logo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://yaraholidays.com/assets/img/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://yaraholidays.com/assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://checkout.razorpay.com">
+
+    <!-- Preload essential assets -->
+    <link rel="preload" href="/img/bg.jpg" as="image" type="image/jpeg" fetchpriority="high">
+
+    <!-- Schema.org markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        "name": "Yara Holidays",
+        "url": "https://yaraholidays.com",
+        "logo": "https://yaraholidays.com/assets/img/logo.png",
+        "description": "Book flights, hotels, buses, and IRCTC tickets with Yara Holidays.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "IN"
+        },
+        "sameAs": [
+            "https://facebook.com/yaraholidays",
+            "https://x.com/HolidayYar6652",
+            "https://instagram.com/yaraholiday",
+            "https://youtube.com/@yaraholiday-ar7",
+            "https://whatsapp.com/channel/0029Valo58lHrDZdW0JXwE11"
+        ],
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://yaraholidays.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8YR553L1T"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-R8YR553L1T');
+    </script>
+  <script type="module" crossorigin src="/assets/index-B0QMeBYD.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-mnK2zLtn.css">
 </head>
 
 <body>
-  <div class="preloader">
-    <div class="d-table">
-      <div class="d-table-cell">
-        <div class="lds-spinner">
-          <div></div><div></div><div></div><div></div>
-          <div></div><div></div><div></div><div></div>
-          <div></div><div></div><div></div><div></div>
+    <!-- Preloader -->
+    <div class="preloader" aria-live="polite" aria-hidden="true">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="lds-spinner" role="status" aria-label="Loading content">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div id="root"></div>
-  <div class="go-top">
-    <i class="fas fa-chevron-up"></i>
-    <i class="fas fa-chevron-up"></i>
-  </div>
 
-  <!-- Main app bundle -->
-  <script src="/js/jquery-3.6.0.min.js" defer></script>
-  <script src="/js/bootstrap.bundle.js" defer></script>
-  <script src="/js/jquery.meanmenu.js" defer></script>
-  <script src="/js/owl.carousel.min.js" defer></script>
-  <script src="/js/wow.min.js" defer></script>
-  <script src="/js/custom.js" defer></script>
-  <script src="/js/add-form.js" defer></script>
-  <script src="/js/form-dropdown.js" defer></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+    <!-- Main content -->
+    <main id="main-content">
+        <div id="root"></div>
+    </main>
 
+    <!-- Go to Top Button -->
+    <div class="go-top" role="button" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up" aria-hidden="true"></i>
+        <i class="fas fa-chevron-up" aria-hidden="true"></i>
+    </div>
+
+    <!-- Main app bundle -->
+
+    <!-- External scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/bootstrap.bundle.js" defer></script>
+    <script src="/js/jquery.meanmenu.js" defer></script>
+    <script src="/js/custom.js" defer></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+
+    <!-- Inline script for performance metrics -->
+    <script>
+        console.time('Page Load Time');
+        window.addEventListener('load', () => {
+            console.timeEnd('Page Load Time');
+        });
+    </script>
 </body>
+
 </html>

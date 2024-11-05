@@ -1,6 +1,7 @@
 import React from 'react';
 import LogInForm from '../components/login/LogInForm';
 import { Container, Row, Col, Card } from 'react-bootstrap';
+import img from '../../assets/img/yara.png';
 import '../components/login/login.css';
 
 const LogIn = () => {
@@ -21,11 +22,31 @@ const LogIn = () => {
               <Row className="g-0">
                 {/* Left side image - only visible on lg screens and up */}
                 <Col lg={6} className="d-none d-lg-block login-image-container">
-                  <div className="login-image">
-                    <div className="overlay"></div>
-                  </div>
-                  <div className="image-content p-4">
-                  <h3 className="fw-bold mb-3">Yara Holiday</h3>
+                  <div className="login-image" style={{ position: 'relative', height: '100%' }}>
+                    <div
+                      className="overlay" // Ensure this overlay doesn't block the image
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        zIndex: 1, // Make sure the overlay is on top of the image
+                      }}
+                    ></div>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundImage: `url(${img})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        zIndex: 0,
+                      }}
+                    ></div>
                   </div>
                 </Col>
 

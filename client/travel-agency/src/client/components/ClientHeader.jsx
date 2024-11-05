@@ -87,13 +87,14 @@ const ClientHeader = () => {
               <div className="col-lg-6 col-md-6">
                 <ul className="topbar-list">
                   <li>
-                    <Link to="#!"><i className="fab fa-facebook"></i></Link>
-                    <Link to="#!"><i className="fab fa-twitter-square"></i></Link>
-                    <Link to="#!"><i className="fab fa-instagram"></i></Link>
-                    <Link to="#!"><i className="fab fa-linkedin"></i></Link>
+                    <Link to="https://www.facebook.com/share/LQ9ntK2srZfMCkK3"><i className="fab fa-facebook"></i></Link>
+                    <Link to="https://x.com/HolidayYar6652?t=YLmJRsRBSXREG3tgcqs8cg&s=09"><i className="fab fa-twitter-square"></i></Link>
+                    <Link to="https://www.instagram.com/invites/contact/?igsh=vo8eehrww7z2&utm_content=vhahyr5"><i className="fab fa-instagram"></i></Link>
+                    <Link to="https://youtube.com/@yaraholiday-ar7?si=u-ZidLykh2sWjsWA"><i className="fab fa-youtube"></i></Link>
+                    <Link to="https://whatsapp.com/channel/0029Valo58lHrDZdW0JXwE11"><i className="fab fa-whatsapp"></i></Link>
                   </li>
-                  <li><Link to="#!"><span>+91 8079 881 580</span></Link></li>
-                  <li><Link to="#!"><span>yaraholiday46@gmail.com</span></Link></li>
+                  <li><span>+91 8079 881 580</span></li>
+                  <li><span><Link to="mailto:info@yaraholidays.com">info@yaraholidays.com</Link></span></li>
                 </ul>
               </div>
               <div className="col-lg-6 col-md-6">

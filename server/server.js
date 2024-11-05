@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const dbConnect = require('./config/dbConnect');
 const cookieSession = require('cookie-session');
+const compression = require('compression');
 const passport = require('passport');
 require('dotenv').config();
 require('./config/passport');
@@ -14,11 +15,8 @@ const app = express();
 // CORS configuration at app level
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
-app.use(cors({
-    origin: FRONTEND_URL,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT']
-}));
+app.use(cors());
+app.use(compression()); 
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -51,6 +49,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const mailRoutes = require('./routes/mailRoutes');
 const userDashboardRoutes = require('./routes/userDashboardRoutes');
 const irctcRoutes = require('./routes/irctcRoutes');
+const serviceRoutes = require('./routes/serviceChargeRoutes');
 
 // Use the routes
 app.use('/api/auth', authRoutes);
@@ -66,6 +65,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/mail', mailRoutes);
 app.use('/api/irctc', irctcRoutes);
 app.use('/api/dashboard', userDashboardRoutes);
+app.use('/api/services', serviceRoutes);
 
 // Serve index.html at the root
 app.get('*', (req, res) => {

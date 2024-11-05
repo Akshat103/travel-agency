@@ -22,17 +22,18 @@ const TopDestinations = () => {
                 </div>
                 <div class="row">
                     <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-                        <div class="destinations_content_box img_animation">
-                            <img src={bigimg} alt="img" loading='lazy' />
-                            <div class="destinations_content_inner">
-                                <h2>Up to</h2>
-                                <div class="destinations_big_offer">
-                                    <h1>50</h1>
-                                    <h6><span>%</span> <span>Off</span></h6>
+                        <div className="destinations_content_box img_animation">
+                            <img src={bigimg} alt="img" loading="lazy" />
+                            <div className="destinations_content_inner">
+                                <h2>Explore</h2>
+                                <div style={{color:'white'}}>
+                                    <h1>Unforgettable</h1>
+                                    <h6><span>Journeys</span> <span>with Us</span></h6>
                                 </div>
-                                <h2>Holiday packages</h2>
+                                <h2>Holiday Packages</h2>
                             </div>
                         </div>
+
                     </div>
                     <div className="col-lg-6 col-md-12 col-sm-12 col-12">
                         <div className="row">
@@ -40,19 +41,19 @@ const TopDestinations = () => {
                                 <div className="destinations_content_box img_animation">
                                     <img src={dest1} alt="img" loading="lazy" className="responsive-img" />
                                     <div className="destinations_content_inner">
-                                        <h3 className="text-white">Rajasthan</h3>
+                                        <h3 className="text-white" style={{fontWeight:"700"}}>Rajasthan</h3>
                                     </div>
                                 </div>
                                 <div className="destinations_content_box img_animation">
                                     <img src={dest2} alt="img" loading="lazy" className="responsive-img" />
                                     <div className="destinations_content_inner">
-                                        <h3 className="text-white">Gujarat</h3>
+                                        <h3 className="text-white" style={{fontWeight:"700"}}>Gujarat</h3>
                                     </div>
                                 </div>
                                 <div className="destinations_content_box img_animation">
                                     <img src={dest6} alt="img" loading="lazy" className="responsive-img" />
                                     <div className="destinations_content_inner">
-                                        <h3 className="text-white">Nagaland</h3>
+                                        <h3 className="text-white" style={{fontWeight:"700"}}>Odisha</h3>
                                     </div>
                                 </div>
                             </div>
@@ -60,19 +61,19 @@ const TopDestinations = () => {
                                 <div className="destinations_content_box img_animation">
                                     <img src={dest4} alt="img" loading="lazy" className="responsive-img" />
                                     <div className="destinations_content_inner">
-                                        <h3 className="text-white">Kerala</h3>
+                                        <h3 className="text-white" style={{fontWeight:"700"}}>Kerala</h3>
                                     </div>
                                 </div>
                                 <div className="destinations_content_box img_animation">
                                     <img src={dest5} alt="img" loading="lazy" className="responsive-img" />
                                     <div className="destinations_content_inner">
-                                        <h3 className="text-white">Uttar Pradesh</h3>
+                                        <h3 className="text-white" style={{fontWeight:"700"}}>Uttar Pradesh</h3>
                                     </div>
                                 </div>
                                 <div className="destinations_content_box img_animation">
                                     <img src={dest3} alt="img" loading="lazy" className="responsive-img" />
                                     <div className="destinations_content_inner">
-                                        <h3 className="text-white">Tamil Nadu</h3>
+                                        <h3 className="text-white" style={{fontWeight:"700"}}>Tamil Nadu</h3>
                                     </div>
                                 </div>
                             </div>
@@ -80,13 +81,13 @@ const TopDestinations = () => {
                                 <div className="destinations_content_box img_animation">
                                     <img src={dest7} alt="img" loading="lazy" className="responsive-img" />
                                     <div className="destinations_content_inner">
-                                        <h3 className="text-white">Madhya Pradesh</h3>
+                                        <h3 className="text-white" style={{fontWeight:"700"}}>Madhya Pradesh</h3>
                                     </div>
                                 </div>
                                 <div className="destinations_content_box img_animation">
                                     <img src={dest8} alt="img" loading="lazy" className="responsive-img" />
                                     <div className="destinations_content_inner">
-                                        <h3 className="text-white">Karnataka</h3>
+                                        <h3 className="text-white" style={{fontWeight:"700"}}>Karnataka</h3>
                                     </div>
                                 </div>
                             </div>

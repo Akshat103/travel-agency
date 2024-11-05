@@ -20,6 +20,12 @@ const DashboardRoutes = [
     icon: "nc-icon nc-chart-pie-35",
     layout: "/admin"
   },
+  {
+    path: "/services-charges",
+    name: "Service Charges",
+    icon: "nc-icon nc-chart-pie-35",
+    layout: "/admin"
+  },
 ];
 
 export default DashboardRoutes;

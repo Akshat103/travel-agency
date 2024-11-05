@@ -5,6 +5,7 @@ import Imagination from '../components/homepage/Imagination'
 import TopDestinations from '../components/homepage/TopDestinations'
 import HomeBanner from '../components/homepage/HomeBanner'
 import WelcomeModal from '../components/WelcomeModal'
+import ClientFooter from '../components/ClientFooter'
 
 const ClientHome = () => {
   return (
@@ -15,6 +16,7 @@ const ClientHome = () => {
       <Form />
       <Imagination />
       <TopDestinations />
+      <ClientFooter />
     </div>
   )
 }

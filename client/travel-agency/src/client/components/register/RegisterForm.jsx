@@ -57,6 +57,12 @@ const RegisterForm = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
+        <div className='m-2 mb-4' style={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+          <h4>Register Yourself</h4>
+        </div>
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
@@ -120,17 +126,13 @@ const RegisterForm = () => {
             Register
           </Button>
         </div>
-
-        <div className="text-center mt-3">
-          <p>Or register with:</p>
-          <div className="d-flex justify-content-center mb-3">
-            <Button variant="outline-secondary" className="mx-2">
-              <FaGoogle /> Google
-            </Button>
-          </div>
-          <p>Already have an account? <Link to="/login">Log in now</Link></p>
-        </div>
-      </Form>
+        <p className="text-center mb-0">
+          Already have an account?{' '}
+          <Link to="/login" className="text-decoration-none">
+            LogIn now
+          </Link>
+        </p>
+      </Form >
     </>
   );
 };

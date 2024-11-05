@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Button, Form, Card } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Badge } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import usePayment from '../../../utils/payment';
 import { updatePassenger } from '../../../redux/flightSlice';
 import { toast } from 'react-toastify';
 import SeatSelection from './SeatSelection';
+import axios from 'axios';
 
 const SeatSelectionPage = () => {
     const [customerInfo, setCustomerInfo] = useState({
@@ -13,6 +14,7 @@ const SeatSelectionPage = () => {
         email: '',
     });
 
+    const serviceType = "bookflight";
     const dispatch = useDispatch();
     const { payment } = usePayment();
     const flightDetails = useSelector((state) => state.flights.flightDetails);
@@ -38,6 +40,21 @@ const SeatSelectionPage = () => {
         }
     };
 
+    const [convenienceFeePerct, setConvenienceFeePerct] = useState(0);
+
+    useEffect(() => {
+        const fetchServiceData = async () => {
+            try {
+                const { data } = await axios.get('/api/services/Flight');
+                setConvenienceFeePerct(data.charge);
+            } catch (error) {
+                console.error("Error fetching service data:", error);
+            }
+        };
+
+        fetchServiceData();
+    }, []);
+
     // Calculate the total price based on selected seats
     const calculateTotalPrice = () => {
         let totalPrice = passengers.reduce((acc, passenger) => {
@@ -47,6 +64,10 @@ const SeatSelectionPage = () => {
         return totalPrice;
     };
 
+    const calculateTotalPriceWithFee = (totalPrice) => {
+        const convenienceFee = (convenienceFeePerct / 100) * totalPrice;
+        return totalPrice + convenienceFee;
+    };
 
     // Handle customer info input change
     const handleInputChange = (e) => {
@@ -102,7 +123,6 @@ const SeatSelectionPage = () => {
                 passenger.Passport_Expiry
             ))
         );
-
         // Validate all required fields
         if (!isFlightDetailsValid || !isPassengerValid ||
             !bookingData.flightKey || !bookingData.searchKey || !bookingData.fareId ||
@@ -113,7 +133,6 @@ const SeatSelectionPage = () => {
 
         try {
             const receipt = `flight_booking_rcptid_${Math.floor(Math.random() * 10000)}`;
-            const serviceType = "bookflight";
             const serviceDetails = bookingData;
             payment(total, receipt, serviceType, serviceDetails);
         } catch (error) {
@@ -122,7 +141,7 @@ const SeatSelectionPage = () => {
     };
 
     return (
-        <div className="m-4">
+        <div className="m-4 mb-5">
             <SeatSelection
                 seatData={seatData}
                 passengers={passengers}
@@ -130,7 +149,10 @@ const SeatSelectionPage = () => {
                 onBack={() => navigate(-1)}
             />
 
-            <h5 className="mt-3">Total Price: INR {calculateTotalPrice()}</h5>
+            <div className='d-flex gap-1'>
+                <h5>Total Price: INR {calculateTotalPriceWithFee(calculateTotalPrice())}</h5>
+                <Badge bg="secondary">Convenience Fee: INR {((convenienceFeePerct / 100) * calculateTotalPrice()).toFixed(2)}</Badge>
+            </div>
             <div className="row gap-2 mt-2">
                 <div className="col-lg-3 col-md-12">
                     <Form.Group>

@@ -86,7 +86,7 @@ const ClientNavBar = ({ userType, onLogout }) => {
                             </div>
                             <div className="logo">
                                 <Link to="/">
-                                    <img src={logo} alt="logo" />
+                                    <img src={logo} alt="logo" style={{ height: '3rem' }} />
                                 </Link>
                             </div>
                         </div>
@@ -96,7 +96,7 @@ const ClientNavBar = ({ userType, onLogout }) => {
                     <div className="container">
                         <nav className="navbar navbar-expand-md">
                             <Link className="navbar-brand" to="/">
-                                <img src={logo} alt="logo" />
+                                <img src={logo} alt="logo"  style={{height:'3rem'}}/>
                             </Link>
                             <div className="mean-push"></div>
                             <div className="collapse navbar-collapse mean-menu" id="navbarSupportedContent" style={{ display: "none" }}>

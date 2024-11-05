@@ -138,7 +138,7 @@ const AddPassengers = () => {
 
             if (response.data) {
                 navigate('/flight/seats', {
-                    state: { seatData: response.data.data, fareId, searchKey, flightKey: response.data.updatedflightKey, totalPrice: calculateTotalPrice() }
+                    state: { seatData: response.data.data, fareId, searchKey, flightKey: response.data.updatedFlightKey, totalPrice: calculateTotalPrice() }
                 });
             }
         } catch (error) {

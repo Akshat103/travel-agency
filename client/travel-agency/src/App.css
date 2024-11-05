@@ -107,3 +107,28 @@ form {
 .scroll-container {
     scrollbar-width: none;
 }
+
+.nav-item .nav-link {
+    font-size: large;
+    font-weight: 700;
+}
+
+.policy-container {
+    padding: 20px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.policy-container h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.policy-container h2 {
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.policy-container p {
+    margin: 0.5rem 0;
+}

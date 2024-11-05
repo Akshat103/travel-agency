@@ -37,7 +37,7 @@ const Form = () => {
                                 </ul>
                             </div>
 
-                            <div class="tab-content" id="myTabContent">
+                            <div className="tab-content" id="myTabContent">
                                 <Flight />
                                 <Recharge context={"home"} />
                                 <Hotel />

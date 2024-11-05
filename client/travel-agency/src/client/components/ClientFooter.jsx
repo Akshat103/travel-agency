@@ -20,15 +20,16 @@ const ClientFooter = () => {
                 </div>
                 <div className="footer_inquery_area">
                   <h5>Mail to our support team</h5>
-                  <h3> <Link to="mailto:yaraholiday46@gmail.com">yaraholiday46@gmail.com</Link></h3>
+                  <h3> <Link to="mailto:info@yaraholidays.com">info@yaraholidays.com</Link></h3>
                 </div>
                 <div className="footer_inquery_area">
                   <h5>Follow us on</h5>
                   <ul className="soical_icon_footer">
-                    <li><Link to="#!"><i className="fab fa-facebook"></i></Link></li>
-                    <li><Link to="#!"><i className="fab fa-twitter-square"></i></Link></li>
-                    <li><Link to="#!"><i className="fab fa-instagram"></i></Link></li>
-                    <li><Link to="#!"><i className="fab fa-linkedin"></i></Link></li>
+                    <li><Link to="https://www.facebook.com/share/LQ9ntK2srZfMCkK3"><i className="fab fa-facebook"></i></Link></li>
+                    <li><Link to="https://x.com/HolidayYar6652?t=YLmJRsRBSXREG3tgcqs8cg&s=09"><i className="fab fa-twitter-square"></i></Link></li>
+                    <li><Link to="https://www.instagram.com/invites/contact/?igsh=vo8eehrww7z2&utm_content=vhahyr5"><i className="fab fa-instagram"></i></Link></li>
+                    <li><Link to="https://youtube.com/@yaraholiday-ar7?si=u-ZidLykh2sWjsWA"><i className="fab fa-youtube"></i></Link></li>
+                    <li><Link to="https://whatsapp.com/channel/0029Valo58lHrDZdW0JXwE11"><i className="fab fa-whatsapp"></i></Link></li>
                   </ul>
                 </div>
               </div>
@@ -40,6 +41,10 @@ const ClientFooter = () => {
               <div className="footer_link_area">
                 <ul>
                   <li><Link to="/about-us">About Us</Link></li>
+                  <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+                  <li><Link to="/terms-and-conditions">Terms and Conditions</Link></li>
+                  <li><Link to="/cancellation-refund">Cancellation Refund</Link></li>
+                  <li><Link to="/shipping-delivery">Shipping Delivery</Link></li>
                 </ul>
               </div>
             </div>
@@ -66,7 +71,7 @@ const ClientFooter = () => {
                 </ul>
               </div>
             </div>
-            
+
           </div>
         </div>
       </footer>
@@ -80,7 +85,7 @@ const ClientFooter = () => {
             </div>
             <div className="co-lg-6 col-md-6 col-sm-12 col-12">
               <div className="copyright_right">
-                <img src={logo} alt="img" />
+                <img src={logo} alt="img" style={{ height: '3rem' }} />
               </div>
             </div>
           </div>

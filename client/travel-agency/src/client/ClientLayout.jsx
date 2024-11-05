@@ -1,6 +1,5 @@
 import React from 'react'
 import ClientHeader from './components/ClientHeader'
-import ClientFooter from './components/ClientFooter'
 
 const ClientLayout = ({ children }) => {
   return (
@@ -9,7 +8,6 @@ const ClientLayout = ({ children }) => {
       <main className="client-main-content">
         {children}
       </main>
-      <ClientFooter />
     </div>
   )
 }

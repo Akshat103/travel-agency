@@ -24,6 +24,23 @@ const loadRazorpayScript = () => {
     });
 };
 
+function getServiceType(serviceType) {
+    switch (serviceType) {
+        case "bookflight":
+            return "Flight";
+        case "bookhotel":
+            return "Hotel";
+        case "bookbus":
+            return "Bus";
+        case "recharge":
+            return "Recharge";
+        case "irctcOnboard":
+            return "IRCTC";
+        default:
+            return "Unknown Service Type";
+    }
+}
+
 const usePayment = () => {
 
     if (Razorpay) {
@@ -39,23 +56,33 @@ const usePayment = () => {
             return;
         }
         try {
+            const { data } = await axios.get(`/api/services/${getServiceType(serviceType)}`);
+
+            const convenienceFee = (data.charge / 100) * amount;
+
+            let totalAmount = amount;
+
+            if (getServiceType(serviceType) === "IRCTC") {
+                totalAmount += data.charge;
+            } else {
+                totalAmount += convenienceFee;
+            }
+
             const { data: { order_id } } = await axios.post('/api/create-order', {
-                amount,
+                amount: totalAmount.toFixed(2),
                 receipt,
                 serviceType,
                 serviceDetails
             });
 
-            toast.success("Order created successfully.");
-
             return new Promise((resolve, reject) => {
                 const options = {
                     "key": VITE_RAZORPAY_KEY_ID,
                     "order_id": order_id,
-                    "amount": amount,
+                    "amount": totalAmount,
                     "currency": "INR",
                     "name": "Yara Holidays",
-                    "description": `Payment for ${serviceType}`,
+                    "description": `Payment for ${getServiceType(serviceType)}. Includes a convenience fee of ₹${convenienceFee}`,
                     "handler": async function (response) {
                         // Show processing toast immediately after payment
                         const processingToastId = toast.info("Processing order...", {

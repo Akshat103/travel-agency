@@ -24,7 +24,7 @@ module.exports.createOrder = async (req, res) => {
         const clientId = req.user.clientId;
 
         const options = {
-            amount: Number(amount * 100),
+            amount: Math.round(amount * 100),
             currency: 'INR',
             receipt: receipt,
             payment_capture: 1,

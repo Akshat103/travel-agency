@@ -14,10 +14,13 @@ export default defineConfig({
       '@assets': '/src/assets',
     },
   },
+  build: {
+    minify: 'esbuild',
+  },
   server: {
     proxy: {
       '/api': {
-        target: 'http://13.202.215.205:5000/api',
+        target: 'http://localhost:5000/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

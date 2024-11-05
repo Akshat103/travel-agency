@@ -5,6 +5,7 @@ import AdminHome from '../admin/pages/AdminHome'
 import NotFound from '../pages/NotFound'
 import OrderPage from '../admin/pages/OrderPage'
 import UserSearchPage from '../admin/pages/UserSearchPage'
+import ServiceChargePage from '../admin/pages/ServiceChargePage'
 
 const AdminRoutes = () => {
   return (
@@ -13,6 +14,7 @@ const AdminRoutes = () => {
         <Route index element={<AdminHome />} />
         <Route path="/orders" element={<OrderPage />} />
         <Route path="/users" element={<UserSearchPage />} />
+        <Route path="/services-charges" element={<ServiceChargePage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

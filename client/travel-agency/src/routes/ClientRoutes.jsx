@@ -12,19 +12,23 @@ import SuccessPage from '../pages/SuccessPage';
 import HotelSearch from '../client/pages/HotelSearch';
 import HotelDetails from '../client/components/hotelpage/HotelDetails';
 import BookHotel from '../client/components/hotelpage/BookHotel';
-import NotFound from '../pages/NotFound';
 import AddPassengers from '../client/components/flightpage/AddPassengers';
 import SeatSelectionPage from '../client/components/flightpage/SeatSelectionPage';
 import FailurePage from '../pages/FailurePage';
-import OnboardUser from '../client/pages/OnboardUser';
-import IRCTCPage from '../client/pages/IrctcPage';
 import Spinner from '../components/Spinner';
 
+const NotFound = lazy(() => import('../pages/NotFound'));
+const OnboardUser = lazy(() => import('../client/pages/OnboardUser'));
+const IRCTCPage = lazy(() => import('../client/pages/IrctcPage'));
 const Register = lazy(() => import('../client/pages/Register'));
 const LogIn = lazy(() => import('../client/pages/LogIn'));
 const UserDashboard = lazy(() => import('../client/pages/UserDashboard'));
 const ContactUs = lazy(() => import('../client/pages/ContactUs'));
 const AboutUs = lazy(() => import('../client/pages/AboutUs'));
+const PrivacyPolicy = lazy(() => import('../client/pages/PrivacyPolicy'));
+const TermsAndConditions = lazy(() => import('../client/pages/TermsAndConditions'));
+const CancellationRefund = lazy(() => import('../client/pages/CancellationRefund'));
+const ShippingDelivery = lazy(() => import('../client/pages/ShippingDelivery'));
 
 const IRCTCRouteGuard = ({ irctcValue, requiredValue, redirectTo, children }) => {
   if (irctcValue !== requiredValue) {
@@ -67,25 +71,48 @@ const ClientRoutes = () => {
     <div style={{ zoom: '80%' }}>
       <Suspense fallback={<Spinner show={true} />}>
         <Routes>
+          {/* Home */}
           <Route path="" element={<ClientLayout><ClientHome /></ClientLayout>} />
+
+          {/* Register Page */}
           <Route path="register" element={<ClientLayout><Register /></ClientLayout>} />
+
+          {/* Login Page */}
           <Route path="login" element={<ClientLayout><LogIn /></ClientLayout>} />
+
+          {/* Flight Routes */}
           <Route path="flights" element={<ClientLayout><FlightSearch /></ClientLayout>} />
           <Route path="flight-details" element={<ClientLayout><FlightDetails /></ClientLayout>} />
           <Route path="flight/add-passengers" element={<ClientLayout><AddPassengers /></ClientLayout>} />
           <Route path="flight/seats" element={<ClientLayout><SeatSelectionPage /></ClientLayout>} />
+
+          {/* Bus Routes */}
           <Route path="bus" element={<ClientLayout><BusSearch /></ClientLayout>} />
+          <Route path="bus-details" element={<ClientLayout><BusDetails /></ClientLayout>} />
+
+          {/* Hotel Routes */}
           <Route path="hotel" element={<ClientLayout><HotelSearch /></ClientLayout>} />
           <Route path="hotel-details" element={<ClientLayout><HotelDetails /></ClientLayout>} />
           <Route path="book-hotel" element={<ClientLayout><BookHotel /></ClientLayout>} />
-          <Route path="bus-details" element={<ClientLayout><BusDetails /></ClientLayout>} />
+
+          {/* Mobile Recharge Routes */}
           <Route path="mobile-recharge" element={<ClientLayout><RechargePage /></ClientLayout>} />
+
+          {/* User Dashboard */}
           <Route path="dashboard" element={<ClientLayout><UserDashboard /></ClientLayout>} />
+
+
           <Route path="success" element={<ClientLayout><SuccessPage /></ClientLayout>} />
           <Route path="failure" element={<ClientLayout><FailurePage /></ClientLayout>} />
+
           <Route path="contact-us" element={<ClientLayout><ContactUs /></ClientLayout>} />
           <Route path="about-us" element={<ClientLayout><AboutUs /></ClientLayout>} />
-          
+          <Route path="privacy-policy" element={<ClientLayout><PrivacyPolicy /></ClientLayout>} />
+          <Route path="terms-and-conditions" element={<ClientLayout><TermsAndConditions /></ClientLayout>} />
+          <Route path="cancellation-refund" element={<ClientLayout><CancellationRefund /></ClientLayout>} />
+          <Route path="shipping-delivery" element={<ClientLayout><ShippingDelivery /></ClientLayout>} />
+
+          {/* IRCTC Routes */}
           <Route
             path="irctc/onboard"
             element={

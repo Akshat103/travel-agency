@@ -7,6 +7,7 @@ import flight from '../../assets/img/services/flight.jpg';
 import hotel from '../../assets/img/services/hotel.jpg';
 import mobile from '../../assets/img/services/mobile.jpg';
 import bus from '../../assets/img/services/bus.jpg';
+import ClientFooter from '../components/ClientFooter'
 import '../../assets/css/AboutUs.css';
 
 const services = [
@@ -73,6 +74,7 @@ const AboutUs = () => {
                     <p className="lead text-white">Experience the world with Yara Holidays - Your trusted travel companion.</p>
                 </Container>
             </Container>
+            <ClientFooter />
         </>
     );
 };
