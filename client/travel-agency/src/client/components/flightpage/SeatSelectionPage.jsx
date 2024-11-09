@@ -149,7 +149,7 @@ const SeatSelectionPage = () => {
                 onBack={() => navigate(-1)}
             />
 
-            <div className='d-flex gap-1'>
+            <div className='d-flex gap-1 m-2'>
                 <h5>Total Price: INR {calculateTotalPriceWithFee(calculateTotalPrice())}</h5>
                 <Badge bg="secondary">Convenience Fee: INR {((convenienceFeePerct / 100) * calculateTotalPrice()).toFixed(2)}</Badge>
             </div>
@@ -178,9 +178,11 @@ const SeatSelectionPage = () => {
                 </div>
             </div>
 
-            <Button variant="primary" className="mt-3" onClick={handleConfirm}>
-                Book
-            </Button>
+            <div className='mb-5 d-flex justify-content-center'>
+                <Button variant="primary" className="mt-3 col-lg-4" onClick={handleConfirm}>
+                    Book
+                </Button>
+            </div>
         </div>
     );
 };

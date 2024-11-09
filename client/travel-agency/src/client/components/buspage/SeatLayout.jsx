@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux';
 import { IoIosPersonAdd } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import { IoPersonRemove } from "react-icons/io5";
+import { Container, Row, Col, Button, Form, ListGroup, Tooltip, OverlayTrigger, Card, Badge } from 'react-bootstrap';
+import axios from 'axios';
 
 const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
-    const [showSeats, setShowSeats] = useState(false);
     const [seatData, setSeatData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -32,8 +33,27 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
     const id = bus.id;
 
     useEffect(() => {
+        fetchSeatData();
+    }, []);
+
+    useEffect(() => {
         updateAvailableSeats();
     }, [seatData, passengers]);
+
+    const [convenienceFeePerct, setConvenienceFeePerct] = useState(0);
+
+    useEffect(() => {
+        const fetchServiceData = async () => {
+            try {
+                const { data } = await axios.get('/api/services/Bus');
+                setConvenienceFeePerct(data.charge);
+            } catch (error) {
+                console.error("Error fetching service data:", error);
+            }
+        };
+
+        fetchServiceData();
+    }, []);
 
     const updateAvailableSeats = () => {
         const available = seatData.filter(seat =>
@@ -57,20 +77,13 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                 throw new Error('Failed to fetch seat data');
             }
             const data = await response.json();
-            const sortedData = data.sort((a, b) => (a.row === b.row ? a.column - b.column : a.row - b.row));
+            const sortedData = data.sort((a, b) => (a.row - b.row || a.column - b.column));
             setSeatData(sortedData);
         } catch (err) {
             setError(err.message);
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleShowSeats = () => {
-        if (!showSeats) {
-            fetchSeatData();
-        }
-        setShowSeats(!showSeats);
     };
 
     const handleContactInput = (e) => {
@@ -164,135 +177,193 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
         }
     };
 
+    const getSeatColor = (seat) => {
+        if (seat.available === "False") {
+            return "#A9A9A9";
+        } else if (seat.ladiesSeat === "True") {
+            return "#FF69B4";
+        } else if (seat.malesSeat === "True") {
+            return "#1E90FF";
+        } else {
+            return "#32CD32";
+        }
+    };
+
     return (
-        <div>
-            <button
-                className="btn btn-outline-primary mb-3"
-                onClick={handleShowSeats}
-            >
-                {showSeats ? 'Hide Seat Layout' : 'Show Seat Layout'}
-            </button>
+        <Container>
+            {loading && <p>Loading seat data...</p>}
+            {error && <p className="text-danger">{error}</p>}
+            {!loading && !error && (
+                <>
+                    <div>
+                        <Row className="mb-4 d-flex flex-column flex-md-row">
+                            <Col md={6} className="mb-3 mb-md-0">
+                                <Card style={{ overflowY: 'auto', maxHeight: '400px' }}>
+                                    <Card.Header>Lower Deck</Card.Header>
+                                    <Card.Body>
+                                        <Row className="g-2"> {/* Adds gap between seat columns */}
+                                            {seatData.filter(seat => seat.zIndex === '0').map((seat) => (
+                                                <Col key={`${seat.row}-${seat.column}`} xs={4} sm={3} md={3} className="mb-3">
+                                                    <OverlayTrigger
+                                                        placement="top"
+                                                        overlay={
+                                                            <Tooltip>
+                                                                Seat: {seat.name} <br />
+                                                                Fare: ₹{Math.ceil(seat.fare)} <br />
+                                                                {seat.ladiesSeat === "True" ? "Ladies Seat" : seat.malesSeat === "True" ? "Males Seat" : ""}
+                                                            </Tooltip>
+                                                        }
+                                                    >
+                                                        <div
+                                                            className={`seat-container rounded text-center text-white'}`}
+                                                            style={{
+                                                                backgroundColor: getSeatColor(seat),
+                                                                height: seat.length === '2' ? '100px' : '50px',
+                                                                width: '50px',
+                                                                margin: '5px'
+                                                            }}
+                                                            onClick={() => handleSeatSelection(seat)}
+                                                        >
+                                                            <strong>{seat.name}</strong>
+                                                        </div>
+                                                    </OverlayTrigger>
+                                                </Col>
+                                            ))}
+                                        </Row>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col md={6}>
+                                <Card style={{ overflowY: 'auto', maxHeight: '400px' }}>
+                                    <Card.Header>Upper Deck</Card.Header>
+                                    <Card.Body>
+                                        <Row className="g-2"> {/* Adds gap between seat columns */}
+                                            {seatData.filter(seat => seat.zIndex === '1').map((seat) => (
+                                                <Col key={`${seat.row}-${seat.column}`} xs={4} sm={3} md={3} className="mb-3">
+                                                    <OverlayTrigger
+                                                        placement="top"
+                                                        overlay={
+                                                            <Tooltip>
+                                                                Seat: {seat.name} <br />
+                                                                Fare: ₹{Math.ceil(seat.fare)} <br />
+                                                                {seat.ladiesSeat === "True" ? "Ladies Seat" : seat.malesSeat === "True" ? "Males Seat" : ""}
+                                                            </Tooltip>
+                                                        }
+                                                    >
+                                                        <div
+                                                            className={`seat-container rounded text-center text-white'}`}
+                                                            style={{
+                                                                backgroundColor: getSeatColor(seat),
+                                                                height: seat.length === '2' ? '100px' : '50px',
+                                                                width: '50px',
+                                                                margin: '5px'
+                                                            }}
+                                                            onClick={() => handleSeatSelection(seat)}
+                                                        >
+                                                            <strong>{seat.name}</strong>
+                                                        </div>
+                                                    </OverlayTrigger>
+                                                </Col>
+                                            ))}
+                                        </Row>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </div>
 
-            {showSeats && (
-                <div>
-                    {loading && <p>Loading seat data...</p>}
-                    {error && <p className="text-danger">{error}</p>}
-                    {!loading && !error && (
-                        <>
-                            <div className="row overflow-auto" style={{ maxHeight: '200px' }}>
-                                {seatData.map((seat) => (
-                                    <div
-                                        key={`${seat.row}-${seat.column}`}
-                                        className={`col-sm-4 col-md-2 mb-2 ${availableSeats.some(s => s.Seat_Key === seat.Seat_Key) ? 'border border-success' : 'border border-danger'} p-2 rounded text-center`}
-                                        style={{
-                                            height: '100px',
-                                            width: '100px',
-                                            margin: '0 auto',
-                                            opacity: availableSeats.some(s => s.Seat_Key === seat.Seat_Key) ? 1 : 0.5,
-                                        }}
-                                    >
-                                        <strong>Seat {seat.name}</strong>
-                                        <p>₹{Math.ceil(seat.fare)}</p>
-                                        <p>{availableSeats.some(s => s.Seat_Key === seat.Seat_Key) ? "Available" : "Booked"}</p>
-                                    </div>
-                                ))}
+                    {/* Contact details form */}
+                    <div className="mt-4">
+                        <div className="row mb-4">
+                            <div className="col-md-6">
+                                <input placeholder='Mobile Number' type="text" name="mobile" className="form-control" value={contactDetails.mobile} onChange={handleContactInput} />
                             </div>
-
-                            <div className="mt-4">
-                                <div className="row mb-4">
-                                    <div className="col-md-6">
-                                        <input placeholder='Mobile Number' type="text" name="mobile" className="form-control" value={contactDetails.mobile} onChange={handleContactInput} />
-                                    </div>
-                                    <div className="col-md-6">
-                                        <input placeholder='Email' type="email" name="email" className="form-control" value={contactDetails.email} onChange={handleContactInput} />
-                                    </div>
-                                </div>
-                                <div className="row mb-4">
-                                    <div className="col-md-6">
-                                        <select name="idType" className="form-control" value={contactDetails.idType} onChange={handleContactInput}>
-                                            <option value="">ID Proof</option>
-                                            <option value="Aadhar">Aadhar</option>
-                                            <option value="PAN">PAN</option>
-                                        </select>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <input
-                                            type="text"
-                                            name="idNumber"
-                                            className="form-control"
-                                            placeholder='ID Number'
-                                            value={contactDetails.idNumber}
-                                            onChange={handleContactInput}
-                                            maxLength={contactDetails.idType === 'Aadhar' ? 12 : 10}
-                                            pattern={contactDetails.idType === 'Aadhar' ? '\\d{12}' : '[A-Z0-9]{10}'}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mb-3">
-                                    <input
-                                        type="text"
-                                        name="address"
-                                        className="form-control"
-                                        placeholder='Address'
-                                        value={contactDetails.address}
-                                        onChange={handleContactInput}
-                                    />
-                                </div>
+                            <div className="col-md-6">
+                                <input placeholder='Email' type="email" name="email" className="form-control" value={contactDetails.email} onChange={handleContactInput} />
                             </div>
-
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <h5 className="mt-2 mb-2">Passengers:</h5>
-                                </div>
-                                <div className="col-md-6">
-                                    <button className="btn btn-primary mb-3" onClick={() => {
-                                        setShowPassengerInputs(true);
-                                        setCurrentPassenger({ passengertitle: '', passengername: '', passengerage: '', seat: null });
-                                    }}>
-                                        {editingIndex !== null ? <CiEdit /> : <IoIosPersonAdd />}
-                                    </button>
-                                </div>
+                        </div>
+                        <div className="row mb-4">
+                            <div className="col-md-6">
+                                <select name="idType" className="form-control" value={contactDetails.idType} onChange={handleContactInput}>
+                                    <option value="">ID Proof</option>
+                                    <option value="Aadhar">Aadhar</option>
+                                    <option value="PAN">PAN</option>
+                                </select>
                             </div>
+                            <div className="col-md-6">
+                                <input
+                                    type="text"
+                                    name="idNumber"
+                                    className="form-control"
+                                    placeholder='ID Number'
+                                    value={contactDetails.idNumber}
+                                    onChange={handleContactInput}
+                                    maxLength={contactDetails.idType === 'Aadhar' ? 12 : 10}
+                                    pattern={contactDetails.idType === 'Aadhar' ? '\\d{12}' : '[A-Z0-9]{10}'}
+                                />
+                            </div>
+                        </div>
+                        <div className="mb-3">
+                            <input
+                                type="text"
+                                name="address"
+                                className="form-control"
+                                placeholder='Address'
+                                value={contactDetails.address}
+                                onChange={handleContactInput}
+                            />
+                        </div>
+                    </div>
 
-                            <div>
-                                {showPassengerInputs && (
-                                    <>
-                                        <div className="row mb-4">
-                                            <div className="col-md-4">
-                                                <input
+                    <div>
+                        <div className="d-flex mb-3">
+                            <h4 className="mx-4">Add Passenger:</h4>
+                            <Button
+                                variant="primary"
+                                onClick={() => {
+                                    setShowPassengerInputs(true);
+                                    setCurrentPassenger({ passengertitle: '', passengername: '', passengerage: '', seat: null });
+                                }}
+                            >
+                                {editingIndex !== null ? <CiEdit /> : <IoIosPersonAdd />}
+                            </Button>
+                        </div>
+                        {showPassengerInputs && (
+                            <Card>
+                                <Card.Body>
+                                    <Form>
+                                        <Row className="mb-4">
+                                            <Col md={4}>
+                                                <Form.Control
                                                     type="text"
                                                     name="passengertitle"
-                                                    className="form-control"
                                                     placeholder="Title"
                                                     value={currentPassenger.passengertitle}
                                                     onChange={handlePassengerInput}
                                                 />
-                                            </div>
-                                            <div className="col-md-4">
-                                                <input
+                                            </Col>
+                                            <Col md={4}>
+                                                <Form.Control
                                                     type="text"
                                                     name="passengername"
-                                                    className="form-control"
-                                                    placeholder='Name'
+                                                    placeholder="Name"
                                                     value={currentPassenger.passengername}
                                                     onChange={handlePassengerInput}
                                                 />
-                                            </div>
-                                            <div className="col-md-4">
-                                                <input
+                                            </Col>
+                                            <Col md={4}>
+                                                <Form.Control
                                                     type="number"
                                                     name="passengerage"
-                                                    className="form-control"
-                                                    placeholder='Age'
+                                                    placeholder="Age"
                                                     value={currentPassenger.passengerage}
                                                     onChange={handlePassengerInput}
                                                 />
-                                            </div>
-                                        </div>
-                                        <div className="row mb-4">
-                                            <div className="col-md-6">
-                                                <select
-                                                    className="form-control"
+                                            </Col>
+                                        </Row>
+                                        <Row className="mb-4">
+                                            <Col md={6}>
+                                                <Form.Select
                                                     value={currentPassenger.seat ? currentPassenger.seat.name : ''}
                                                     onChange={(e) => {
                                                         const selectedSeat = availableSeats.find(seat => seat.name === e.target.value);
@@ -305,39 +376,51 @@ const SeatLayout = ({ bus, selectedBoarding, selectedDropping }) => {
                                                             {seat.name} - ₹{Math.ceil(seat.fare)}
                                                         </option>
                                                     ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <button className="btn btn-primary mb-2" onClick={handleAddPassenger}>
+                                                </Form.Select>
+                                            </Col>
+                                        </Row>
+                                        <Button variant="primary" onClick={handleAddPassenger}>
                                             {editingIndex !== null ? 'Update Passenger' : 'Save Passenger'}
-                                        </button>
-                                    </>
-                                )}
+                                        </Button>
+                                    </Form>
+                                </Card.Body>
+                            </Card>
+                        )}
+                    </div>
+
+                    {passengers.length > 0 && (
+                        <div>
+                            <h5 className="mt-4 mb-3">Passengers:</h5>
+                            <ListGroup className="mt-4">
+                                {passengers.map((passenger, index) => (
+                                    <ListGroup.Item
+                                        key={index}
+                                        className="d-flex justify-content-between align-items-center"
+                                    >
+                                        {`${passenger.passengertitle} ${passenger.passengername} (${passenger.passengerage}), Seat: ${passenger.seat ? passenger.seat.name : 'Not selected'}`}
+                                        <div>
+                                            <Button variant="warning" size="sm" className="mx-1" onClick={() => handleEditPassenger(index)}>
+                                                <CiEdit />
+                                            </Button>
+                                            <Button variant="danger" size="sm" className="mx-1" onClick={() => handleRemovePassenger(index)}>
+                                                <IoPersonRemove />
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                ))}
+                            </ListGroup>
+                            <div className='d-flex gap-2 m-1'>
+                                <p>Total Amount: ₹{Math.ceil(totalAmount)}</p>
+                                <Badge bg="secondary">Convenience Fee: {convenienceFeePerct}%</Badge>
                             </div>
-
-                            {passengers.length > 0 && (
-                                <div>
-                                    <ul className="list-group">
-                                        {passengers.map((passenger, index) => (
-                                            <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                                {`${passenger.passengertitle} ${passenger.passengername} ${passenger.passengerage}, Seat: ${passenger.seat ? passenger.seat.name : 'Not selected'}`}
-                                                <div>
-                                                    <button className="btn btn-warning btn-sm mx-1" onClick={() => handleEditPassenger(index)}><CiEdit /></button>
-                                                    <button className="btn btn-danger btn-sm mx-1" onClick={() => handleRemovePassenger(index)}><IoPersonRemove /></button>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    <p className="mt-3">Total Amount: ₹{Math.ceil(totalAmount)}</p>
-                                    <button className="btn btn-success mt-3" onClick={handleBook}>Book Seats</button>
-                                </div>
-                            )}
-
-                        </>
+                            <Button variant="success" className="mt-3" onClick={handleBook}>
+                                Book Seats
+                            </Button>
+                        </div>
                     )}
-                </div>
+                </>
             )}
-        </div>
+        </Container>
     );
 };
 

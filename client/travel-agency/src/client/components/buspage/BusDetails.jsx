@@ -35,9 +35,9 @@ const BusDetails = () => {
       <button onClick={() => navigate(-1)} className="btn btn-outline-primary mb-4">
         <ArrowLeft size={18} className="me-2" /> Back to Buses
       </button>
-      <h2 className="mb-4">{bus.travels}</h2>
       <div className="card shadow-sm">
         <div className="card-body">
+          <h4 className="mb-4">{bus.travels}</h4>
           <div className="row mb-4">
             <div className="col-md-6">
               <h5 className="font-semibold">Departure</h5>
@@ -97,7 +97,6 @@ const BusDetails = () => {
             </div>
           </div>
           <div>
-            <h5 className="font-semibold mb-2">Seats</h5>
             <SeatLayout
               bus={bus}
               selectedBoarding={selectedBoarding}

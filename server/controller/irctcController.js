@@ -115,7 +115,6 @@ const onboardIRCTC = async (details, clientId, orderid) => {
 
     try {
         const response = await axios(options);
-        console.log(response)
         const updatedOrder = await OrderSchema.findOneAndUpdate(
             { orderId: orderid },
             { serviceResponse: response.data },

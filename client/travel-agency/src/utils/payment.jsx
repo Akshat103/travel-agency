@@ -58,16 +58,22 @@ const usePayment = () => {
         try {
             const { data } = await axios.get(`/api/services/${getServiceType(serviceType)}`);
 
-            const convenienceFee = (data.charge / 100) * amount;
+            // Ensure `amount` is a number and calculate `convenienceFee`
+            amount = parseFloat(amount);
+            const convenienceFee = parseFloat(((data.charge / 100) * amount).toFixed(2));
 
+            // Initialize `totalAmount` and add appropriate charge based on service type
             let totalAmount = amount;
-
             if (getServiceType(serviceType) === "IRCTC") {
-                totalAmount += data.charge;
+                totalAmount += parseFloat(data.charge.toFixed(2));
             } else {
                 totalAmount += convenienceFee;
             }
 
+            // Format `totalAmount` to two decimal places for precision
+            totalAmount = parseFloat(totalAmount.toFixed(2));
+
+            // Make the request to create an order, ensuring `totalAmount` is correctly formatted
             const { data: { order_id } } = await axios.post('/api/create-order', {
                 amount: totalAmount.toFixed(2),
                 receipt,

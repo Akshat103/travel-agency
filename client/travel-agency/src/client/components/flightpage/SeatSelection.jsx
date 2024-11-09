@@ -154,7 +154,7 @@ const SeatSelection = ({ passengers, seatData, onBack }) => {
   const currentPassenger = passengers.find(p => p.passengerCount === selectedPassengerCount);
 
   return (
-    <Container fluid className="p-4">
+    <Container fluid>
       <Button className="mb-4" onClick={onBack}>
         <ArrowLeft className="mr-2" />
         Back
