@@ -83,7 +83,6 @@ const FlightSearch = () => {
     }
   };
 
-
   return (
     <>
       <Spinner show={isSearching} />

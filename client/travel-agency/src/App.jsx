@@ -6,6 +6,7 @@ import Spinner from './components/Spinner';
 import ScrollToTop from './utils/ScrollToTop';
 import { resetStore } from './redux/store';
 import './App.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const ClientRoutes = loadable(() => import('./routes/ClientRoutes'));
 const AdminRoutes = loadable(() => import('./routes/AdminRoutes'));

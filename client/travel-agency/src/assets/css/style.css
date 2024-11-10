@@ -458,7 +458,7 @@ section {
 
 /* --Banner Area-- */
 #home_one_banner {
-    background-image: url("/img/bg.jpg");
+    background-image: url("/img/bg.webp");
     padding: 250px 0 280px 0;
     position: relative;
     background-position: center;

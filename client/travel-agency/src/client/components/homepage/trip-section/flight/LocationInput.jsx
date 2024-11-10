@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchFlightCity } from '../../../../../redux/flightSlice';
-import _ from 'lodash';
 
 const LocationInput = ({ label, onSelect }) => {
     const dispatch = useDispatch();
@@ -11,6 +10,7 @@ const LocationInput = ({ label, onSelect }) => {
     const [suggestions, setSuggestions] = useState([]);
     const [selectedAirport, setSelectedAirport] = useState(null);
     const [isTyping, setIsTyping] = useState(false);
+    const timeoutRef = useRef(null);
 
     useEffect(() => {
         if (!flightCity && !flightCityLoading) {
@@ -18,28 +18,37 @@ const LocationInput = ({ label, onSelect }) => {
         }
     }, [flightCity, flightCityLoading, dispatch]);
 
-    const debounceFilterSuggestions = useCallback(
-        _.debounce((query) => {
-            if (query.length > 0 && flightCity) {
-                setIsTyping(true);
+    const filterSuggestions = (searchQuery) => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        if (searchQuery.length > 0 && flightCity) {
+            setIsTyping(true);
+            timeoutRef.current = setTimeout(() => {
                 const filteredSuggestions = flightCity.filter(
                     item =>
-                        item.AIRPORTNAME.toLowerCase().includes(query.toLowerCase()) ||
-                        item.AIRPORTCODE.toLowerCase().includes(query.toLowerCase())
+                        item.AIRPORTNAME.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        item.AIRPORTCODE.toLowerCase().includes(searchQuery.toLowerCase())
                 );
                 setSuggestions(filteredSuggestions);
                 setIsTyping(false);
-            } else {
-                setSuggestions([]);
-                setIsTyping(false);
-            }
-        }, 500),
-        [flightCity]
-    );
+            }, 500);
+        } else {
+            setSuggestions([]);
+            setIsTyping(false);
+        }
+    };
 
     useEffect(() => {
-        debounceFilterSuggestions(query);
-    }, [query, debounceFilterSuggestions]);
+        filterSuggestions(query);
+
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, [query, flightCity]);
 
     const handleSelect = (airport) => {
         setSelectedAirport(airport);

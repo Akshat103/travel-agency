@@ -1,7 +1,7 @@
 import React from "react";
-import img1 from "../../../assets/img/imagination/imagination1.jpg"
-import img2 from "../../../assets/img/imagination/imagination2.jpg"
-import img3 from "../../../assets/img/imagination/imagination3.jpg"
+import img1 from "../../../assets/img/imagination/imagination1.webp"
+import img2 from "../../../assets/img/imagination/imagination2.webp"
+import img3 from "../../../assets/img/imagination/imagination3.webp"
 
 const Imagination = () => {
     return (

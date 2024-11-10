@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import countryList from '../../../assets/data/countries_name_flag.json';
 import { MdEdit } from "react-icons/md";
 import { toast } from 'react-toastify';

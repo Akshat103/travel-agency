@@ -1,44 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
-import lottie from 'lottie-web';
-import { Link } from 'react-router-dom';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import FailureAnimation from '../assets/animations/failureAnimation.svg';
 
 const FailurePage = () => {
-    const animationContainer = useRef(null);
-    const [animationData, setAnimationData] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
     const errorMessage = location.state?.errorMessage || "An error occurred";
     const [secondsLeft, setSecondsLeft] = useState(5);
 
     useEffect(() => {
-        import('../assets/animations/failureAnimation.json')
-            .then((data) => {
-                setAnimationData({ ...data });
-            })
-            .catch((error) => {
-                console.error('Error loading animation data:', error);
-            });
-    }, []);
-
-    useEffect(() => {
-        if (animationData) {
-            const animation = lottie.loadAnimation({
-                container: animationContainer.current,
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                animationData: animationData,
-            });
-
-            return () => {
-                animation.destroy();
-            };
-        }
-    }, [animationData]);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
+        const timer = setInterval(() => {
             setSecondsLeft((prev) => prev - 1);
         }, 1000);
 
@@ -46,7 +17,7 @@ const FailurePage = () => {
             navigate('/dashboard');
         }
 
-        return () => clearTimeout(timer);
+        return () => clearInterval(timer);
     }, [secondsLeft, navigate]);
 
     return (
@@ -61,8 +32,9 @@ const FailurePage = () => {
                     textAlign: 'center',
                 }}
             >
-                <div
-                    ref={animationContainer}
+                <img
+                    src={FailureAnimation}
+                    alt="Failure Animation"
                     style={{ width: '400px', margin: '-50px' }}
                 />
                 <h4>Oops! Something went wrong</h4>

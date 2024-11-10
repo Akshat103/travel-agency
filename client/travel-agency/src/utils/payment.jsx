@@ -1,30 +1,12 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
 const VITE_RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
-const loadRazorpayScript = () => {
-    return new Promise((resolve) => {
-        if (typeof Razorpay !== "undefined") {
-            resolve(true);
-            return;
-        }
-
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.async = true;
-        script.onload = () => {
-            resolve(true);
-        };
-        script.onerror = () => {
-            resolve(false);
-        };
-        document.head.appendChild(script);
-    });
-};
-
-function getServiceType(serviceType) {
+// Moved to separate function for clarity
+const getServiceType = (serviceType) => {
     switch (serviceType) {
         case "bookflight":
             return "Flight";
@@ -39,22 +21,54 @@ function getServiceType(serviceType) {
         default:
             return "Unknown Service Type";
     }
-}
+};
+
+const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.async = true;
+        script.onload = () => {
+            resolve(true);
+        };
+        script.onerror = () => {
+            resolve(false);
+        };
+        document.body.appendChild(script);
+    });
+};
 
 const usePayment = () => {
-
-    if (Razorpay) {
-        loadRazorpayScript();
-    }
-
+    const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false);
     const navigate = useNavigate();
 
+    // Load Razorpay on mount
+    useEffect(() => {
+        const loadRazorpay = async () => {
+            // Check if Razorpay is already loaded
+            if (window.Razorpay) {
+                setIsRazorpayLoaded(true);
+                return;
+            }
+
+            try {
+                const loaded = await loadRazorpayScript();
+                setIsRazorpayLoaded(loaded);
+            } catch (error) {
+                console.error("Failed to load Razorpay:", error);
+                toast.error("Failed to load payment system. Please try again.");
+            }
+        };
+
+        loadRazorpay();
+    }, []);
+
     const payment = async (amount, receipt, serviceType, serviceDetails) => {
-        const scriptLoaded = await loadRazorpayScript();
-        if (!scriptLoaded) {
-            console.error("Razorpay SDK failed to load. Are you online?");
+        if (!isRazorpayLoaded) {
+            toast.error("Payment system is still loading. Please try again in a moment.");
             return;
         }
+
         try {
             const { data } = await axios.get(`/api/services/${getServiceType(serviceType)}`);
 
@@ -73,7 +87,7 @@ const usePayment = () => {
             // Format `totalAmount` to two decimal places for precision
             totalAmount = parseFloat(totalAmount.toFixed(2));
 
-            // Make the request to create an order, ensuring `totalAmount` is correctly formatted
+            // Create order
             const { data: { order_id } } = await axios.post('/api/create-order', {
                 amount: totalAmount.toFixed(2),
                 receipt,
@@ -83,14 +97,13 @@ const usePayment = () => {
 
             return new Promise((resolve, reject) => {
                 const options = {
-                    "key": VITE_RAZORPAY_KEY_ID,
-                    "order_id": order_id,
-                    "amount": totalAmount,
-                    "currency": "INR",
-                    "name": "Yara Holidays",
-                    "description": `Payment for ${getServiceType(serviceType)}. Includes a convenience fee of ₹${convenienceFee}`,
-                    "handler": async function (response) {
-                        // Show processing toast immediately after payment
+                    key: VITE_RAZORPAY_KEY_ID,
+                    order_id: order_id,
+                    amount: totalAmount,
+                    currency: "INR",
+                    name: "Yara Holidays",
+                    description: `Payment for ${getServiceType(serviceType)}. Includes a convenience fee of ₹${convenienceFee}`,
+                    handler: async function (response) {
                         const processingToastId = toast.info("Processing order...", {
                             autoClose: false,
                         });
@@ -103,58 +116,61 @@ const usePayment = () => {
                                 serviceType
                             });
 
-                            // Close the processing toast
                             toast.dismiss(processingToastId);
 
-                            if (data.success && serviceType === "bookbus") {
-                                navigate('/success', { state: { message: `Booking ID: ${data.data.booking_id}` } });
-                            } else if (data.success && serviceType === "bookflight") {
-                                navigate('/success', { state: { message: `Booking ID: ${data.data.Booking_RefNo}` } });
-                            } else if (data.success && serviceType === "irctcOnboard") {
-                                navigate('/success', { state: { message: data.message } });
+                            if (data.success) {
+                                switch (serviceType) {
+                                    case "bookbus":
+                                        navigate('/success', { state: { message: `Booking ID: ${data.data.booking_id}` } });
+                                        break;
+                                    case "bookflight":
+                                        navigate('/success', { state: { message: `Booking ID: ${data.data.Booking_RefNo}` } });
+                                        break;
+                                    case "irctcOnboard":
+                                        navigate('/success', { state: { message: data.message } });
+                                        break;
+                                    default:
+                                        toast.error("Order completion failed.");
+                                        reject("Order completion failed.");
+                                }
                             } else {
                                 toast.error("Order completion failed.");
                                 reject("Order completion failed.");
                             }
                         } catch (error) {
-                            // Close the processing toast on error
                             toast.dismiss(processingToastId);
 
-                            if (error.response && error.response.status === 401) {
+                            if (error.response?.status === 401) {
                                 const { redirect } = error.response.data;
                                 if (redirect) {
                                     navigate(redirect);
                                 }
-                            } else if (error.response.data.order === false) {
-                                toast.error(error.response.data.message);
-                                navigate('/failure');
-                                reject(error);
-                            } else if (error.response.data.recharge === false) {
+                            } else if (error.response?.data.order === false || error.response?.data.recharge === false) {
                                 toast.error(error.response.data.message);
                                 navigate('/failure');
                                 reject(error);
                             } else {
-                                toast.error(error.response.data.message);
+                                toast.error(error.response?.data?.message || "Payment verification failed");
                                 navigate('/failure');
                                 reject(error);
                             }
                         }
                     },
-                    "theme": {
-                        "color": "#8c3eea"
+                    theme: {
+                        color: "#8c3eea"
                     }
                 };
 
-                var rzp1 = new Razorpay(options);
-                rzp1.open();
+                const rzp = new window.Razorpay(options);
+                rzp.open();
 
-                rzp1.on('payment.failed', function (response) {
+                rzp.on('payment.failed', function (response) {
                     toast.error(`Payment failed: ${response.error.description}`);
                     reject(response.error);
                 });
             });
         } catch (error) {
-            if (error.response && error.response.status === 401) {
+            if (error.response?.status === 401) {
                 const { redirect } = error.response.data;
                 if (redirect) {
                     navigate(redirect);
@@ -166,7 +182,7 @@ const usePayment = () => {
         }
     };
 
-    return { payment };
+    return { payment, isRazorpayLoaded };
 };
 
 export default usePayment;

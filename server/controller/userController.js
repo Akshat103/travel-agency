@@ -1,7 +1,10 @@
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
 const IRCTC = require('../models/IRCTC');
+const jwt = require('jsonwebtoken');
+const transporter = require('../config/nodemailer');
+const crypto = require('crypto');
+const logger = require('../utils/logger');
+const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 const generateClientId = () => {
@@ -243,6 +246,74 @@ const logoutUser = (req, res) => {
   }
 };
 
+const generateOtp = async (req, res) => {
+  const { email } = req.body;
+  try {
+      // Find the user by email
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.status(404).send('User not found');
+      }
+
+      // Generate a random OTP
+      const otp = crypto.randomBytes(3).toString('hex'); // 6-character OTP
+
+      // Set OTP and expiration time
+      user.otp = otp;
+      user.otpExpires = Date.now() + 15 * 60 * 1000; // OTP expires in 15 minutes
+      await user.save();
+
+      // Send OTP via email
+      const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: user.email,
+          subject: 'Password Reset OTP',
+          text: `Your OTP for resetting your password is: ${otp}. It will expire in 15 minutes.`
+      };
+
+      transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+              logger.error('Error sending OTP email:', err);
+              return res.status(500).send('Error sending OTP');
+          }
+          logger.info('OTP email sent:', info.response);
+          res.status(200).send('OTP sent successfully');
+      });
+  } catch (error) {
+      logger.error('Error generating OTP:', error.message);
+      res.status(500).send('Internal Server Error');
+  }
+};
+
+// Verify OTP and change password
+const changePassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  try {
+      // Find user by email
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.status(404).send('User not found');
+      }
+
+      // Check if OTP is valid and not expired
+      if (user.otp !== otp || Date.now() > user.otpExpires) {
+          return res.status(400).send('Invalid or expired OTP');
+      }
+
+      // Update the password
+      user.password = newPassword;
+      user.otp = undefined; // Clear OTP after use
+      user.otpExpires = undefined; // Clear OTP expiration
+      await user.save();
+
+      res.status(200).send('Password changed successfully');
+  } catch (error) {
+      logger.error('Error changing password:', error.message);
+      res.status(500).send('Internal Server Error');
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
@@ -252,5 +323,7 @@ module.exports = {
   updateUser,
   switchUserType,
   deleteUser,
-  logoutUser
+  logoutUser,
+  generateOtp,
+  changePassword
 };

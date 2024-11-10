@@ -1,138 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Primary Meta Tags -->
     <title>Yara Holidays - Your Travel Journey Begins Here</title>
-    <meta name="title" content="Yara Holidays - Your Travel Journey Begins Here">
-    <meta name="description"
-        content="Book flights, hotels, buses, and IRCTC tickets with Yara Holidays. Best deals on travel packages, mobile recharge, and more. Start your journey today!">
-    <meta name="keywords"
-        content="travel booking, flight tickets, hotel booking, bus tickets, IRCTC, mobile recharge, holiday packages">
-    <meta name="author" content="Yara Holidays">
-    <meta name="robots" content="index, follow">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yaraholidays.com/">
-    <meta property="og:title" content="Yara Holidays - Your Travel Journey Begins Here">
-    <meta property="og:description"
-        content="Book flights, hotels, buses, and IRCTC tickets with Yara Holidays. Best deals on travel packages, mobile recharge, and more.">
-    <meta property="og:image" content="https://yaraholidays.com/assets/img/logo.png">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://yaraholidays.com/">
-    <meta property="twitter:title" content="Yara Holidays - Your Travel Journey Begins Here">
-    <meta property="twitter:description"
-        content="Book flights, hotels, buses, and IRCTC tickets with Yara Holidays. Best deals on travel packages, mobile recharge, and more.">
-    <meta property="twitter:image" content="https://yaraholidays.com/assets/img/logo.png">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://yaraholidays.com/assets/img/logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://yaraholidays.com/assets/img/apple-touch-icon.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#ffffff">
-
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://checkout.razorpay.com">
-
-    <!-- Preload essential assets -->
-    <link rel="preload" href="/img/bg.jpg" as="image" type="image/jpeg" fetchpriority="high">
-
-    <!-- Schema.org markup -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "TravelAgency",
-        "name": "Yara Holidays",
-        "url": "https://yaraholidays.com",
-        "logo": "https://yaraholidays.com/assets/img/logo.png",
-        "description": "Book flights, hotels, buses, and IRCTC tickets with Yara Holidays.",
-        "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "IN"
-        },
-        "sameAs": [
-            "https://facebook.com/yaraholidays",
-            "https://x.com/HolidayYar6652",
-            "https://instagram.com/yaraholiday",
-            "https://youtube.com/@yaraholiday-ar7",
-            "https://whatsapp.com/channel/0029Valo58lHrDZdW0JXwE11"
-        ],
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://yaraholidays.com/search?q={search_term_string}",
-            "query-input": "required name=search_term_string"
+    <meta name="description" content="Book flights, hotels, buses, and IRCTC tickets with Yara Holidays. Best deals on travel packages, mobile recharge, and more. Start your journey today!">
+    
+    <!-- Inline Critical CSS -->
+    <style>
+        .preloader {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 9999;
         }
-    }
-    </script>
+        #root {
+            min-height: 100vh;
+        }
+    </style>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8YR553L1T"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/img/bg.webp" as="image" fetchpriority="high">
+    
+    <!-- Efficient font loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" as="style" 
+          onload="this.onload=null;this.rel='stylesheet'">
 
-        gtag('config', 'G-R8YR553L1T');
-    </script>
+    <!-- Essential meta tags -->
+    <meta name="robots" content="index, follow">
+    <link rel="icon" type="image/png" href="https://yaraholidays.com/assets/img/logo.png">
+    <link rel="manifest" href="/manifest.json">
 </head>
 
 <body>
-    <!-- Preloader -->
-    <div class="preloader" aria-live="polite" aria-hidden="true">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="lds-spinner" role="status" aria-label="Loading content">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
+    <div id="root">
+        <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+            <div role="status" aria-label="Loading content">Welcome to Yara Holidays & Cabs...</div>
         </div>
     </div>
 
-    <!-- Main content -->
-    <main id="main-content">
-        <div id="root"></div>
-    </main>
-
-    <!-- Go to Top Button -->
-    <div class="go-top" role="button" aria-label="Scroll to top">
-        <i class="fas fa-chevron-up" aria-hidden="true"></i>
-        <i class="fas fa-chevron-up" aria-hidden="true"></i>
-    </div>
-
-    <!-- Main app bundle -->
+    <!-- Core application -->
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- External scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/js/bootstrap.bundle.js" defer></script>
-    <script src="/js/jquery.meanmenu.js" defer></script>
-    <script src="/js/custom.js" defer></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
-
-    <!-- Inline script for performance metrics -->
+    <!-- Optimized third-party script loading -->
     <script>
-        console.time('Page Load Time');
-        window.addEventListener('load', () => {
-            console.timeEnd('Page Load Time');
+        // Function to load scripts based on user interaction or visibility
+        function loadScript(src, async = true) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.async = async;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.body.appendChild(script);
+            });
+        }
+
+        // Load analytics only after first paint
+        requestIdleCallback(() => {
+            // Google Analytics with minimal configuration
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-R8YR553L1T', {
+                'send_page_view': false  // Defer page view tracking
+            });
+            loadScript('https://www.googletagmanager.com/gtag/js?id=G-R8YR553L1T');
+        });
+
+        // Load Razorpay only when payment flow starts
+        window.loadRazorpay = function() {
+            if (!window.Razorpay) {
+                return loadScript('https://checkout.razorpay.com/v1/checkout.js')
+                    .then(() => {
+                        console.log('Razorpay loaded');
+                    })
+                    .catch(error => {
+                        console.error('Error loading Razorpay:', error);
+                    });
+            }
+            return Promise.resolve();
+        };
+
+        // Load non-critical resources after page is interactive
+        window.addEventListener('load', function() {
+            // Defer CSS loading
+            const cssFiles = [
+                '/css/bootstrap.min.css',
+                '/css/meanmenu.css',
+                '/css/custom.css'
+            ];
+            
+            requestIdleCallback(() => {
+                cssFiles.forEach(file => {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = file;
+                    document.head.appendChild(link);
+                });
+            });
+
+            // Load non-critical scripts during idle time
+            const scripts = [
+                'https://code.jquery.com/jquery-3.6.0.min.js',
+                '/js/bootstrap.bundle.js',
+                '/js/jquery.meanmenu.js',
+                '/js/custom.js'
+            ];
+
+            requestIdleCallback(() => {
+                scripts.forEach(src => loadScript(src));
+            });
         });
     </script>
 </body>
-
 </html>

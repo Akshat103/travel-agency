@@ -1,41 +1,22 @@
+// src/routes/ClientRoutes.js
 import React, { useEffect, Suspense, lazy } from 'react';
-import { Route, Routes, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import ClientLayout from '../client/ClientLayout';
 import ClientHome from '../client/pages/ClientHome';
-import FlightSearch from '../client/pages/FlightSearch';
-import BusSearch from '../client/pages/BusSearch';
-import RechargePage from '../client/pages/RechargePage';
-import FlightDetails from '../client/components/flightpage/FlightDetails';
-import BusDetails from '../client/components/buspage/BusDetails';
-import SuccessPage from '../pages/SuccessPage';
-import HotelSearch from '../client/pages/HotelSearch';
-import HotelDetails from '../client/components/hotelpage/HotelDetails';
-import BookHotel from '../client/components/hotelpage/BookHotel';
-import AddPassengers from '../client/components/flightpage/AddPassengers';
-import SeatSelectionPage from '../client/components/flightpage/SeatSelectionPage';
-import FailurePage from '../pages/FailurePage';
+import ClientHeader from '../client/components/ClientHeader';
 import Spinner from '../components/Spinner';
+import FlightRoutes from './serviceRoutes/FlightRoutes';
+import BusRoutes from './serviceRoutes/BusRoutes';
+import HotelRoutes from './serviceRoutes/HotelRoutes';
+import MobileRechargeRoutes from './serviceRoutes/MobileRechargeRoutes';
+import InfoRoutes from './serviceRoutes/InfoRoutes';
+import IRCTCRoutes from './serviceRoutes/IRCTCRoutes';
 
 const NotFound = lazy(() => import('../pages/NotFound'));
-const OnboardUser = lazy(() => import('../client/pages/OnboardUser'));
-const IRCTCPage = lazy(() => import('../client/pages/IrctcPage'));
 const Register = lazy(() => import('../client/pages/Register'));
 const LogIn = lazy(() => import('../client/pages/LogIn'));
+const ForgotPassword = lazy(() => import('../client/pages/ForgetPasswordPage'));
 const UserDashboard = lazy(() => import('../client/pages/UserDashboard'));
-const ContactUs = lazy(() => import('../client/pages/ContactUs'));
-const AboutUs = lazy(() => import('../client/pages/AboutUs'));
-const PrivacyPolicy = lazy(() => import('../client/pages/PrivacyPolicy'));
-const TermsAndConditions = lazy(() => import('../client/pages/TermsAndConditions'));
-const CancellationRefund = lazy(() => import('../client/pages/CancellationRefund'));
-const ShippingDelivery = lazy(() => import('../client/pages/ShippingDelivery'));
-
-const IRCTCRouteGuard = ({ irctcValue, requiredValue, redirectTo, children }) => {
-  if (irctcValue !== requiredValue) {
-    return <Navigate to={redirectTo} />;
-  }
-  return children;
-};
 
 const ClientRoutes = () => {
   const location = useLocation();
@@ -69,75 +50,30 @@ const ClientRoutes = () => {
 
   return (
     <div style={{ zoom: '80%' }}>
-      <Suspense fallback={<Spinner show={true} />}>
-        <Routes>
-          {/* Home */}
-          <Route path="" element={<ClientLayout><ClientHome /></ClientLayout>} />
+      <div className="client-layout">
+        <ClientHeader />
+        <main className="client-main-content">
+          <Suspense fallback={<Spinner show={true} />}>
+            <Routes>
+              <Route path="" element={<ClientHome />} />
+              <Route path="register" element={<Register />} />
+              <Route path="login" element={<LogIn />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="dashboard" element={<UserDashboard />} />
 
-          {/* Register Page */}
-          <Route path="register" element={<ClientLayout><Register /></ClientLayout>} />
+              {/* Include the modular routes */}
+              {FlightRoutes()}
+              {BusRoutes()}
+              {HotelRoutes()}
+              {MobileRechargeRoutes()}
+              {InfoRoutes()}
+              {IRCTCRoutes({ irctcStatus })}
 
-          {/* Login Page */}
-          <Route path="login" element={<ClientLayout><LogIn /></ClientLayout>} />
-
-          {/* Flight Routes */}
-          <Route path="flights" element={<ClientLayout><FlightSearch /></ClientLayout>} />
-          <Route path="flight-details" element={<ClientLayout><FlightDetails /></ClientLayout>} />
-          <Route path="flight/add-passengers" element={<ClientLayout><AddPassengers /></ClientLayout>} />
-          <Route path="flight/seats" element={<ClientLayout><SeatSelectionPage /></ClientLayout>} />
-
-          {/* Bus Routes */}
-          <Route path="bus" element={<ClientLayout><BusSearch /></ClientLayout>} />
-          <Route path="bus-details" element={<ClientLayout><BusDetails /></ClientLayout>} />
-
-          {/* Hotel Routes */}
-          <Route path="hotel" element={<ClientLayout><HotelSearch /></ClientLayout>} />
-          <Route path="hotel-details" element={<ClientLayout><HotelDetails /></ClientLayout>} />
-          <Route path="book-hotel" element={<ClientLayout><BookHotel /></ClientLayout>} />
-
-          {/* Mobile Recharge Routes */}
-          <Route path="mobile-recharge" element={<ClientLayout><RechargePage /></ClientLayout>} />
-
-          {/* User Dashboard */}
-          <Route path="dashboard" element={<ClientLayout><UserDashboard /></ClientLayout>} />
-
-
-          <Route path="success" element={<ClientLayout><SuccessPage /></ClientLayout>} />
-          <Route path="failure" element={<ClientLayout><FailurePage /></ClientLayout>} />
-
-          <Route path="contact-us" element={<ClientLayout><ContactUs /></ClientLayout>} />
-          <Route path="about-us" element={<ClientLayout><AboutUs /></ClientLayout>} />
-          <Route path="privacy-policy" element={<ClientLayout><PrivacyPolicy /></ClientLayout>} />
-          <Route path="terms-and-conditions" element={<ClientLayout><TermsAndConditions /></ClientLayout>} />
-          <Route path="cancellation-refund" element={<ClientLayout><CancellationRefund /></ClientLayout>} />
-          <Route path="shipping-delivery" element={<ClientLayout><ShippingDelivery /></ClientLayout>} />
-
-          {/* IRCTC Routes */}
-          <Route
-            path="irctc/onboard"
-            element={
-              <ClientLayout>
-                <IRCTCRouteGuard irctcValue={irctcStatus} requiredValue="0" redirectTo="/irctc">
-                  <OnboardUser />
-                </IRCTCRouteGuard>
-              </ClientLayout>
-            }
-          />
-
-          <Route
-            path="irctc"
-            element={
-              <ClientLayout>
-                <IRCTCRouteGuard irctcValue={irctcStatus} requiredValue="1" redirectTo="/irctc/onboard">
-                  <IRCTCPage />
-                </IRCTCRouteGuard>
-              </ClientLayout>
-            }
-          />
-
-          <Route path="*" element={<ClientLayout><NotFound /></ClientLayout>} />
-        </Routes>
-      </Suspense>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </main>
+      </div>
     </div>
   );
 };
